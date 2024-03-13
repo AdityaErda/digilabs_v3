@@ -2,57 +2,18 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Landing extends MX_Controller {
-  public function __construct() {
-    parent::__construct();
-    $this->load->model('M_landing');
-  }
-
-  public function index() {
-    (COUNT($this->session->userdata()) > 5) ?  redirect(base_url('dashboard/order/?&header_menu=53&menu_id=54')) : $this->load->view('landing/landing');
-  }
-
-  public function indexPreview() {
-    $this->load->view('landing/landing_preview');
-  }
-
-    public function preview()
-    {
-        $param_landing = array(
-            'aktif' => 'y',
-        );
-
-        $landing = $this->M_landing->getLanding($param_landing);
-
-        $data_landing['utama'] = $this->M_landing->getLanding($param_landing);
-        $this->load->view('web/web_header', $data_landing, FALSE);
-        // $this->load->view('web/konten', $data_landing, FALSE);
-
-        foreach ($landing as $value) :
-
-            $param_template_banner = array('landing_template_tipe' => 'B', 'id_landing' => $value['landing_id']);
-            $param_template_about = array('landing_template_tipe' => 'T', 'id_landing' => $value['landing_id']);
-            $param_template_news = array('landing_template_tipe' => 'N', 'id_landing' => $value['landing_id']);
-            $param_template_certificate = array('landing_template_tipe' => 'S', 'id_landing' => $value['landing_id']);
-            $param_template_cooperation = array('landing_template_tipe' => 'C', 'id_landing' => $value['landing_id']);
-            $param_template_contact = array('landing_template_tipe' => 'K', 'id_landing' => $value['landing_id']);
-            $param_template_testimonial = array('landing_template_tipe' => 'T', 'id_landing' => $value['landing_id']);
-
-            $data_landing['banner'] = $this->M_landing->getLandingDetail($param_template_banner);
-            $data_landing['about'] = $this->M_landing->getLandingDetail($param_template_about);
-            $data_landing['news'] = $this->M_landing->getLandingDetail($param_template_news);
-            $data_landing['certificate'] = $this->M_landing->getLandingDetail($param_template_certificate);
-            $data_landing['cooperation'] = $this->M_landing->getLandingDetail($param_template_cooperation);
-            $data_landing['contact'] = $this->M_landing->getLandingDetail($param_template_contact);
-            $data_landing['testimonial'] = $this->M_landing->getLandingDetail($param_template_testimonial);
-
-
-            $this->load->view('web/content/' . $value['landing_template_file'], $data_landing, false);
-        endforeach;
-
-        $this->load->view('web/web_footer', $data_landing, FALSE);
-        $this->load->view('web/web_js', $data_landing, FALSE);
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('M_landing');
     }
 
+    public function index() {
+        $this->load->view('landing/landing');
+    }
+
+    public function indexPreview() {
+        $this->load->view('landing/landing_preview');
+    }
 
     public function utama()
     {
@@ -163,35 +124,6 @@ class Landing extends MX_Controller {
     {
         $sesi = $this->session->userdata();
 
-        // if (isset($_FILES['landing_detail_gambar'])) {
-        //     $temp = "./landing/";
-        //     if (!file_exists($temp)) mkdir($temp);
-
-        //     $fileupload      = $_FILES['landing_detail_gambar']['tmp_name'];
-        //     $ImageName       = $_FILES['landing_detail_gambar']['name'];
-        //     $ImageType       = $_FILES['landing_detail_gambar']['type'];
-
-        //     if (!empty($fileupload)) {
-        //         $Extension        = array("jpeg", "jpg", "png", "bmp", "gif", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf");
-        //         $acak           = rand(11111111, 99999999);
-        //         $ImageExt       = substr($ImageName, strrpos($ImageName, '.'));
-        //         $ImageExt       = str_replace('.', '', $ImageExt); // Extension
-        //         $ImageName      = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
-        //         $NewImageName   = str_replace(' ', '', create_id() . '_' . date('ymdhis') . '.' . $ImageExt);
-
-
-        //         if (in_array($ImageExt, $Extension)) {
-        //             move_uploaded_file($_FILES["landing_detail_gambar"]["tmp_name"], $temp . $NewImageName); // Menyimpan file
-        //         }
-        //         $note = "Data Berhasil Disimpan";
-        //     } else {
-        //         $note = "Data Gagal Disimpan";
-        //     }
-        //     echo $note;
-        // } else {
-        //     $NewImageName = null;
-        // }
-
         if (!empty($_FILES['landing_detail_gambar']['name'])) {
 
             $file_name                  = str_replace(' ', '', create_id() . '_' . date('ymdhis'));
@@ -273,28 +205,6 @@ class Landing extends MX_Controller {
     public function updateLandingDetail()
     {
         $sesi = $this->session->userdata();
-
-        // if (isset($_FILES['landing_detail_gambar'])) {
-        //     $temp = "./landing/";
-        //     if (!file_exists($temp)) mkdir($temp);
-
-        //     $fileupload      = $_FILES['landing_detail_gambar']['tmp_name'];
-        //     $ImageName       = $_FILES['landing_detail_gambar']['name'];
-        //     $ImageType       = $_FILES['landing_detail_gambar']['type'];
-
-        //     if (!empty($fileupload)) {
-        //         $Extension        = array("jpeg", "jpg", "png", "bmp", "gif", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pdf");
-        //         $acak           = rand(11111111, 99999999);
-        //         $ImageExt       = substr($ImageName, strrpos($ImageName, '.'));
-        //         $ImageExt       = str_replace('.', '', $ImageExt); // Extension
-        //         $ImageName      = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
-        //         $NewImageName   = str_replace(' ', '', create_id() . '_' . date('ymdhis') . '.' . $ImageExt);
-
-        //         if (in_array($ImageExt, $Extension)) {
-        //             move_uploaded_file($_FILES["landing_detail_gambar"]["tmp_name"], $temp . $NewImageName); // Menyimpan file
-        //         }
-        //     }
-        // }
 
         if (!empty($_FILES['landing_detail_gambar']['name'])) {
 
