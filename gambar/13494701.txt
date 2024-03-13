@@ -1,0 +1,6 @@
+vandar 1600
+phy 1200
+gm 2000
+artil 8600
+ml 9600
+vp 5800

@@ -1,0 +1,6 @@
+Laporan Penerimaan menggunakan muslimat
+Rekap penerimaan kasir misal User A Tunai xxxx, bank xxxx
+Rekap penerimaan perhari kolom kekanan sama spt lap penerimaan, kebawahnya per tgl
+Piutang BPJS & Asuransi belum masuk ar/ap (Kasir Jaminannya yang bermasalah)
+AR BPJS looping ambil bank aja, nominal piutang bermasalah
+Laporan Piutang BPJS belum bener dari muslimat
