@@ -1,27 +1,19 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Landing extends MX_Controller
-{
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->model('M_landing');
-    }
+class Landing extends MX_Controller {
+  public function __construct() {
+    parent::__construct();
+    $this->load->model('M_landing');
+  }
 
-    public function index()
-    {
-        if (COUNT($this->session->userdata()) > 5) {
-            redirect(base_url('dashboard/order/?&header_menu=53&menu_id=54'));
-        } else {
-            $this->load->view('landing/landing');
-        }
-    }
+  public function index() {
+    (COUNT($this->session->userdata()) > 5) ?  redirect(base_url('dashboard/order/?&header_menu=53&menu_id=54')) : $this->load->view('landing/landing');
+  }
 
-    public function indexPreview()
-    {
-        $this->load->view('landing/landing_preview');
-    }
+  public function indexPreview() {
+    $this->load->view('landing/landing_preview');
+  }
 
     public function preview()
     {
