@@ -1,18 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Order extends MY_Controller
-{
+class Order extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		isLogin();
 		$this->load->model('dashboard/M_order');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Order';
 		$data = $this->session->userdata();
 		$data['session_login'] = $this->session->userdata();
@@ -22,26 +19,22 @@ class Order extends MY_Controller
 		$this->template->template_master('dashboard/order',$isi,$data);
 	}
 
-	public function getOrderData()
-	{
+	public function getOrderData(){
 		$param['transaksi_tipe'] = $this->input->get_post('transaksi_tipe');
 		$param['tahun'] = $this->input->get('tahun');
 		$data = $this->M_order->getOrderData($param);
 		echo json_encode($data);
 	}
 
-	public function getOrderTotal()
-	{
+	public function getOrderTotal(){
 		$param['transaksi_status'] = $this->input->get_post('transaksi_status');
 		$param['transaksi_tipe'] = $this->input->get_post('transaksi_tipe');
 		$param['tahun'] = $this->input->get('tahun');
 		$data = $this->M_order->getOrderTahun($param);
-		// echo $this->db->last_query();
 		echo json_encode($data);
 	}
 
-	public function getOrderBulan()
-	{
+	public function getOrderBulan(){
 		$param = array();
 		$param['tahun'] = $this->input->get('tahun');
 		$data = array();
@@ -65,51 +58,42 @@ class Order extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getOrderSeksi()
-	{
+	public function getOrderSeksi(){
 		$param['tahun'] = $this->input->get('tahun');
 		$data = $this->M_order->getOrderSeksi($param);
-		// echo $this->db->last_query();
+		
 		echo json_encode($data);
 	}
 
-	public function getOrderStatus()
-	{
+	public function getOrderStatus(){
 		$param['tahun'] = $this->input->get('tahun');
 		$data = $this->M_order->getOrderStatus($param);
-		// echo $this->db->last_query();
 
 		echo json_encode($data);
 	}
 
-	public function getSumParameter()
-	{
+	public function getSumParameter(){
 		$param = array();
 		$param['tahun'] = $this->input->get('tahun');
 		$data = $this->M_order->getSumParameter($param);
 
-		// echo $this->db->last_query();
 		echo json_encode($data);
 	}
 
-	public function getOrderCustomer()
-	{
+	public function getOrderCustomer(){
 		$param = array();
 		$param['tahun'] = $this->input->get('tahun');
 		$data = $this->M_order->getOrderCustomer($param);
-		// echo $this->db->last_query();
 
 		echo json_encode($data);
 	}
 
-	public function getPendapatanBulan()
-	{
+	public function getPendapatanBulan(){
 		$param = array();
 		if ($this->input->get('tahun')) {
 			$param['tahun'] =  anti_inject_angka($this->input->get('tahun'));
 		}
 		$data = $this->M_order->getPendapatanBulan($param);
-		// echo $this->db->last_query();
 
 		$param_lalu = [];
 		if ($this->input->get('tahun') && is_numeric($this->input->get('tahun'))) {

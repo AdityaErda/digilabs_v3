@@ -46,11 +46,6 @@
     }
   </style>
 </head>
-<?php
-$sql = $this->db->query("SELECT * FROM landing.landing WHERE aktif = 'y' ORDER BY landing_urut ASC");
-$data = $sql->result_array();
-?>
-
 <body>
   <!-- HEADER -->
   <header id="header" class="header fixed-top">

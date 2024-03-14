@@ -15,6 +15,9 @@ class Document extends MY_Controller{
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
+		$data['jenis'] = $this->db->query("SELECT * FROM document.document_jenis ORDER BY jenis_nama ASC LIMIT 6")->result(); 
+		$data['seksi'] = $this->db->query("SELECT * FROM global.global_seksi WHERE is_disposisi = 'y' ORDER BY seksi_nama ASC")->result(); 
+
 		$this->template->template_master('dashboard/document',$isi,$data);
 	}
 
@@ -38,7 +41,6 @@ class Document extends MY_Controller{
 		if ($this->input->get('seksi_id')) $param['seksi_id'] = $this->input->get('seksi_id');
 
 		$data = $this->M_document->getDocumentSeksi($param);
-		// echo $this->db->last_query();
 		echo json_encode($data);
 	}
 

@@ -26,8 +26,7 @@
           $jenis_no[] = 'bg-primary';
           $jenis_no[] = 'bg-secondary';
           ?>
-          <?php $jenis = $this->db->query("SELECT * FROM document.document_jenis ORDER BY jenis_nama ASC LIMIT 6") ?>
-          <?php foreach ($jenis->result() as $key => $value) : ?>
+          <?php foreach ($jenis as $key => $value) : ?>
             <div class="col-md-2">
               <div class="small-box <?= $jenis_no[$key] ?>">
                 <div class="inner">
@@ -53,10 +52,9 @@
           $seksi_no[] = 'yellow';
           $seksi_no[] = 'aqua';
           ?>
-          <?php $seksi = $this->db->query("SELECT * FROM global.global_seksi WHERE is_disposisi = 'y' ORDER BY seksi_nama ASC") ?>
           <table width="100%">
             <tr>
-              <?php foreach ($seksi->result() as $key => $value) : ?>
+              <?php foreach ($seksi as $key => $value) : ?>
                 <td width="10%">
                   <div class="col-md-12">
                     <div class="small-box" style="background-color: <?= $seksi_no[$key] ?>;">

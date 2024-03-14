@@ -569,38 +569,6 @@
       }
     });
 
-    // $.ajax({
-    //   url: "<?= base_url() ?>dashboard/order/getOrderSeksi?tahun=" + tahun,
-    //   method: "GET",
-    //   async: true,
-    //   dataType: 'json',
-    //   success: function(isi) {
-    //     var label = [];
-    //     var value = [];
-
-    //     $.each(isi, function(index, val) {
-    //       label.push(val.seksi_nama);
-    //       value.push(val.total);
-    //     });
-
-    //     $('#chartSeksi').remove();
-    //     $('#div_chartSeksi').append('<canvas id="chartSeksi" style="width: 100%;"></canvas>');
-    //     var ctx = document.getElementById('chartSeksi').getContext('2d');
-    //     var myChart = new Chart(ctx, {
-    //       type: 'doughnut',
-    //       data: {
-    //         labels: label,
-    //         datasets: [{
-    //           label: 'Sample',
-    //           data: value,
-    //           backgroundColor: ['#000080', 'red', 'green', 'orange', 'black', ],
-    //         }]
-    //       }
-    //     });
-    //   }
-    // });
-
-
     $.ajax({
       url: "<?= base_url() ?>dashboard/order/getOrderStatus?tahun=" + tahun,
       method: "GET",

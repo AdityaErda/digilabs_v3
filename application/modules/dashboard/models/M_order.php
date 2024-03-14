@@ -1,10 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_order extends CI_Model
-{
-	public function getOrderBulan($data = null)
-	{
+class M_order extends CI_Model{
+	public function getOrderBulan($data = null){
 		$this->db->select("to_char(a.transaksi_detail_tgl_pengajuan, 'Month') as bulan, EXTRACT(MONTH FROM TO_DATE(to_char(a.transaksi_detail_tgl_pengajuan, 'Month'), 'Month')) AS bln");
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_id = b.transaksi_id');
@@ -18,8 +16,7 @@ class M_order extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getOrderData($data = null)
-	{
+	public function getOrderData($data = null){
 		$this->db->select("a.transaksi_nomor,a.transaksi_tgl,a.when_create,a.transaksi_sifat,a.transaksi_kecepatan_tanggap,a.transaksi_id,a.transaksi_nomor, a.transaksi_tipe, a.transaksi_status,b.transaksi_detail_status,b.transaksi_detail_no_memo, b.transaksi_detail_no_surat,b.transaksi_detail_note,b.transaksi_detail_nomor,b.transaksi_detail_nomor_sample, c.jenis_nama, d.peminta_jasa_nama, e.sample_pekerjaan_nama, f.identitas_nama, g.*, to_char(b.transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY') AS transaksi_detail_tgl_pengajuan_baru, to_char(b.transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(b.transaksi_detail_tgl_estimasi, 'DD-MM-YYYY') AS transaksi_detail_tgl_estimasi_baru, b.transaksi_detail_note as note_awal,transaksi_detail_file,transaksi_detail_attach");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.transaksi_id = b.transaksi_id', 'left');
@@ -59,8 +56,7 @@ class M_order extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getOrderTahun($data = null)
-	{
+	public function getOrderTahun($data = null){
 		$this->db->select("count(*) as total");
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_id = b.transaksi_id AND a.transaksi_detail_id = b.id_transaksi_detail');
@@ -74,8 +70,7 @@ class M_order extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getOrderBulanEksternal($data = null)
-	{
+	public function getOrderBulanEksternal($data = null){
 		$this->db->select("COUNT(b.transaksi_id) AS total");
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_detail_id = b.id_transaksi_detail AND b.transaksi_tipe = ' . "'E'", 'left');
@@ -88,8 +83,7 @@ class M_order extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getOrderBulanInternal($data = null)
-	{
+	public function getOrderBulanInternal($data = null){
 		$this->db->select("COUNT(b.transaksi_id) AS total");
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_detail_id = b.id_transaksi_detail AND b.transaksi_tipe = ' . "'I'", 'left');
@@ -102,8 +96,7 @@ class M_order extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getOrderBulanRutin($data = null)
-	{
+	public function getOrderBulanRutin($data = null){
 		$this->db->select("COUNT(b.transaksi_id) AS total");
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_detail_id = b.id_transaksi_detail AND b.transaksi_tipe = ' . "'R'", 'left');
@@ -117,8 +110,7 @@ class M_order extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getOrderSeksi($data = null)
-	{
+	public function getOrderSeksi($data = null){
 		// $this->db->select("*");
 		$this->db->select("c.seksi_nama, COUNT(*) AS total,is_disposisi");
 		$this->db->from('sample.sample_transaksi a');
@@ -135,8 +127,7 @@ class M_order extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getOrderStatus($data = null)
-	{
+	public function getOrderStatus($data = null){
 		$this->db->select("b.transaksi_detail_status, COUNT(*) AS total");
 		// $this->db->select('*');
 		$this->db->from('sample.sample_transaksi a');
@@ -155,8 +146,7 @@ class M_order extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getSumParameter($data = null)
-	{
+	public function getSumParameter($data = null){
 		$this->db->select("SUM(b.transaksi_detail_parameter) AS total");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.id_transaksi_detail = b.transaksi_detail_id', 'left');
@@ -168,8 +158,7 @@ class M_order extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getOrderCustomer($data = null)
-	{
+	public function getOrderCustomer($data = null){
 		// $this->db->select("(SUM(c.identitas_harga*b.transaksi_detail_jumlah)) AS total, d.peminta_jasa_nama");
 		$this->db->select("(c.identitas_harga * b.transaksi_detail_jumlah) as total , d.peminta_jasa_nama");
 		$this->db->from('sample.sample_transaksi a');
@@ -186,8 +175,7 @@ class M_order extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getPendapatanBulan($data = null)
-	{
+	public function getPendapatanBulan($data = null){
 		$this->db->select("(SUM(c.identitas_harga*b.transaksi_detail_jumlah)) AS total, to_char(a.transaksi_tgl, 'Month') as bulan, EXTRACT(MONTH FROM TO_DATE(to_char(a.transaksi_tgl, 'Month'), 'Month')) AS bln");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.id_transaksi_detail = b.transaksi_detail_id', 'left');

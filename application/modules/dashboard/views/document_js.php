@@ -1,13 +1,11 @@
 <script>
   $(function () {
-    <?php $jenis = $this->db->query("SELECT * FROM document.document_jenis ORDER BY jenis_nama ASC LIMIT 6") ?>
-    <?php foreach ($jenis->result() as $key => $value): ?>
+    <?php foreach ($jenis as $key => $value): ?>
       var jenis_id = '<?= $value->jenis_id ?>';
       $.getJSON('<?= base_url('dashboard/document/getDocumentJenis').'?jenis_id=' ?>'+jenis_id, function(json) {$('#jenis_id_<?= $value->jenis_id ?>').html(json.total)});
     <?php endforeach ?>
 
-    <?php $seksi = $this->db->query("SELECT * FROM global.global_seksi WHERE is_disposisi = 'y' ORDER BY seksi_nama ASC") ?>
-    <?php foreach ($seksi->result() as $key => $value): ?>
+    <?php foreach ($seksi as $key => $value): ?>
       var seksi_id = '<?= $value->seksi_id ?>';
       $.getJSON('<?= base_url('dashboard/document/getDocumentSeksi').'?seksi_id=' ?>'+seksi_id, function(json) {$('#seksi_id_<?= $value->seksi_id ?>').html(json.total)});
     <?php endforeach ?>

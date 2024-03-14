@@ -1,37 +1,31 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Stok extends MY_Controller
-{
+class Stok extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('dashboard/M_stok');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Stok';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
 		$this->template->template_master('dashboard/stok',$isi,$data);
-
 	}
 
-	public function getItem()
-	{
+	public function getItem(){
 		$param = array();
 		$param['tahun'] = $this->input->get('tahun');
 		$data = $this->M_stok->getItem($param);
 		echo json_encode($data);
 	}
 
-	public function getTransaksi()
-	{
+	public function getTransaksi(){
 		$bulan_nama = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 		$isi = array();
 		$isi['isi'] = array();
@@ -60,8 +54,7 @@ class Stok extends MY_Controller
 		echo json_encode($isi);
 	}
 
-	public function getPerbaikan()
-	{
+	public function getPerbaikan(){
 		$bulan_nama = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 		$isi = array();
 		$isi['isi'] = array();
@@ -90,8 +83,7 @@ class Stok extends MY_Controller
 		echo json_encode($isi);
 	}
 
-	public function getPenyerapan()
-	{
+	public function getPenyerapan(){
 		$bulan_nama = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 		$isi = array();
 		$isi['isi'] = array();
@@ -120,8 +112,7 @@ class Stok extends MY_Controller
 		echo json_encode($isi);
 	}
 
-	public function getRequest()
-	{
+	public function getRequest(){
 
 		$tanggal = $this->input->get('tanggal_cari');
 		if ($tanggal) $tgl = explode(' - ', $tanggal);
@@ -134,11 +125,11 @@ class Stok extends MY_Controller
 		$param['transaksi_id'] = $this->input->get('transaksi_id');
 		$param['transaksi_tipe'] = $this->input->get_post('transaksi_tipe');
 		$data = $this->M_stok->getRequest($param);
+		
 		echo json_encode($data);
 	}
 
-	public function getMaterial()
-	{
+	public function getMaterial(){
 		$tanggal = $this->input->get('tanggal_cari');
 		if ($tanggal) $tgl = explode(' - ', $tanggal);
 		if ($tanggal) $tgl2 = str_replace('/', '-', $tgl);
@@ -150,8 +141,6 @@ class Stok extends MY_Controller
 		$param['transaksi_id'] = $this->input->get('transaksi_id');
 		$param['transaksi_tipe'] = $this->input->get_post('transaksi_tipe');
 		$data = $this->M_stok->getMaterial($param);
-
-		// echo $this->db->last_query();
 
 		echo json_encode($data);
 	}
