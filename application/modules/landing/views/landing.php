@@ -89,60 +89,54 @@
           </div>
           <p>&nbsp;</p>
           <hr>
-          <?php if (($this->input->post('transaksi_nomor'))) :
-            $result = htmlspecialchars($this->input->post('transaksi_nomor'), ENT_QUOTES, 'UTF-8');;
-            $sql = $this->db->query("SELECT * FROM sample.sample_transaksi a LEFT JOIN sample.sample_transaksi_detail b ON a.transaksi_id = b.transaksi_id LEFT JOIN sample.sample_peminta_jasa d ON d.peminta_jasa_id = b.peminta_jasa_id LEFT JOIN sample.sample_jenis q ON q.jenis_id = b.jenis_id WHERE UPPER(transaksi_nomor) LIKE '%" . strtoupper($result) . "%' AND (is_proses != 'y' OR is_proses is NULL) ORDER BY a.transaksi_nomor ASC");
-            $dataSample = $sql->result_array();
-          ?>
-            <table width="100%" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>No Surat</th>
-                  <th>Jenis Sample</th>
-                  <th>Status</th>
-                  <th>Peminta Jasa</th>
-                  <th>Nomor Sample</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php if ($dataSample) : ?>
-                  <?php foreach ($dataSample as $value) : ?>
-                    <?php
-                    $status = '';
-                    if ($value['transaksi_detail_status'] == '0')  $status = 'Draft';
-                    else if ($value['transaksi_detail_status'] == '1')  $status = 'Pengajuan';
-                    else if ($value['transaksi_detail_status'] == '2')  $status = 'Review AVP';
-                    else if ($value['transaksi_detail_status'] == '3')  $status = 'Approve VP';
-                    else if ($value['transaksi_detail_status'] == '4')  $status = 'Approve VP PPK';
-                    else if ($value['transaksi_detail_status'] == '5')  $status = 'Approve AVP LUK';
-                    else if ($value['transaksi_detail_status'] == '6')  $status = 'Sample Belum Diterima';
-                    else if ($value['transaksi_detail_status'] == '12')  $status = 'Tunda';
-                    else if ($value['transaksi_detail_status'] == '7')  $status = 'Sample Diterima';
-                    else if ($value['transaksi_detail_status'] == '13')  $status = 'Tunda';
-                    else if ($value['transaksi_detail_status'] == '8')  $status = 'On Progress';
-                    else if ($value['transaksi_detail_status'] == '9')  $status = 'Log Sample';
-                    else if ($value['transaksi_detail_status'] == '10')  $status = 'Terbit Sertifikat';
-                    else if ($value['transaksi_detail_status'] == '11')  $status = 'Clossed';
-                    else if ($value['transaksi_detail_status'] == '14')  $status = 'Batal';
-                    else if ($value['transaksi_detail_status'] == '15')  $status = 'Reject';
-                    else if ($value['transaksi_detail_status'] == '16') $status = 'Send DOF';
-                    else if ($value['transaksi_detail_status'] == '17') $status = 'Terbit Sertifikat';
-                    // else if ($value['transaksi_detail_status'] == '18' && $value['logsheet_id'] == null)                    $status = 'Closed NOn Letter';
-                    else if ($value['transaksi_detail_status'] == '18') $status = 'Closed';
+          <table width="100%" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>No Surat</th>
+                <th>Jenis Sample</th>
+                <th>Status</th>
+                <th>Peminta Jasa</th>
+                <th>Nomor Sample</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if ($dataSample) : ?>
+                <?php foreach ($dataSample as $value) : ?>
+                  <?php
+                  $status = '';
+                  if ($value['transaksi_detail_status'] == '0')  $status = 'Draft';
+                  else if ($value['transaksi_detail_status'] == '1')  $status = 'Pengajuan';
+                  else if ($value['transaksi_detail_status'] == '2')  $status = 'Review AVP';
+                  else if ($value['transaksi_detail_status'] == '3')  $status = 'Approve VP';
+                  else if ($value['transaksi_detail_status'] == '4')  $status = 'Approve VP PPK';
+                  else if ($value['transaksi_detail_status'] == '5')  $status = 'Approve AVP LUK';
+                  else if ($value['transaksi_detail_status'] == '6')  $status = 'Sample Belum Diterima';
+                  else if ($value['transaksi_detail_status'] == '12')  $status = 'Tunda';
+                  else if ($value['transaksi_detail_status'] == '7')  $status = 'Sample Diterima';
+                  else if ($value['transaksi_detail_status'] == '13')  $status = 'Tunda';
+                  else if ($value['transaksi_detail_status'] == '8')  $status = 'On Progress';
+                  else if ($value['transaksi_detail_status'] == '9')  $status = 'Log Sample';
+                  else if ($value['transaksi_detail_status'] == '10')  $status = 'Terbit Sertifikat';
+                  else if ($value['transaksi_detail_status'] == '11')  $status = 'Clossed';
+                  else if ($value['transaksi_detail_status'] == '14')  $status = 'Batal';
+                  else if ($value['transaksi_detail_status'] == '15')  $status = 'Reject';
+                  else if ($value['transaksi_detail_status'] == '16') $status = 'Send DOF';
+                  else if ($value['transaksi_detail_status'] == '17') $status = 'Terbit Sertifikat';
+                  // else if ($value['transaksi_detail_status'] == '18' && $value['logsheet_id'] == null)                    $status = 'Closed NOn Letter';
+                  else if ($value['transaksi_detail_status'] == '18') $status = 'Closed';
 
-                    ?>
-                    <tr>
-                      <td><?= $value['transaksi_nomor'] ?></td>
-                      <td><?= $value['jenis_nama'] ?></td>
-                      <td><?= $status ?></td>
-                      <td><?= $value['peminta_jasa_nama'] ?></td>
-                      <td><?= $value['transaksi_detail_nomor_sample'] ?></td>
-                    </tr>
-                  <?php endforeach ?>
-                <?php endif ?>
-              </tbody>
-            </table>
-          <?php endif ?>
+                  ?>
+                  <tr>
+                    <td><?= $value['transaksi_nomor'] ?></td>
+                    <td><?= $value['jenis_nama'] ?></td>
+                    <td><?= $status ?></td>
+                    <td><?= $value['peminta_jasa_nama'] ?></td>
+                    <td><?= $value['transaksi_detail_nomor_sample'] ?></td>
+                  </tr>
+                <?php endforeach ?>
+              <?php endif ?>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
