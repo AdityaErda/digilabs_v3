@@ -149,8 +149,7 @@
           <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="200">
             <div class="swiper-wrapper">
               <?php
-              $sql = $this->db->query("SELECT * FROM landing.landing_detail WHERE landing_detail_status = 'y' AND id_landing = '" . $isi['landing_id'] . "' ORDER BY landing_detail_urutan ASC");
-              $dataDetail = $sql->result_array();
+                $dataDetail = $this->db->order_by('landing_detail_urutan', 'ASC')->get_where('landing.landing_detail', array('landing_detail_status' => 'y','id_landing' => $isi['landing_id']))->result_array();
               ?>
               <?php foreach ($dataDetail as $isi_detail) : ?>
                 <div class="swiper-slide" style="opacity: 0;">
@@ -170,8 +169,7 @@
         <div class="container" data-aos="fade-up">
           <div class="row gx-0">
             <?php
-            $sql = $this->db->query("SELECT * FROM landing.landing_detail WHERE landing_detail_status = 'y' AND id_landing = '" . $isi['landing_id'] . "' ORDER BY landing_detail_urutan ASC");
-            $dataDetail = $sql->result_array();
+              $dataDetail = $this->db->order_by('landing_detail_urutan', 'ASC')->get_where('landing.landing_detail', array('landing_detail_status' => 'y','id_landing' => $isi['landing_id']))->result_array();
             ?>
             <?php foreach ($dataDetail as $isi_detail) : ?>
               <div class="col-lg-9 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
@@ -197,8 +195,7 @@
             <div class="col-lg-12">
               <h3><?= $isi['landing_judul'] ?></h3>
               <?php
-              $sql = $this->db->query("SELECT * FROM landing.landing_detail WHERE landing_detail_status = 'y' AND id_landing = '" . $isi['landing_id'] . "' ORDER BY landing_detail_urutan ASC");
-              $dataDetail = $sql->result_array();
+              $dataDetail = $this->db->order_by('landing_detail_urutan', 'ASC')->get_where('landing.landing_detail', array('landing_detail_status' => 'y','id_landing' => $isi['landing_id']))->result_array();
               ?>
               <ul class="nav nav-pills mb-3">
                 <?php foreach ($dataDetail as $k => $isi_detail) : ?>
@@ -252,8 +249,7 @@
             <p><?= $isi['landing_judul'] ?></p>
           </header>
           <?php
-          $sql = $this->db->query("SELECT * FROM landing.landing_detail WHERE landing_detail_status = 'y' AND id_landing = '" . $isi['landing_id'] . "' ORDER BY landing_detail_urutan ASC");
-          $dataDetail = $sql->result_array();
+            $dataDetail = $this->db->order_by('landing_detail_urutan', 'ASC')->get_where('landing.landing_detail', array('landing_detail_status' => 'y','id_landing' => $isi['landing_id']))->result_array();
           ?>
           <div class="row gy-4 portfolio-container" data-aos="fade-up" data-aos-delay="200">
             <?php foreach ($dataDetail as $isi_detail) : ?>
@@ -279,8 +275,7 @@
             <p><?= $isi['landing_judul'] ?></p>
           </header>
           <?php
-          $sql = $this->db->query("SELECT * FROM landing.landing_detail WHERE landing_detail_status = 'y' AND id_landing = '" . $isi['landing_id'] . "' ORDER BY landing_detail_urutan ASC");
-          $dataDetail = $sql->result_array();
+          $dataDetail = $this->db->order_by('landing_detail_urutan', 'ASC')->get_where('landing.landing_detail', array('landing_detail_status' => 'y','id_landing' => $isi['landing_id']))->result_array();
           ?>
           <div class="row" data-aos="fade-up" data-aos-delay="200">
             <?php foreach ($dataDetail as $isi_detail) : ?>
@@ -298,8 +293,7 @@
             <p><?= $isi['landing_judul'] ?></p>
           </header>
           <?php
-          $sql = $this->db->query("SELECT * FROM landing.landing_detail WHERE landing_detail_status = 'y' AND id_landing = '" . $isi['landing_id'] . "' ORDER BY landing_detail_urutan ASC");
-          $dataDetail = $sql->result_array();
+          $dataDetail = $this->db->order_by('landing_detail_urutan', 'ASC')->get_where('landing.landing_detail', array('landing_detail_status' => 'y','id_landing' => $isi['landing_id']))->result_array();
           ?>
           <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="200">
             <div class="swiper-wrapper">
@@ -328,8 +322,7 @@
             <p><?= $isi['landing_judul'] ?></p>
           </header>
           <?php
-          $sql = $this->db->query("SELECT * FROM landing.landing_detail WHERE landing_detail_status = 'y' AND id_landing = '" . $isi['landing_id'] . "' ORDER BY landing_detail_urutan ASC");
-          $dataDetail = $sql->result_array();
+          $dataDetail = $this->db->order_by('landing_detail_urutan', 'ASC')->get_where('landing.landing_detail', array('landing_detail_status' => 'y','id_landing' => $isi['landing_id']))->result_array();
           ?>
           <div class="row gy-4">
             <div class="col-lg-12">
