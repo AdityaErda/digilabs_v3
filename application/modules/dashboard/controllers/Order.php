@@ -19,11 +19,7 @@ class Order extends MY_Controller
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('dashboard/order');
-		$this->load->view('tampilan/footer');
-		$this->load->view('dashboard/order_js');
+		$this->template->template_master('dashboard/order',$isi,$data);
 	}
 
 	public function getOrderData()

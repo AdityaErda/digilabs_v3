@@ -17,7 +17,6 @@ class Landing extends MX_Controller {
 
     public function utama()
     {
-
         $isi['judul'] = 'Landing Page';
         $data = $this->session->userdata();
         $data['id_sidebar'] = $this->input->get('id_sidebar');
