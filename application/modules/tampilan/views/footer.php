@@ -58,7 +58,7 @@ if (COUNT($this->session->userdata()) < 5) {
       $('#notif_review').html(json.length);
     });
   }
-  notifReview();
+  // notifReview();
   // notifikasi review
 
   // notifikasi approved
@@ -67,7 +67,7 @@ if (COUNT($this->session->userdata()) < 5) {
       $('#notif_approved').html(json.length);
     });
   }
-  notifApproved();
+  // notifApproved();
   // notifikasi approved
 
   // notifikasi lab
@@ -76,7 +76,7 @@ if (COUNT($this->session->userdata()) < 5) {
       $('#notif_lab').html(json.length);
     });
   }
-  notifLab();
+  // notifLab();
   // notifikasi lab
 
   // notifikiasi inbox
@@ -85,7 +85,7 @@ if (COUNT($this->session->userdata()) < 5) {
       $('#notif_inbox').html(json.length);
     });
   }
-  notifInbox();
+  // notifInbox();
   // notifikasi inbox
 
 
@@ -106,7 +106,7 @@ if (COUNT($this->session->userdata()) < 5) {
     });
   }
   // setInterval(() => {
-  notifstoklimit();
+  // notifstoklimit();
   // }, 5);
 
   function notifdocexp(view = '') {
@@ -125,7 +125,7 @@ if (COUNT($this->session->userdata()) < 5) {
     });
   }
   // setInterval(()=>{
-  notifdocexp();
+  // notifdocexp();
   // },5)
 
   function fun_notifLogout() { //fungsi untuk menampilkan notifikasi saat logout

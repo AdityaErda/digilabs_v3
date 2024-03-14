@@ -15,8 +15,9 @@ class Order extends MY_Controller{
 		$data['session_login'] = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
-
+		
 		$this->template->template_master('dashboard/order',$isi,$data);
+		
 	}
 
 	public function getOrderData(){

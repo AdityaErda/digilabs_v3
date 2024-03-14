@@ -428,14 +428,14 @@
           35 <= e.keyCode && 40 >= e.keyCode || (e.shiftKey || 48 > e.keyCode || 57 < e.keyCode) &&
           (96 > e.keyCode || 105 < e.keyCode) && e.preventDefault()
       });
-      approve_internal();
-      approve_eksternal();
-      inbox_internal();
-      inbox_eksternal();
-      notif_internal();
-      notif_eksternal();
-      total_eksternal();
-      total_internal();
+      // approve_internal();
+      // approve_eksternal();
+      // inbox_internal();
+      // inbox_eksternal();
+      // notif_internal();
+      // notif_eksternal();
+      // total_eksternal();
+      // total_internal();
     })
     /* Fun Notifikasi Sample Eksternal */
     function notif_eksternal() {
@@ -489,7 +489,7 @@
       $('#notif_total_eksternal').html((approve * 1) + (notif * 1) + (inbox * 1));
     }
     setTimeout(function() {
-      total_eksternal();
+      // total_eksternal();
     }, 2000);
     /* Fun Total Sample Eksternal */
     /* Fun Total Sample Internal */
@@ -500,7 +500,7 @@
       $('#notif_total_internal').html((approve * 1) + (notif * 1) + (inbox * 1));
     }
     setTimeout(function() {
-      total_internal();
+      // total_internal();
     }, 2000);
     /* Fun Total Sample Internal */
     /* Fun Rutin */
@@ -510,7 +510,7 @@
       });
     }
     setTimeout(function() {
-      total_rutin();
+      // total_rutin();
     }, 2000);
     /* Fun Rutin */
   </script>
