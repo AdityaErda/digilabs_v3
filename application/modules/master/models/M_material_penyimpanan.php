@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_material_penyimpanan extends CI_Model
-{
+class M_material_penyimpanan extends CI_Model{
 	/* GET */
-	public function getPenyimpananBarang($data = null)
-	{
+	public function getPenyimpananBarang($data = null){
 		$this->db->select('*');
 		$this->db->from('material.material_penyimpanan a');
         $this->db->join('material.material_aset b', 'a.penyimpanan_aset = b.aset_id', 'left');
@@ -16,8 +14,8 @@ class M_material_penyimpanan extends CI_Model
 		return (isset($data['penyimpanan_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 	
-    public function getAset($data = null)
-	{
+  public function getAset($data = null){
+
 		$this->db->select('*');
 		$this->db->from('material.material_aset a');
         $this->db->join('material.material_penyimpanan b', 'a.aset_id = b.penyimpanan_aset', 'left');
@@ -32,8 +30,7 @@ class M_material_penyimpanan extends CI_Model
 	/* GET */
 
 	/* INSERT */
-	public function insertPenyimpananBarang($data)
-	{
+	public function insertPenyimpananBarang($data){
 		$this->db->insert('material.material_penyimpanan', $data);
 
 		return $this->db->affected_rows();
@@ -41,8 +38,7 @@ class M_material_penyimpanan extends CI_Model
 	/* INSERT */
 
 	/* UPDATE */
-	public function updatePenyimpananBarang($data, $id)
-	{
+	public function updatePenyimpananBarang($data, $id){
 		$this->db->set($data);
 		$this->db->where('penyimpanan_id', $id);
 		$this->db->update('material.material_penyimpanan');
@@ -52,8 +48,7 @@ class M_material_penyimpanan extends CI_Model
 	/* UPDATE */
 
 	/* DELETE */
-	public function deletePenyimpananBarang($id)
-	{
+	public function deletePenyimpananBarang($id){
 		$this->db->where('penyimpanan_id', $id);
 		$this->db->delete('material.material_penyimpanan');
 
@@ -62,8 +57,7 @@ class M_material_penyimpanan extends CI_Model
 	/* DELETE */
 
 	/* RESET */
-	public function resetPenyimpananBarang()
-	{
+	public function resetPenyimpananBarang(){
 		$this->db->where('penyimpanan_id !=', '');
 		$this->db->delete('material.material_penyimpanan');
 
@@ -71,8 +65,7 @@ class M_material_penyimpanan extends CI_Model
 	}
 	/* RESET */
 	/* GET IMPORT */
-	public function getImport($data = null)
-	{
+	public function getImport($data = null){
 		$this->db->select('*');
 		$this->db->from('import.import_material_jenis');
 		if (isset($data['import_kode'])) $this->db->where('import_kode', $data['import_kode']);
@@ -83,16 +76,14 @@ class M_material_penyimpanan extends CI_Model
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 		$insert = $this->db->insert_batch('import.import_material_jenis', $data);
 		if ($insert) {
 			return true;
 		}
 	}
 
-	public function insertTable($data)
-	{
+	public function insertTable($data){
 		$this->db->query("INSERT INTO material.material_jenis SELECT jenis_id, null, jenis_nama, jenis_kode, when_create, who_create FROM import.import_material_jenis WHERE import_kode = '" . $data['import_kode'] . "' AND UPPER(jenis_nama) NOT IN (SELECT UPPER(jenis_nama) FROM material.material_jenis)");
 
 		return $this->db->affected_rows();
@@ -100,8 +91,7 @@ class M_material_penyimpanan extends CI_Model
 	/* INSERT IMPORT */
 
 	/* DELETE TABLE */
-	public function deleteTable($id)
-	{
+	public function deleteTable($id){
 		$this->db->where('import_kode', $id);
 		$this->db->delete('import.import_material_jenis');
 

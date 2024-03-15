@@ -3,35 +3,26 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Audit_kategori extends MY_Controller
-{
+class Audit_kategori extends MY_Controller{
 
-
-  public function __construct()
-  {
+  public function __construct(){
     parent::__construct();
     // load model
     $this->load->model('master/M_audit_kategori');
   }
 
 
-  public function index()
-  {
+  public function index(){
     $isi['judul'] = 'Kategori Audit';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
     $data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-    $this->load->view('tampilan/header', $isi);
-    $this->load->view('tampilan/sidebar', $data);
-    $this->load->view('master/audit_kategori');
-    $this->load->view('tampilan/footer');
-    $this->load->view('master/audit_kategori_js');
+    $this->template->template_master('master/audit_kategori',$isi,$data);
   }
 
   /* GET */
-  public function getKategoriAudit()
-  {
+  public function getKategoriAudit(){
     $param = [];
     if ($this->input->get('audit_kategori_id')) {
       $param['audit_kategori_id'] = anti_inject_replace($this->input->get_post('audit_kategori_id'));
@@ -43,8 +34,7 @@ class Audit_kategori extends MY_Controller
   }
 
 
-  public function getAuditKategoriList()
-  {
+  public function getAuditKategoriList(){
     $auditKategori['results'] = array();
     $param = [];
     if ($this->input->get('audit_kategori_nama')) {
@@ -62,8 +52,7 @@ class Audit_kategori extends MY_Controller
   /* GET */
 
   /* INSERT */
-  public function insertKategoriAudit()
-  {
+  public function insertKategoriAudit(){
 
     $isi = $this->session->userdata();
 
@@ -76,8 +65,7 @@ class Audit_kategori extends MY_Controller
   /* INSERT */
 
   /* UPDATE */
-  public function updateKategoriAudit()
-  {
+  public function updateKategoriAudit(){
     $isi = $this->session->userdata();
 
     $id = anti_inject($this->input->post('audit_kategori_id'));
@@ -92,16 +80,14 @@ class Audit_kategori extends MY_Controller
   /* UPDATE */
 
   /* DELETE */
-  public function deleteKategoriAudit()
-  {
+  public function deleteKategoriAudit(){
     $this->M_audit_kategori->deleteKategoriAudit($this->input->get('audit_kategori_id'));
   }
   /* DELETE */
 
   /* RESET */
 
-  public function resetKategoriAudit()
-  {
+  public function resetKategoriAudit(){
     $this->M_audit_kategori->resetKategoriAudit();
   }
 

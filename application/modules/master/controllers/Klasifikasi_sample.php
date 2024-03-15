@@ -3,35 +3,26 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Klasifikasi_sample extends MY_Controller
-{
+class Klasifikasi_sample extends MY_Controller{
 
-
-  public function __construct()
-  {
+  public function __construct(){
     parent::__construct();
     // load model
     $this->load->model('master/M_klasifikasi_sample');
   }
 
 
-  public function index()
-  {
+  public function index(){
     $isi['judul'] = 'Klasifikasi Sample';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
     $data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-    $this->load->view('tampilan/header', $isi);
-    $this->load->view('tampilan/sidebar', $data);
-    $this->load->view('master/klasifikasi_sample');
-    $this->load->view('tampilan/footer');
-    $this->load->view('master/klasifikasi_sample_js');
+    $this->template->template_master('master/klasifikasi_sample',$isi,$data);
   }
 
   /* GET */
-  public function getKlasifikasiSample()
-  {
+  public function getKlasifikasiSample(){
     $param = [];
     if ($this->input->get('klasifikasi_id')) {
       $param['klasifikasi_id'] = anti_inject_replace($this->input->get('klasifikasi_id'));
@@ -42,8 +33,7 @@ class Klasifikasi_sample extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getKlasifikasiSampleList()
-  {
+  public function getKlasifikasiSampleList(){
     $Klasifikasi['results'] = array();
     $param = [];
     if ($this->input->get('klasifikasi_nama')) {
@@ -62,8 +52,7 @@ class Klasifikasi_sample extends MY_Controller
   /* GET */
 
   /* INSERT */
-  public function insertKlasifikasiSample()
-  {
+  public function insertKlasifikasiSample(){
 
     $isi = $this->session->userdata();
 
@@ -77,8 +66,7 @@ class Klasifikasi_sample extends MY_Controller
   /* INSERT */
 
   /* UPDATE */
-  public function updateKlasifikasiSample()
-  {
+  public function updateKlasifikasiSample(){
     $isi = $this->session->userdata();
 
     $id = anti_inject($this->input->post('klasifikasi_id'));
@@ -94,16 +82,14 @@ class Klasifikasi_sample extends MY_Controller
   /* UPDATE */
 
   /* DELETE */
-  public function deleteKlasifikasiSample()
-  {
+  public function deleteKlasifikasiSample(){
     $this->M_klasifikasi_sample->deleteKlasifikasiSample($this->input->get('klasifikasi_id'));
   }
   /* DELETE */
 
   /* RESET */
 
-  public function resetKlasifikasiSample()
-  {
+  public function resetKlasifikasiSample(){
     $this->M_klasifikasi_sample->resetKlasifikasiSample();
   }
 

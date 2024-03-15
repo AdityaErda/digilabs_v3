@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_cek_sample extends CI_Model
-{
+class M_cek_sample extends CI_Model{
 	/* GET */
-	public function getTemplateLogsheet($data = null)
-	{
+	public function getTemplateLogsheet($data = null){
 		$this->db->select('*');
 		$this->db->from('sample.sample_template_logsheet a');
 		$this->db->join('sample.sample_cek_sample b', 'b.id_template_logsheet = a.template_logsheet_id', 'left');
@@ -20,8 +18,7 @@ class M_cek_sample extends CI_Model
 		return (isset($data['template_logsheet_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getSample($param = null)
-	{
+	public function getSample($param = null){
 		if (isset($param['cek_sample_id'])) $this->db->where('cek_sample_id', $param['cek_sample_id']);
 		$this->db->where("(is_lama != 'y' or is_lama is null)");
 		$this->db->select('*');
@@ -34,8 +31,7 @@ class M_cek_sample extends CI_Model
 		}
 	}
 
-	public function getSampleDetail($par = null)
-	{
+	public function getSampleDetail($par = null){
 		if (!empty($par['rumus_id'])) $this->db->where('id_rumus', $par['rumus_id']);
 		if (!empty($par['cek_sample_id'])) $this->db->where('a.cek_sample_id', $par['cek_sample_id']);
 		$this->db->where('is_lama', 'n');
@@ -48,8 +44,7 @@ class M_cek_sample extends CI_Model
 		return $query->result_array();
 	}
 
-	public function getSampleDetailDetail($par = null)
-	{
+	public function getSampleDetailDetail($par = null){
 		if (!empty($par['cek_sample_detail_id'])) $this->db->where('cek_sample_detail_id', $par['cek_sample_detail_id']);
 		$this->db->where('a.is_lama', 'n');
 		$this->db->where('b.is_lama', 'n');
@@ -67,28 +62,24 @@ class M_cek_sample extends CI_Model
 	/* GET */
 
 	/* INSERT */
-	public function insertCekSample($data = null)
-	{
+	public function insertCekSample($data = null){
 		$this->db->insert('sample.sample_cek_sample', $data);
 		return $this->db->affected_rows();
 	}
 
-	public function insertCekSampleDetail($data = null)
-	{
+	public function insertCekSampleDetail($data = null){
 		$this->db->insert('sample.sample_cek_sample_detail', $data);
 		return $this->db->affected_rows();
 	}
 
-	public function insertCekSampleDetailDetail($data = null)
-	{
+	public function insertCekSampleDetailDetail($data = null){
 		$this->db->insert('sample.sample_cek_sample_detail_detail', $data);
 		return $this->db->affected_rows();
 	}
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateTemplateLogsheet($data, $id)
-	{
+	public function updateTemplateLogsheet($data, $id){
 		$this->db->set($data);
 		$this->db->where('template_logsheet_id', $id);
 		$this->db->update('sample.sample_template_logsheet');
@@ -98,16 +89,14 @@ class M_cek_sample extends CI_Model
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteTemplateLogsheet($id)
-	{
+	public function deleteTemplateLogsheet($id){
 		$this->db->where('template_logsheet_id', $id);
 		$this->db->delete('sample.sample_template_logsheet');
 
 		return $this->db->affected_rows();
 	}
 
-	public function resetTemplateLogsheet()
-	{
+	public function resetTemplateLogsheet(){
 		$this->db->empty_table('sample.sample_template_logsheet');
 
 		return $this->db->affected_rows();
@@ -116,8 +105,7 @@ class M_cek_sample extends CI_Model
 
 
 	/* GET DETAIL */
-	public function getDetailLogsheet($data = null)
-	{
+	public function getDetailLogsheet($data = null){
 		$this->db->select('a.*, b.rumus_id, b.rumus_nama, b.is_adbk, b.satuan_sample, b.desimal_angka, b.batasan_emisi,b.metode');
 		$this->db->from('sample.sample_template_logsheet_detail a');
 		$this->db->join('sample.sample_perhitungan_sample b', 'a.logsheet_nama_rumus = b.rumus_id', 'left');
@@ -136,8 +124,7 @@ class M_cek_sample extends CI_Model
 		return (isset($data['template_logsheet_detail_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getMasterRumus($data = null)
-	{
+	public function getMasterRumus($data = null){
 		$this->db->select('a.*, b.jenis_id, b.jenis_nama');
 		$this->db->from('sample.sample_perhitungan_sample a');
 		$this->db->join('sample.sample_jenis b', 'a.jenis_id = b.jenis_id', 'left');
@@ -151,8 +138,7 @@ class M_cek_sample extends CI_Model
 	/* GET DETAIL */
 
 	/* INSERT DETAIL */
-	public function insertTemplateLogsheetDetail($data)
-	{
+	public function insertTemplateLogsheetDetail($data){
 		$this->db->insert('sample.sample_template_logsheet_detail', $data);
 
 		return $this->db->affected_rows();
@@ -160,8 +146,7 @@ class M_cek_sample extends CI_Model
 	/* INSERT DETAIL */
 
 	/* UPDATE DETAIL */
-	public function updateTemplateLogsheetDetail($data, $id)
-	{
+	public function updateTemplateLogsheetDetail($data, $id){
 		$this->db->set($data);
 		$this->db->where('template_logsheet_detail_id', $id);
 		$this->db->update('sample.sample_template_logsheet_detail');
@@ -171,8 +156,7 @@ class M_cek_sample extends CI_Model
 	/* UPDATE DETAIL */
 
 	/* DELETE DETAIL */
-	public function deleteTemplateLogsheetDetail($id)
-	{
+	public function deleteTemplateLogsheetDetail($id){
 		$this->db->where('template_logsheet_detail_id', $id);
 		$this->db->delete('sample.sample_template_logsheet_detail');
 
@@ -182,8 +166,7 @@ class M_cek_sample extends CI_Model
 	/* DELETE DETAIL */
 
 	/* GET LOG SHEET */
-	public function getListRumus($data = null)
-	{
+	public function getListRumus($data = null){
 		$this->db->select('*');
 		$this->db->from('sample.sample_perhitungan_sample_detail a');
 		$this->db->join('sample.sample_perhitungan_sample b', 'a.rumus_id = b.id_rumus', 'left');

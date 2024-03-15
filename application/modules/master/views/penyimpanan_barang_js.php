@@ -23,65 +23,37 @@
       placeholder: 'Pilih'
     });
  
-    
-
     $('.select2-selection').css('height', '37px');
     $('.select2').css('width', '100%');
 
     /* Isi Table */
     $('#table thead tr').clone(true).addClass('filters').appendTo('#table thead');
-    $('#table').DataTable({
-        orderCellsTop: true,
-        initComplete: function () {
+      $('#table').DataTable({
+      orderCellsTop: true,
+      initComplete: function () {
         $('.dataTables_scrollHead').on('scroll', function () {
             $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
         });
-            var api = this.api();
- 
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
- 
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('keyup change', function (e) {
-                            e.stopPropagation();
- 
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
- 
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
-                                )
-                                .draw();
- 
-                            $(this)
-                                .focus()[0]
-                                .setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
-        },
+        var api = this.api();
+        api.columns().eq(0).each(function (colIdx) {
+          var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+          var title = $(cell).text();
+          $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
+
+          $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+          .off('keyup change')
+          .on('keyup change', function (e) {
+            e.stopPropagation();
+            $(this).attr('title', $(this).val());
+            var regexr = '({search})';
+            var cursorPosition = this.selectionStart;
+            api.column(colIdx)
+                .search(this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '', this.value != '', this.value == '')
+                .draw();
+            $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+          });
+        });
+      },
       "scrollX": true,
       "lengthMenu":[[5,10,25,50,-1],[5,10,25,50,"All"]],
       "dom": 'lBfrtip',
@@ -122,31 +94,31 @@
       if(!json.user_id){
         fun_notifLogout();
       }else{
-    $('#simpan').css('display', 'none');
-    $('#edit').css('display', 'block');
-    $.getJSON('<?= base_url('master/penyimpanan_barang/getPenyimpananBarang') ?>', {
-      penyimpanan_id: id
-    }, function(json) {
-      $.each(json, function(index, val) {
-        $('#' + index).val(val);
-      });
+        $('#simpan').css('display', 'none');
+        $('#edit').css('display', 'block');
+        $.getJSON('<?= base_url('master/penyimpanan_barang/getPenyimpananBarang') ?>', {
+          penyimpanan_id: id
+        }, function(json) {
+          $.each(json, function(index, val) {
+            $('#' + index).val(val);
+          });
 
-      $('#penyimpanan_aset').append('<option selected value="' + json.penyimpanan_aset + '">' + json.aset_nama + '</option>');
-      $('#penyimpanan_aset').select2('data', {
-        id: json.penyimpanan_aset,
-        text: json.aset_nama
-      });
-      $('#penyimpanan_aset').trigger('change');
+          $('#penyimpanan_aset').append('<option selected value="' + json.penyimpanan_aset + '">' + json.aset_nama + '</option>');
+          $('#penyimpanan_aset').select2('data', {
+            id: json.penyimpanan_aset,
+            text: json.aset_nama
+          });
+          $('#penyimpanan_aset').trigger('change');
 
-      $('#penyimpanan_status').append('<option selected value="' + json.penyimpanan_status + '">' + json.penyimpanan_status + '</option>');
-      $('#penyimpanan_status').select2('data', {
-        id: json.penyimpanan_status,
-        text: json.penyimpanan_status
-      });
-      $('#penyimpanan_status').trigger('change');
+          $('#penyimpanan_status').append('<option selected value="' + json.penyimpanan_status + '">' + json.penyimpanan_status + '</option>');
+          $('#penyimpanan_status').select2('data', {
+            id: json.penyimpanan_status,
+            text: json.penyimpanan_status
+          });
+          $('#penyimpanan_status').trigger('change');
+        });
+      }
     });
-  }
-  });
   }
   /* View Update */
 
@@ -157,22 +129,22 @@
       if(!json.user_id){
         fun_notifLogout();
       }else{
-    if ($('#penyimpanan_id').val() != '') var url = '<?= base_url('master/penyimpanan_barang/updatePenyimpananBarang') ?>'; 
-    else var url = '<?= base_url('master/penyimpanan_barang/insertPenyimpananBarang') ?>';
+        if ($('#penyimpanan_id').val() != '') var url = '<?= base_url('master/penyimpanan_barang/updatePenyimpananBarang') ?>'; 
+        else var url = '<?= base_url('master/penyimpanan_barang/insertPenyimpananBarang') ?>';
 
-    e.preventDefault();
-    $.ajax({
-      url: url,
-      data: $('#form_modal').serialize(),
-      type: 'POST',
-      dataType: 'html',
-      success: function(isi) {
-        $('#close').click();
-        toastr.success('Berhasil');
+        e.preventDefault();
+        $.ajax({
+          url: url,
+          data: $('#form_modal').serialize(),
+          type: 'POST',
+          dataType: 'html',
+          success: function(isi) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          }
+        });
       }
     });
-  }
-  });
   });
   /* Proses */
 
@@ -182,16 +154,16 @@
       if(!json.user_id){
         fun_notifLogout();
       }else{
-    $.confirmModal('Apakah anda yakin akan menghapusnya?', function(el) {
-      $.get('<?= base_url('master/penyimpanan_barang/deletePenyimpananBarang') ?>', {
-        penyimpanan_id: id
-      }, function(data) {
-        $('#close').click();
-        toastr.success('Berhasil');
-      });
+        $.confirmModal('Apakah anda yakin akan menghapusnya?', function(el) {
+          $.get('<?= base_url('master/penyimpanan_barang/deletePenyimpananBarang') ?>', {
+            penyimpanan_id: id
+          }, function(data) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          });
+        });
+      }
     });
-  }
-  });
   }
   /* Fun Delete */
 
@@ -201,16 +173,16 @@
       if(!json.user_id){
         fun_notifLogout();
       }else{
-    $.confirmModal('Apakah anda yakin akan mereset seluruh data jenis barang ?', function(el) {
-      $.get('<?= base_url('master/penyimpanan_barang/resetPenyimpananBarang') ?>', {
-        penyimpanan_id: 'id'
-      }, function(data) {
-        $('#close').click();
-        toastr.success('Berhasil');
-      });
+        $.confirmModal('Apakah anda yakin akan mereset seluruh data jenis barang ?', function(el) {
+          $.get('<?= base_url('master/penyimpanan_barang/resetPenyimpananBarang') ?>', {
+            penyimpanan_id: 'id'
+          }, function(data) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          });
+        });
+      }
     });
-  }
-  });
   }
   /* Fun Reset */
   /* Fun Close */

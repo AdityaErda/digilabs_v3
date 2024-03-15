@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Harga_pokok_jasa extends MY_Controller
-{
+class Harga_pokok_jasa extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		$this->load->model('master/M_material_item');
 		$this->load->model('master/M_material_aset');
@@ -14,24 +12,18 @@ class Harga_pokok_jasa extends MY_Controller
 	}
 
 	/* INDEX */
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Harga Pokok Jasa';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
-
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/harga_pokok_jasa');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/harga_pokok_jasa_js');
+		
+		$this->template->template_master('master/harga_pokok_jasa',$isi,$data);
 	}
 	/* INDEX */
 
 	/* GET */
-    public function getBarangMaterial()   
-	{
+    public function getBarangMaterial(){
 		$listAset['results'] = array();
 
 		$param['item_nama'] = $this->input->get('item_nama');
@@ -45,8 +37,7 @@ class Harga_pokok_jasa extends MY_Controller
 
 		echo json_encode($listAset);
 	}
-    public function getAset()   
-	{
+    public function getAset(){
 		$listAset['results'] = array();
 
 		$param['aset_nama'] = $this->input->get('aset_nama');
@@ -60,8 +51,7 @@ class Harga_pokok_jasa extends MY_Controller
 
 		echo json_encode($listAset);
 	}
-    public function getJenisSampleUji()   
-	{
+    public function getJenisSampleUji(){
 		$listAset['results'] = array();
 
 		$param['jenis_nama'] = $this->input->get('jenis_nama');
@@ -74,8 +64,7 @@ class Harga_pokok_jasa extends MY_Controller
 
 		echo json_encode($listAset);
 	}
-    public function getSampleIdentitas()   
-	{
+    public function getSampleIdentitas(){
 		$listAset['results'] = array();
 
 		$param['jenis_id'] = $this->input->get('jenis_id');
@@ -91,8 +80,7 @@ class Harga_pokok_jasa extends MY_Controller
 		echo json_encode($listAset);
 	}
 
-	public function getHargaPokokJasa()
-	{
+	public function getHargaPokokJasa(){
 		$param['harga_pokok_jasa_id'] = $this->input->get('harga_pokok_jasa_id');
 
 		$data = $this->M_harga_pokok_jasa->getHargaPokokJasa($param);
@@ -101,8 +89,7 @@ class Harga_pokok_jasa extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertHargaPokokJasa()
-	{
+	public function insertHargaPokokJasa(){
 		$isi = $this->session->userdata();
 
 		$data['harga_pokok_jasa_id'] = create_id();
@@ -126,8 +113,7 @@ class Harga_pokok_jasa extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateHargaPokokJasa()
-	{
+	public function updateHargaPokokJasa(){
 		$isi = $this->session->userdata();
 
 		$id = $this->input->post('harga_pokok_jasa_id');
@@ -154,21 +140,18 @@ class Harga_pokok_jasa extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteHargaPokokJasa()
-	{
+	public function deleteHargaPokokJasa(){
 		$this->M_harga_pokok_jasa->deleteHargaPokokJasa($this->input->get('harga_pokok_jasa_id'));
 	}
 	/* DELETE */
 	/* RESET */
-	public function resetHargaPokokJasa()
-	{
+	public function resetHargaPokokJasa(){
 		$this->M_harga_pokok_jasa->resetHargaPokokJasa();
 	}
 	/* RESET */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import Jenis Barang';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -183,8 +166,7 @@ class Harga_pokok_jasa extends MY_Controller
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_harga_pokok_jasa->getImport($param);
@@ -193,8 +175,7 @@ class Harga_pokok_jasa extends MY_Controller
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 		$data_session = $this->session->userdata();
 
 		$config = array(
@@ -233,8 +214,7 @@ class Harga_pokok_jasa extends MY_Controller
 		}
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		$this->M_harga_pokok_jasa->insertTable($param);
 		$this->M_harga_pokok_jasa->deleteTable($this->input->get('import_kode'));

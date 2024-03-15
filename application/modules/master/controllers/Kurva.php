@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Kurva extends MY_Controller
-{
+class Kurva extends MY_Controller{
 
-  public function __construct()
-  {
+  public function __construct(){
     parent::__construct();
 
     $this->load->model('master/M_Kurva');
@@ -14,22 +12,16 @@ class Kurva extends MY_Controller
   }
 
   /* INDEX */
-  public function index()
-  {
+  public function index(){
     $isi['judul'] = 'Kurva';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
     $data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-    $this->load->view('tampilan/header', $isi);
-    $this->load->view('tampilan/sidebar', $data);
-    $this->load->view('master/kurva');
-    $this->load->view('tampilan/footer');
-    $this->load->view('master/kurva_js');
+    $this->template->template_master('master/kurva',$isi,$data);
   }
 
-  public function lihat()
-  {
+  public function lihat(){
     $isi['judul'] = 'Lihat Kurva';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -38,22 +30,23 @@ class Kurva extends MY_Controller
     $param['kurva_id'] = $this->input->get_post('id_kurva');
     $param['id_kurva'] = $this->input->get_post('id_kurva');
 
-    $konten['kurva_header'] = $this->M_Kurva->getKurvaHeader($param);
-    $konten['kurva'] = $this->M_Kurva->getKurva($param);
+    $data['kurva_header'] = $this->M_Kurva->getKurvaHeader($param);
+    $data['kurva'] = $this->M_Kurva->getKurva($param);
 
     $this->load->view('tampilan/header', $isi);
     $this->load->view('tampilan/sidebar', $data);
-    $this->load->view('master/kurva_lihat', $konten);
+    $this->load->view('master/kurva_lihat', $data);
     $this->load->view('tampilan/footer');
     $this->load->view('master/kurva_lihat_js');
+
+    $this->template->template_master('master/kurva_lihat',$isi,$data);
   }
 
 
   /* INDEX */
 
   /* GET */
-  public function getRumusMultiple()
-  {
+  public function getRumusMultiple(){
     $param = array(
       'multiple_rumus_id' => $this->input->get_post('multiple_rumus_id'),
       // 'id_rumus' => $this->input->get_post('id_rumus'),
@@ -63,8 +56,7 @@ class Kurva extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getJenisSample()
-  {
+  public function getJenisSample(){
     $listJenis['results'] = array();
 
     $param['jenis_nama'] = $this->input->get('jenis_nama');
@@ -78,8 +70,7 @@ class Kurva extends MY_Controller
     echo json_encode($listJenis);
   }
 
-  public function getJenisRumusList()
-  {
+  public function getJenisRumusList(){
     $listJenis['results'] = array();
 
     $param['jenis_nama'] = $this->input->get('jenis_nama');
@@ -95,23 +86,20 @@ class Kurva extends MY_Controller
     echo json_encode($listJenis);
   }
 
-  public function getKurva()
-  {
+  public function getKurva(){
     $param['kurva_id'] = $this->input->get_post('kurva_id');
     $data = $this->M_Kurva->getKurva($param);
     echo json_encode($data);
   }
 
-  public function getKurvaHeader()
-  {
+  public function getKurvaHeader(){
     $param['kurva_header_id'] = $this->input->get_post('kurva_header_id');
     $param['id_kurva'] = $this->input->get_post('id_kurva');
     $data = $this->M_Kurva->getKurvaHeader($param);
     echo json_encode($data);
   }
 
-  public function getKurvaIsi()
-  {
+  public function getKurvaIsi(){
     $param['kurva_isi_id'] = $this->input->get_post('kurva_isi_id');
     $param['id_kurva'] = $this->input->get_post('id_kurva');
     $param['id_kurva_header'] = $this->input->get_post('id_kurva_header');
@@ -119,8 +107,7 @@ class Kurva extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getKurvaBatas()
-  {
+  public function getKurvaBatas(){
     $param['id_kurva'] = $this->input->get_post('id_kurva');
     $param['id_kurva_header'] = $this->input->get_post('id_kurva_header');
     $isi = array();
@@ -137,8 +124,7 @@ class Kurva extends MY_Controller
   /* GET */
 
   /* Insert */
-  public function insertKurva()
-  {
+  public function insertKurva(){
     $sesi = $this->session->userdata();
 
     $data['kurva_id'] = create_id();
@@ -151,8 +137,7 @@ class Kurva extends MY_Controller
     $this->M_Kurva->insertKurva($data);
   }
 
-  public function insertKurvaHeader()
-  {
+  public function insertKurvaHeader(){
     $data['kurva_header_id'] = create_id();
     $data['id_kurva'] = $this->input->get_post('id_kurva');
     $data['kurva_header_nama'] = $this->input->get_post('kurva_header_nama');
@@ -161,8 +146,7 @@ class Kurva extends MY_Controller
     $this->M_Kurva->insertKurvaHeader($data);
   }
 
-  public function insertKurvaIsi()
-  {
+  public function insertKurvaIsi(){
     $data['kurva_isi_id'] = create_id();
     $data['id_kurva'] = $this->input->get_post('id_kurva');
     $data['id_kurva_header']  = $this->input->get_post('id_kurva_header');
@@ -176,8 +160,7 @@ class Kurva extends MY_Controller
   /* Insert */
 
   /* Update */
-  public function updateKurva()
-  {
+  public function updateKurva(){
     $sesi = $this->session->userdata();
 
     $id = $this->input->get_post('kurva_id');
@@ -190,8 +173,7 @@ class Kurva extends MY_Controller
     $this->M_Kurva->updateKurva($id, $data);
   }
 
-  public function updateKurvaHeader()
-  {
+  public function updateKurvaHeader(){
     $id = $this->input->get_post('kurva_header_id');
     $data['id_kurva'] = $this->input->get_post('id_kurva');
     $data['kurva_header_nama'] = $this->input->get_post('kurva_header_nama');
@@ -200,8 +182,7 @@ class Kurva extends MY_Controller
     $this->M_Kurva->updateKurvaHeader($id, $data);
   }
 
-  public function updateKurvaIsi()
-  {
+  public function updateKurvaIsi(){
     $id = $this->input->get_post('kurva_isi_id');
     $data['kurva_urut'] = $this->input->get_post('kurva_isi_urut');
     $data['kurva_isi_jumlah'] = $this->input->get_post('kurva_isi_jumlah');
@@ -209,8 +190,7 @@ class Kurva extends MY_Controller
     $this->M_Kurva->updateKurvaIsi($id, $data);
   }
 
-  public function updateRumusMultiple()
-  {
+  public function updateRumusMultiple(){
     $isi = $this->session->userdata();
 
     $id = $this->input->post('multiple_rumus_id');
@@ -226,33 +206,28 @@ class Kurva extends MY_Controller
   /* Update */
 
   /* Delete */
-  public function deleteKurva()
-  {
+  public function deleteKurva(){
     $id = $this->input->get_post('kurva_id');
     $this->M_Kurva->deleteKurva($id);
   }
 
-  public function deleteKurvaHeader()
-  {
+  public function deleteKurvaHeader(){
     $id = $this->input->get_post('kurva_header_id');
     $this->M_Kurva->deleteKurvaHeader($id);
   }
 
-  public function deleteKurvaIsi()
-  {
+  public function deleteKurvaIsi(){
     $id = $this->input->get_post('kurva_isi_id');
     $this->M_Kurva->deleteKurvaIsi($id);
   }
 
-  public function deleteRumusMultiple()
-  {
+  public function deleteRumusMultiple(){
     $this->M_rumus_multiple->deleteRumusMultiple($this->input->get('multiple_rumus_id'));
   }
   /* Delete */
 
   /* Get Parameter & Detail Paramater */
-  public function getDetailRumusMultiple()
-  {
+  public function getDetailRumusMultiple(){
     $param = array();
 
     if ($this->input->get('id_multiple_rumus')) $param['id_multiple_rumus'] = $this->input->get('id_multiple_rumus');
@@ -265,8 +240,7 @@ class Kurva extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getListRumus()
-  {
+  public function getListRumus(){
     $rumus['rumus_detail_input'] = $this->input->get('rumus_detail_input');
     $param['id_parameter'] = $this->input->get('id_parameter');
     $param['detail_parameter_rumus_id'] = $this->input->get('detail_parameter_rumus_id');
@@ -280,8 +254,7 @@ class Kurva extends MY_Controller
     echo json_encode($hasil);
   }
 
-  public function getUrutanRumus($value = '')
-  {
+  public function getUrutanRumus($value = ''){
     $select = "*";
     $where = array('rumus_detail_urut' => $this->input->get('rumus_detail_urut'), 'id_parameter' => $this->input->get('detail_multiple_rumus_id'));
     $data = $this->M_rumus_multiple->getUrutanRumus($select, $where, null, null, null)->row();
@@ -293,8 +266,7 @@ class Kurva extends MY_Controller
     }
   }
 
-  public function getParameterRumus()
-  {
+  public function getParameterRumus(){
     $param['id_parameter'] = anti_inject($this->input->get_post('id_parameter'));
     $param['detail_parameter_rumus_id'] = anti_inject($this->input->get_post('detail_parameter_rumus_id'));
 
@@ -306,8 +278,7 @@ class Kurva extends MY_Controller
   /*Get Parameter & Detail Paramater */
 
   /* Insert Parameter & Detail Paramater */
-  public function insertRumusMultipleDetail()
-  {
+  public function insertRumusMultipleDetail(){
     $isi = $this->session->userdata();
 
     $data['detail_multiple_rumus_id'] = create_id();
@@ -320,8 +291,7 @@ class Kurva extends MY_Controller
     $this->M_rumus_multiple->insertRumusMultipleDetail($data);
   }
 
-  public function insertDetailParameter()
-  {
+  public function insertDetailParameter(){
     $isi = $this->session->userdata();
 
     $rumus_detail_input = ($this->input->post('rumus_detail_input') != FALSE) ? $this->input->post('rumus_detail_input') : NULL;
@@ -343,8 +313,7 @@ class Kurva extends MY_Controller
   /* Insert Parameter & Detail Paramater */
 
   /* Update Parameter & Detail Paramater */
-  public function updateRumusMultipleDetail()
-  {
+  public function updateRumusMultipleDetail(){
     $isi = $this->session->userdata();
 
     $id = $this->input->post('detail_multiple_rumus_id');
@@ -359,8 +328,7 @@ class Kurva extends MY_Controller
     $this->M_rumus_multiple->updateRumusMultipleDetail($data, $id);
   }
 
-  public function updateDetailParameter()
-  {
+  public function updateDetailParameter(){
     $isi = $this->session->userdata();
 
     $rumus_detail_template = ($this->input->post('rumus_detail_template') != FALSE) ? $this->input->post('rumus_detail_template') : NULL;
@@ -383,20 +351,17 @@ class Kurva extends MY_Controller
   /* Update Parameter & Detail Paramater */
 
   /* Delete Parameter & Detail Paramater */
-  public function deleteRumusMultipleDetail()
-  {
+  public function deleteRumusMultipleDetail(){
     $this->M_rumus_multiple->deleteRumusMultipleDetail($this->input->get('detail_multiple_rumus_id'));
   }
 
-  public function deleteDetailParameter()
-  {
+  public function deleteDetailParameter(){
     $this->M_rumus_multiple->deleteDetailParameter($this->input->get('detail_parameter_rumus_id'));
   }
   /* Delete Parameter & Detail Paramater */
 
   /* Get Import */
-  public function getImport()
-  {
+  public function getImport(){
     $param['import_kode'] = $this->input->get('import_kode');
 
     $data = $this->M_rumus_multiple->getImport($param);
@@ -404,8 +369,7 @@ class Kurva extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getImportParameter()
-  {
+  public function getImportParameter(){
     $param['import_kode'] = $this->input->get('import_kode');
 
     $data = $this->M_rumus_multiple->getImportParameter($param);
@@ -413,8 +377,7 @@ class Kurva extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getImportDetailParameter()
-  {
+  public function getImportDetailParameter(){
     $param['import_kode'] = $this->input->get('import_kode');
 
     $data = $this->M_rumus_multiple->getImportDetailParameter($param);
@@ -424,8 +387,7 @@ class Kurva extends MY_Controller
   /* Get Import */
 
   /* Insert Import */
-  public function insertImport()
-  {
+  public function insertImport(){
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 
@@ -475,8 +437,7 @@ class Kurva extends MY_Controller
     }
   }
 
-  public function insertTable()
-  {
+  public function insertTable(){
     $param['import_kode'] = $this->input->get('import_kode');
     $this->M_rumus_multiple->insertTable($param);
     $this->M_rumus_multiple->deleteTable($this->input->get('import_kode'));
@@ -486,8 +447,7 @@ class Kurva extends MY_Controller
   /* Insert Import */
 
   /* Insert Import Paramater */
-  public function insertImportParameter()
-  {
+  public function insertImportParameter(){
     ini_set('display_errors', 1);
     // error_reporting(E_ALL);
     error_reporting(0);
@@ -536,8 +496,7 @@ class Kurva extends MY_Controller
     }
   }
 
-  public function insertTableParameter()
-  {
+  public function insertTableParameter(){
     $param['import_kode'] = $this->input->get('import_kode');
     $this->M_rumus_multiple->insertTableParameter($param);
     $this->M_rumus_multiple->deleteTableParameter($this->input->get('import_kode'));
@@ -547,8 +506,7 @@ class Kurva extends MY_Controller
   /* Insert Import Parameter */
 
   /* Insert Import Detail Parameter */
-  public function insertImportDetailParameter()
-  {
+  public function insertImportDetailParameter(){
     ini_set('display_errors', 1);
     error_reporting(0);
     // error_reporting(E_ALL);
@@ -598,8 +556,7 @@ class Kurva extends MY_Controller
     }
   }
 
-  public function insertTableDetailParameter()
-  {
+  public function insertTableDetailParameter(){
     $param['import_kode'] = $this->input->get('import_kode');
     $this->M_rumus_multiple->insertTableDetailParameter($param);
     $this->M_rumus_multiple->deleteTableDetailParameter($this->input->get('import_kode'));
@@ -608,8 +565,7 @@ class Kurva extends MY_Controller
   }
   /* Insert Import Detail Parameter */
 
-  public function indexMamas()
-  {
+  public function indexMamas(){
     $this->load->view('master/mamas');
   }
 } /* . End Proses Rumus_multiple */

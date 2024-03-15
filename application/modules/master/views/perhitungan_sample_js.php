@@ -5,56 +5,28 @@
     /* Isi Table */
     $('#table thead tr').clone(true).addClass('filters').appendTo('#table thead');
     $('#table').DataTable({
-      orderCellsTop: true,
-      initComplete: function() {
-        $('.dataTables_scrollHead').on('scroll', function() {
-          $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
-        });
-        var api = this.api();
+    orderCellsTop: true,
+    initComplete: function() {
+      $('.dataTables_scrollHead').on('scroll', () => $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft()));
+      var api = this.api();
+      api.columns().eq(0).each(function(colIdx) {
+        var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+        var title = $(cell).text();
+        $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
 
-        // For each column
-        api
-          .columns()
-          .eq(0)
-          .each(function(colIdx) {
-            // Set the header cell to contain the input element
-            var cell = $('.filters th').eq(
-              $(api.column(colIdx).header()).index()
-            );
-            var title = $(cell).text();
-            $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
-
-            // On every keypress in this input
-            $(
-                'input',
-                $('.filters th').eq($(api.column(colIdx).header()).index())
-              )
-              .off('keyup change')
-              .on('keyup change', function(e) {
-                e.stopPropagation();
-
-                // Get the search value
-                $(this).attr('title', $(this).val());
-                var regexr = '({search})'; //$(this).parents('th').find('select').val();
-
-                var cursorPosition = this.selectionStart;
-                // Search the column for that value
-                api
-                  .column(colIdx)
-                  .search(
-                    this.value != '' ?
-                    regexr.replace('{search}', '(((' + this.value + ')))') :
-                    '',
-                    this.value != '',
-                    this.value == ''
-                  )
-                  .draw();
-
-                $(this)
-                  .focus()[0]
-                  .setSelectionRange(cursorPosition, cursorPosition);
-              });
+        $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+          .off('keyup change')
+          .on('keyup change', function(e) {
+            e.stopPropagation();
+            $(this).attr('title', $(this).val());
+            var regexr = '({search})';
+            var cursorPosition = this.selectionStart;
+            api.column(colIdx)
+                .search(this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '', this.value != '', this.value == '')
+                .draw();
+            $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
           });
+        });
       },
       "scrollX": true,
       "lengthMenu": [
@@ -101,24 +73,11 @@
             return status;
           }
         },
-        // {
-        // "data": "batasan_emisi"
-        // },
         {
           "render": function(data, type, full, meta) {
             return full.when_create + ' - ' + full.who_create + ' - ' + full.who_seksi_create_name;
           }
         },
-        // {
-        //     "render": function(data, type, full, meta) {
-        //         return '<center><a href="javascript:;" id="' + full.rumus_id + '" title="List Rumus" onclick="fun_rumus(this.id)"><i class="fa fa-calculator" data-toggle="modal" data-target="#modal_list_rumus" style="color: grey"></i></a></center>';
-        //     }
-        // },
-        // {
-        //     "render": function(data, type, full, meta) {
-        //         return '<center><a href="javascript:;" id="' + full.rumus_id + '" title="Detail" onclick="fun_detail(this.id)"><i class="fa fa-search"></i></a></center>';
-        //     }
-        // },
         {
           "render": function(data, type, full, meta) {
             var tombol = '<div class="input-group-prepend"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Action</button><div class="dropdown-menu" style="height:auto;max-height: 100px;overflow-x:auto;">';
@@ -128,16 +87,6 @@
             return tombol;
           }
         },
-        // {
-        //     "render": function(data, type, full, meta) {
-        //         return '<center><a href="javascript:;" id="' + full.rumus_id + '" title="Edit" onclick="fun_edit(this.id)"><i class="fa fa-edit" data-toggle="modal" data-target="#modal" style="color: orange"></i></a></center>';
-        //     }
-        // },
-        // {
-        //     "render": function(data, type, full, meta) {
-        //         return '<center><a href="javascript:;" id="' + full.rumus_id + '" title="Hapus" onclick="fun_delete(this.id)"><i class="fa fa-trash" style="color: red"></i></a></center>';
-        //     }
-        // },
       ]
     });
     /* Isi Table */
@@ -167,53 +116,26 @@
     /* Isi Table Detail */
     $('#table_detail thead tr').clone(true).addClass('filters_detail').appendTo('#table_detail thead');
     $('#table_detail').DataTable({
-      orderCellsTop: true,
-      initComplete: function() {
-        var api = this.api();
-
-        // For each column
-        api
-          .columns()
-          .eq(0)
-          .each(function(colIdx) {
-            // Set the header cell to contain the input element
-            var cell = $('.filters_detail th').eq(
-              $(api.column(colIdx).header()).index()
-            );
-            var title = $(cell).text();
-            $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
-
-            // On every keypress in this input
-            $(
-                'input',
-                $('.filters_detail th').eq($(api.column(colIdx).header()).index())
-              )
-              .off('keyup change')
-              .on('keyup change', function(e) {
-                e.stopPropagation();
-
-                // Get the search value
-                $(this).attr('title', $(this).val());
-                var regexr = '({search})'; //$(this).parents('th').find('select').val();
-
-                var cursorPosition = this.selectionStart;
-                // Search the column for that value
-                api
-                  .column(colIdx)
-                  .search(
-                    this.value != '' ?
-                    regexr.replace('{search}', '(((' + this.value + ')))') :
-                    '',
-                    this.value != '',
-                    this.value == ''
-                  )
-                  .draw();
-
-                $(this)
-                  .focus()[0]
-                  .setSelectionRange(cursorPosition, cursorPosition);
-              });
+    orderCellsTop: true,
+    initComplete: function() {
+      var api = this.api();
+      api.columns().eq(0).each(function(colIdx) {
+        var cell = $('.filters_detail th').eq($(api.column(colIdx).header()).index());
+        var title = $(cell).text();
+        $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
+        $('input', $('.filters_detail th').eq($(api.column(colIdx).header()).index()))
+        .off('keyup change')
+        .on('keyup change', function(e) {
+            e.stopPropagation();
+            $(this).attr('title', $(this).val());
+            var regexr = '({search})';
+            var cursorPosition = this.selectionStart;
+            api.column(colIdx)
+                .search(this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '', this.value != '', this.value == '')
+                .draw();
+            $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
           });
+        });
       },
       "scrollX": true,
       "lengthMenu": [
@@ -225,14 +147,6 @@
         "dataSrc": ""
       },
       "columns": [
-        // {
-        //     render: function(data, type, full, meta) {
-        //         return meta.row + meta.settings._iDisplayStart + 1;
-        //     }
-        // },
-        // {
-        //   "data": "rumus_detail_urut"
-        // },
         {
           "data": "rumus_detail_template"
         },
@@ -258,16 +172,6 @@
             return full.when_create + ' - ' + full.who_create;
           }
         },
-        // {
-        //   "render": function(data, type, full, meta) {
-        //     return '<center><a href="javascript:;" id="' + full.rumus_detail_id + '" title="Edit" onclick="fun_edit_detail(this.id)"><i class="fa fa-edit" data-toggle="modal" data-target="#modal_detail" style="color: orange"></i></a></center>';
-        //   }
-        // },
-        // {
-        //   "render": function(data, type, full, meta) {
-        //     return '<center><a href="javascript:;" id="' + full.rumus_detail_id + '" title="Hapus" onclick="fun_delete_detail(this.id)"><i class="fa fa-trash" style="color: red"></i></a></center>';
-        //   }
-        // },
         {
           "render": function(data, type, full, meta) {
             var tombol = '<div class="input-group-prepend"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Action</button><div class="dropdown-menu" style="height:auto;max-height: 100px;overflow-x:auto;">';

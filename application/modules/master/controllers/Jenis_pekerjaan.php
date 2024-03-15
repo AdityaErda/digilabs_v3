@@ -1,35 +1,27 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Jenis_pekerjaan extends MY_Controller
-{
+class Jenis_pekerjaan extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('master/M_sample_pekerjaan');
 	}
 
 	/* INDEX */
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Jenis Pekerjaan';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = anti_inject_replace($this->input->get('id_sidebar'));
 		$data['id_sidebar_detail'] = anti_inject_replace($this->input->get('id_sidebar_detail'));
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_pekerjaan');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_pekerjaan_js');
+		$this->template->template_master('master/jenis_pekerjaan',$isi,$data);
 	}
 	/* INDEX */
 
 	/* GET */
-	public function getJenisPekerjaan()
-	{
+	public function getJenisPekerjaan(){
 		$param = [];
 		if ($this->input->get('sample_pekerjaan_id')) {
 			$param['sample_pekerjaan_id'] = anti_inject_replace($this->input->get('sample_pekerjaan_id'));
@@ -45,8 +37,7 @@ class Jenis_pekerjaan extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertJenisPekerjaan()
-	{
+	public function insertJenisPekerjaan(){
 		$isi = $this->session->userdata();
 
 		$data['sample_pekerjaan_id'] = create_id();
@@ -60,8 +51,7 @@ class Jenis_pekerjaan extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateJenisPekerjaan()
-	{
+	public function updateJenisPekerjaan(){
 		$isi = $this->session->userdata();
 
 		$id = anti_inject($this->input->post('sample_pekerjaan_id'));
@@ -77,36 +67,28 @@ class Jenis_pekerjaan extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteJenisPekerjaan()
-	{
+	public function deleteJenisPekerjaan(){
 		$this->M_sample_pekerjaan->deleteJenisPekerjaan(anti_inject_replace($this->input->get('sample_pekerjaan_id')));
 	}
 
-	public function resetJenisPekerjaan()
-	{
+	public function resetJenisPekerjaan(){
 		$this->M_sample_pekerjaan->resetJenisPekerjaan();
 	}
 	/* DELETE */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import Sample Pekerjaan';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = anti_inject_replace($this->input->get('id_sidebar'));
 		$data['id_sidebar_detail'] = anti_inject_replace($this->input->get('id_sidebar_detail'));
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_pekerjaan_import');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_pekerjaan_import_js');
+		$this->template->template_master('master/jenis_pekerjaan_import',$isi,$data);
 	}
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = anti_inject_replace($this->input->get('import_kode'));
 
 		$data = $this->M_sample_pekerjaan->getImport($param);
@@ -115,8 +97,7 @@ class Jenis_pekerjaan extends MY_Controller
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 
 		error_reporting(0);
 		$data_session = $this->session->userdata();
@@ -167,8 +148,7 @@ class Jenis_pekerjaan extends MY_Controller
 		}
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = anti_inject_replace($this->input->get('import_kode'));
 		$this->M_sample_pekerjaan->insertTable($param);
 		$this->M_sample_pekerjaan->deleteTable(anti_inject_replace($this->input->get('import_kode')));

@@ -1,11 +1,9 @@
  <?php
  defined('BASEPATH') or exit('No direct script access allowed');
 
- class Barang_material extends MY_Controller
- {
+ class Barang_material extends MY_Controller{
 
- 	public function __construct()
- 	{
+ 	public function __construct(){
  		parent::__construct();
 
  		$this->load->model('master/M_material_item');
@@ -14,23 +12,16 @@
  		$this->load->model('material/M_request');
  	}
 
- 	public function index()
- 	{
+ 	public function index(){
  		$isi['judul'] = 'Barang Material';
  		$data = $this->session->userdata();
  		$data['id_sidebar'] = $this->input->get('id_sidebar');
  		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
- 		$this->load->view('tampilan/header', $isi);
- 		$this->load->view('tampilan/sidebar', $data);
- 		$this->load->view('master/barang_material');
- 		$this->load->view('tampilan/footer');
- 		$this->load->view('master/barang_material_js');
+ 		$this->template->template_master('master/barang_material',$isi,$data);
  	}
 
- 	/* GET */
- 	public function getBarangMaterial()
- 	{
+ 	public function getBarangMaterial(){
  		$param['item_id'] = $this->input->get('item_id');
  		$param['item_nama'] = $this->input->get('item_nama');
 
@@ -38,8 +29,7 @@
  		echo json_encode($data);
  	}
 
- 	public function getJenis()
- 	{
+ 	public function getJenis(){
  		$listJenis['results'] = array();
 
  		$param['jenis_nama'] = $this->input->get('material_nama');
@@ -53,8 +43,7 @@
  		echo json_encode($listJenis);
  	}
 
- 	public function getGlAccount()
- 	{
+ 	public function getGlAccount(){
  		$listGlAccount['results'] = array();
 
  		$param['gl_account_nama'] = $this->input->get('gl_account_nama');
@@ -70,8 +59,7 @@
  	/* GET */
 
  	/* INSERT */
- 	public function insertBarangMaterial()
- 	{
+ 	public function insertBarangMaterial(){
  		$isi = $this->session->userdata();
 
  		$data['item_id'] = create_id();
@@ -190,8 +178,7 @@
  	/* INSERT */
 
  	/* UPDATE */
- 	public function updateBarangMaterial()
- 	{
+ 	public function updateBarangMaterial(){
  		$isi = $this->session->userdata();
 
  		$id = anti_inject($this->input->post('item_id'));
@@ -218,22 +205,19 @@
  	/* UPDATE */
 
  	/* DELETE */
- 	public function deleteBarangMaterial()
- 	{
+ 	public function deleteBarangMaterial(){
  		$this->M_material_item->deleteBarangMaterial($this->input->get('item_id'));
  	}
  	/* DELETE */
 
  	/* DELETE */
- 	public function resetBarangMaterial()
- 	{
+ 	public function resetBarangMaterial(){
  		$this->M_material_item->resetBarangMaterial();
  	}
  	/* DELETE */
 
  	/* GET HISTORY */
- 	public function getHistory()
- 	{
+ 	public function getHistory(){
  		$param['item_id'] = $this->input->get('item_id');
 
  		$data = $this->M_material_item->getHistory($param);
@@ -242,8 +226,7 @@
  	/* GET HISTORY */
 
  	/* GET DETAIL */
- 	public function getKomposisi()
- 	{
+ 	public function getKomposisi(){
  		$param['komposisi_id'] = $this->input->get('komposisi_id');
  		$param['item_id'] = $this->input->get('item_id');
 
@@ -251,8 +234,7 @@
  		echo json_encode($data);
  	}
 
- 	public function getItem()
- 	{
+ 	public function getItem(){
  		$listItem['results'] = array();
 
  		$param['item_nama'] = $this->input->get('item_nama');
@@ -268,8 +250,7 @@
  	/* GET DETAIL */
 
  	/* INSERT DETAIL */
- 	public function insertKomposisi()
- 	{
+ 	public function insertKomposisi(){
  		$value = $this->session->userdata();
  		$isi = $this->fun_komposisi_harga($this->input->post('komposisi_item'));
 
@@ -288,8 +269,7 @@
  	/* INSERT DETAIL */
 
  	/* UPDATE DETAIL */
- 	public function updateKomposisi()
- 	{
+ 	public function updateKomposisi(){
  		$value = $this->session->userdata();
  		$isi = $this->fun_komposisi_harga($this->input->post('komposisi_item'));
 
@@ -310,8 +290,7 @@
  	/* UPDATE DETAIL */
 
  	/* DELETE DETAIL */
- 	public function deleteKomposisi()
- 	{
+ 	public function deleteKomposisi(){
  		$param['komposisi_id'] = $this->input->get('komposisi_id');
 
  		$data = $this->M_material_item->getKomposisi($param);
@@ -323,15 +302,13 @@
  	/* DELETE DETAIL */
 
  	/* FUN TAMBAHAN */
- 	public function fun_komposisi_harga($id)
- 	{
+ 	public function fun_komposisi_harga($id){
  		$param['item_id'] = $id;
 
  		return $this->M_material_item->getBarangMaterial($param);
  	}
 
- 	public function fun_item_harga($id)
- 	{
+ 	public function fun_item_harga($id){
  		$param['item_id'] = $id;
 
  		$isi = $this->M_material_item->getSumKomposisi($param);
@@ -345,8 +322,7 @@
  		dblog('U', $id, $data['item_harga']);
  	}
 
- 	public function fun_ganti_harga()
- 	{
+ 	public function fun_ganti_harga(){
  		$param['komposisi_item'] = $this->input->get('komposisi_item');
 
  		foreach ($this->M_material_item->getKomposisi($param) as $value) {
@@ -362,24 +338,18 @@
  	/* FUN TAMBAHAN */
 
  	/* INDEX IMPORT */
- 	public function index_import()
- 	{
+ 	public function index_import(){
  		$isi['judul'] = 'Import Material Item';
  		$data = $this->session->userdata();
  		$data['id_sidebar'] = $this->input->get('id_sidebar');
  		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
- 		$this->load->view('tampilan/header', $isi);
- 		$this->load->view('tampilan/sidebar', $data);
- 		$this->load->view('master/barang_material_import');
- 		$this->load->view('tampilan/footer');
- 		$this->load->view('master/barang_material_import_js');
+ 		$this->template->template_master('master/barang_material_import',$isi,$data);
  	}
  	/* INDEX IMPORT */
 
  	/* GET IMPORT */
- 	public function getImport()
- 	{
+ 	public function getImport(){
  		$param['import_kode'] = $this->input->get('import_kode');
 
  		$data = $this->M_material_item->getImport($param);
@@ -388,8 +358,7 @@
  	/* GET IMPORT */
 
  	/* INSERT IMPORT */
- 	public function insertImport()
- 	{
+ 	public function insertImport(){
 
  		error_reporting(0);
  		$data_session = $this->session->userdata();
@@ -454,13 +423,12 @@
 			}
 		}
 
-		public function insertTable()
-		{
-			$param['import_kode'] = $this->input->get('import_kode');
-			$this->M_material_item->insertTable($param);
-			$this->M_material_item->deleteTable($this->input->get('import_kode'));
+	public function insertTable(){
+		$param['import_kode'] = $this->input->get('import_kode');
+		$this->M_material_item->insertTable($param);
+		$this->M_material_item->deleteTable($this->input->get('import_kode'));
 
-			header("Location: " . base_url('master/barang_material/index?header_menu=0&menu_id=0'));
-		}
-		/* INSERT IMPORT */
+		header("Location: " . base_url('master/barang_material/index?header_menu=0&menu_id=0'));
 	}
+	/* INSERT IMPORT */
+}

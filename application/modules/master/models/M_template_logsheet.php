@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_template_logsheet extends CI_Model
-{
+class M_template_logsheet extends CI_Model{
 	/* GET */
-	public function getTemplateLogsheet($data = null)
-	{
+	public function getTemplateLogsheet($data = null){
 		$this->db->select('*');
 		$this->db->from('sample.sample_template_logsheet');
 		if (isset($data['param_search'])) $this->db->where("upper(jenis_nama) LIKE '%" . strtoupper($data['param_search']) . "%'");
@@ -17,8 +15,7 @@ class M_template_logsheet extends CI_Model
 		return (isset($data['template_logsheet_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getTemplateLogsheetList($data = null)
-	{
+	public function getTemplateLogsheetList($data = null){
 		$this->db->select('a.*');
 		$this->db->from('sample.sample_template_logsheet a');
 		// $this->db->join('sample.sample_master_logsheet b', 'a.template_logsheet_file = b.logsheet_template_id', 'left');
@@ -31,8 +28,7 @@ class M_template_logsheet extends CI_Model
 		return (isset($data['template_logsheet_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getMasterTemplate($data = null)
-	{
+	public function getMasterTemplate($data = null){
 		$this->db->select('*');
 		$this->db->from('sample.sample_master_logsheet');
 		if (isset($data['logsheet_template_nama'])) $this->db->where("upper(logsheet_template_nama) LIKE '%" . strtoupper($data['logsheet_template_nama']) . "%'");
@@ -44,8 +40,7 @@ class M_template_logsheet extends CI_Model
 	/* GET */
 
 	/* INSERT */
-	public function insertTemplateLogsheet($data)
-	{
+	public function insertTemplateLogsheet($data){
 		$this->db->insert('sample.sample_template_logsheet', $data);
 
 		return $this->db->affected_rows();
@@ -53,8 +48,7 @@ class M_template_logsheet extends CI_Model
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateTemplateLogsheet($data, $id)
-	{
+	public function updateTemplateLogsheet($data, $id){
 		$this->db->set($data);
 		$this->db->where('template_logsheet_id', $id);
 		$this->db->update('sample.sample_template_logsheet');
@@ -64,16 +58,14 @@ class M_template_logsheet extends CI_Model
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteTemplateLogsheet($id)
-	{
+	public function deleteTemplateLogsheet($id){
 		$this->db->where('template_logsheet_id', $id);
 		$this->db->delete('sample.sample_template_logsheet');
 
 		return $this->db->affected_rows();
 	}
 
-	public function resetTemplateLogsheet()
-	{
+	public function resetTemplateLogsheet(){
 		$this->db->empty_table('sample.sample_template_logsheet');
 
 		return $this->db->affected_rows();
@@ -82,8 +74,7 @@ class M_template_logsheet extends CI_Model
 
 
 	/* GET DETAIL */
-	public function getDetailLogsheet($data = null)
-	{
+	public function getDetailLogsheet($data = null){
 		$this->db->select('a.*, b.rumus_id, b.rumus_nama, b.is_adbk, b.satuan_sample, b.desimal_angka, b.batasan_emisi,b.metode');
 		$this->db->from('sample.sample_template_logsheet_detail a');
 		$this->db->join('sample.sample_perhitungan_sample b', 'a.logsheet_nama_rumus = b.rumus_id', 'left');
@@ -102,8 +93,7 @@ class M_template_logsheet extends CI_Model
 		return (isset($data['template_logsheet_detail_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getMasterRumus($data = null)
-	{
+	public function getMasterRumus($data = null){
 		$this->db->select('a.*, b.jenis_id, b.jenis_nama');
 		$this->db->from('sample.sample_perhitungan_sample a');
 		$this->db->join('sample.sample_jenis b', 'a.jenis_id = b.jenis_id', 'left');
@@ -120,8 +110,7 @@ class M_template_logsheet extends CI_Model
 	/* GET DETAIL */
 
 	/* INSERT DETAIL */
-	public function insertTemplateLogsheetDetail($data)
-	{
+	public function insertTemplateLogsheetDetail($data){
 		$this->db->insert('sample.sample_template_logsheet_detail', $data);
 
 		return $this->db->affected_rows();
@@ -129,8 +118,7 @@ class M_template_logsheet extends CI_Model
 	/* INSERT DETAIL */
 
 	/* UPDATE DETAIL */
-	public function updateTemplateLogsheetDetail($data, $id)
-	{
+	public function updateTemplateLogsheetDetail($data, $id){
 		$this->db->set($data);
 		$this->db->where('template_logsheet_detail_id', $id);
 		$this->db->update('sample.sample_template_logsheet_detail');
@@ -140,8 +128,7 @@ class M_template_logsheet extends CI_Model
 	/* UPDATE DETAIL */
 
 	/* DELETE DETAIL */
-	public function deleteTemplateLogsheetDetail($id)
-	{
+	public function deleteTemplateLogsheetDetail($id){
 		$this->db->where('template_logsheet_detail_id', $id);
 		$this->db->delete('sample.sample_template_logsheet_detail');
 
@@ -151,8 +138,7 @@ class M_template_logsheet extends CI_Model
 	/* DELETE DETAIL */
 
 	/* GET LOG SHEET */
-	public function getListRumus($data = null)
-	{
+	public function getListRumus($data = null){
 		$this->db->select('*');
 		$this->db->from('sample.sample_perhitungan_sample_detail a');
 		$this->db->join('sample.sample_perhitungan_sample b', 'a.rumus_id = b.id_rumus', 'left');

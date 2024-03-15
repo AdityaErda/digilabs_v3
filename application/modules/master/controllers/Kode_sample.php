@@ -19,11 +19,7 @@ class Kode_sample extends MY_Controller
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 		$data['tipe'] = $this->input->get('tipe');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/kode_sample');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/kode_sample_js');
+		$this->template->template_master('master/kode_sample',$isi,$data);
 	}
 
 	public function getKodeSample()

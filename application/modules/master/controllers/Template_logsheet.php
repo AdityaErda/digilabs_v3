@@ -1,33 +1,25 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Template_logsheet extends MY_Controller
-{
+class Template_logsheet extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		//Do your magic here
 		$this->load->model('M_template_logsheet');
 		$this->load->model('M_perhitungan_sample');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Template LogSheet';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/template_logsheet');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/template_logsheet_js');
+		$this->template->template_master('master/template_logsheet',$isi,$data);
 	}
 
-	public function preview_template()
-	{
+	public function preview_template(){
 		if ($this->uri->segment(4)) {
 			$param['id_logsheet_template'] = anti_inject_replace($this->uri->segment(4));
 		}
@@ -36,8 +28,7 @@ class Template_logsheet extends MY_Controller
 		$this->load->view('master/preview_template', $data, FALSE);
 	}
 
-	public function download_excel()
-	{
+	public function download_excel(){
 		error_reporting(0);
 		$this->load->library('Excel');
 		if ($this->uri->segment(4)) {
@@ -55,9 +46,7 @@ class Template_logsheet extends MY_Controller
 		// $this->load->view('master/template_logsheet_download_excel', $data, FALSE);
 	}
 
-	public function download_excel_proses()
-	{
-
+	public function download_excel_proses(){
 
 		if (isset($_POST["file_content"])) {
 			$temporary_html_file = './tmp_html/' . time() . '.html';
@@ -90,8 +79,7 @@ class Template_logsheet extends MY_Controller
 		}
 	}
 
-	public function download_excel_multiple()
-	{
+	public function download_excel_multiple(){
 
 		error_reporting(0);
 		$this->load->library('Excel');
@@ -112,8 +100,7 @@ class Template_logsheet extends MY_Controller
 
 
 	/* Get */
-	public function getTemplateLogsheetList()
-	{
+	public function getTemplateLogsheetList(){
 		$jenis['results'] = array();
 		$session = $this->session->userdata();
 		$param = [];
@@ -135,8 +122,7 @@ class Template_logsheet extends MY_Controller
 		echo json_encode($jenis);
 	}
 
-	public function getTemplateLogsheet()
-	{
+	public function getTemplateLogsheet(){
 		$session = $this->session->userdata();
 		$param = [];
 		if ($session['role_id'] != '1') {
@@ -150,8 +136,7 @@ class Template_logsheet extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getMasterTemplate()
-	{
+	public function getMasterTemplate(){
 		$listJenis['results'] = array();
 
 		$param['logsheet_template_nama'] = $this->input->get('logsheet_template_nama');
@@ -167,8 +152,7 @@ class Template_logsheet extends MY_Controller
 	/* Get */
 
 	/* Insert */
-	public function insertTemplateLogsheet()
-	{
+	public function insertTemplateLogsheet(){
 		$isi = $this->session->userdata();
 
 		$seksi = $this->db->get_where('global.global_seksi', array('seksi_id' => $isi['id_seksi']))->row_array();
@@ -186,8 +170,7 @@ class Template_logsheet extends MY_Controller
 	/* Insert */
 
 	/* Update */
-	public function updateTemplateLogsheet()
-	{
+	public function updateTemplateLogsheet(){
 		$isi = $this->session->userdata();
 
 		$id = anti_inject($this->input->post('template_logsheet_id'));
@@ -204,16 +187,14 @@ class Template_logsheet extends MY_Controller
 	/* Update */
 
 	/* Delete */
-	public function deleteTemplateLogsheet()
-	{
+	public function deleteTemplateLogsheet(){
 		$this->M_template_logsheet->deleteTemplateLogsheet($this->input->get('template_logsheet_id'));
 	}
 
 	/* Delete */
 
 	/* Get Detail */
-	public function getDetailLogsheet()
-	{
+	public function getDetailLogsheet(){
 		$param = array();
 
 		if ($this->input->get('id_logsheet_template')) $param['id_logsheet_template'] = $this->input->get('id_logsheet_template');
@@ -226,8 +207,7 @@ class Template_logsheet extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getMasterRumus()
-	{
+	public function getMasterRumus(){
 		$session = $this->session->userdata();
 		$listJenis['results'] = array();
 
@@ -247,8 +227,7 @@ class Template_logsheet extends MY_Controller
 		echo json_encode($listJenis);
 	}
 
-	public function getMasterRumusData()
-	{
+	public function getMasterRumusData(){
 		$listJenis['results'] = array();
 
 		$param['rumus_id'] = $this->input->get_post('rumus_id');
@@ -260,8 +239,7 @@ class Template_logsheet extends MY_Controller
 	/* Get Detail */
 
 	/* Insert Detail */
-	public function insertTemplateLogsheetDetail()
-	{
+	public function insertTemplateLogsheetDetail(){
 		$isi = $this->session->userdata();
 
 		$data['template_logsheet_detail_id'] = create_id();
@@ -277,8 +255,7 @@ class Template_logsheet extends MY_Controller
 	/* Insert Detail */
 
 	/* Update Detail */
-	public function updateTemplateLogsheetDetail()
-	{
+	public function updateTemplateLogsheetDetail(){
 		$isi = $this->session->userdata();
 
 		$id = anti_inject($this->input->post('template_logsheet_detail_id'));
@@ -296,8 +273,7 @@ class Template_logsheet extends MY_Controller
 	/* Update Detail */
 
 	/* Delete Detail*/
-	public function deleteTemplateLogsheetDetail()
-	{
+	public function deleteTemplateLogsheetDetail(){
 		$this->M_template_logsheet->deleteTemplateLogsheetDetail($this->input->get('template_logsheet_detail_id'));
 	}
 

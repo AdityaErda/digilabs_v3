@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_material_item extends CI_Model
-{
+class M_material_item extends CI_Model{
 	/* GET */
-	public function getBarangMaterial($data = null)
-	{
+	public function getBarangMaterial($data = null){
 		$this->db->select('a.*, b.jenis_id, b.jenis_nama, c.gl_account_id, c.gl_account_nama');
 		$this->db->from('material.material_item a');
 		$this->db->join('material.material_jenis b', 'a.jenis_id = b.jenis_id', 'left');
@@ -19,8 +17,7 @@ class M_material_item extends CI_Model
 	/* GET */
 
 	/* INSERT */
-	public function insertBarangMaterial($data)
-	{
+	public function insertBarangMaterial($data){
 		$this->db->insert('material.material_item', $data);
 
 		return $this->db->affected_rows();
@@ -28,8 +25,7 @@ class M_material_item extends CI_Model
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateBarangMaterial($data, $id)
-	{
+	public function updateBarangMaterial($data, $id){
 		$this->db->set($data);
 		$this->db->where('item_id', $id);
 		$this->db->update('material.material_item');
@@ -39,8 +35,7 @@ class M_material_item extends CI_Model
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteBarangMaterial($id)
-	{
+	public function deleteBarangMaterial($id){
 		$this->db->where('item_id', $id);
 		$this->db->delete('material.material_item');
 
@@ -49,8 +44,7 @@ class M_material_item extends CI_Model
 	/* DELETE */
 
 	/* DELETE */
-	public function resetBarangMaterial()
-	{
+	public function resetBarangMaterial(){
 		$this->db->where('item_id !=', '');
 		$this->db->delete('material.material_item');
 		return $this->db->affected_rows();
@@ -58,8 +52,7 @@ class M_material_item extends CI_Model
 	/* DELETE */
 
 	/* GET HISTORY */
-	public function getHistory($data = null)
-	{
+	public function getHistory($data = null){
 		$this->db->select('log_when, log_who, barang_id, barang_harga');
 		$this->db->from('global.global_dblog');
 		if (isset($data['item_id'])) $this->db->where('barang_id', $data['item_id']);
@@ -71,8 +64,7 @@ class M_material_item extends CI_Model
 	/* GET HISTORY */
 
 	/* GET DETAIL */
-	public function getKomposisi($data = null)
-	{
+	public function getKomposisi($data = null){
 		$this->db->select('a.*, b.item_nama, b.item_harga, c.item_nama AS nama_item, c.item_harga AS harga_item');
 		$this->db->from('material.material_komposisi a');
 		$this->db->join('material.material_item b', 'a.item_id = b.item_id', 'left');
@@ -85,8 +77,7 @@ class M_material_item extends CI_Model
 		return (isset($data['komposisi_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getSumKomposisi($data = null)
-	{
+	public function getSumKomposisi($data = null){
 		$this->db->select('SUM(a.komposisi_harga) AS total');
 		$this->db->from('material.material_komposisi a');
 		if (isset($data['item_id'])) $this->db->where('a.item_id', $data['item_id']);
@@ -97,8 +88,7 @@ class M_material_item extends CI_Model
 	/* GET DETAIL */
 
 	/* INSERT DETAIL */
-	public function insertKomposisi($data)
-	{
+	public function insertKomposisi($data){
 		$this->db->insert('material.material_komposisi', $data);
 
 		return $this->db->affected_rows();
@@ -106,8 +96,7 @@ class M_material_item extends CI_Model
 	/* INSERT DETAIL */
 
 	/* UPDATE DETAIL */
-	public function updateKomposisi($data, $id)
-	{
+	public function updateKomposisi($data, $id){
 		$this->db->set($data);
 		$this->db->where('komposisi_id', $id);
 		$this->db->update('material.material_komposisi');
@@ -117,8 +106,7 @@ class M_material_item extends CI_Model
 	/* UPDATE DETAIL */
 
 	/* DELETE DETAIL */
-	public function deleteKomposisi($id)
-	{
+	public function deleteKomposisi($id){
 		$this->db->where('komposisi_id', $id);
 		$this->db->delete('material.material_komposisi');
 
@@ -127,8 +115,7 @@ class M_material_item extends CI_Model
 	/* DELETE DETAIL */
 
 	/* GET IMPORT */
-	public function getImport($data = null)
-	{
+	public function getImport($data = null){
 		$this->db->select('a.*, b.jenis_nama, c.gl_account_nama');
 		$this->db->from('import.import_material_item a');
 		$this->db->join('material.material_jenis b', 'a.jenis_id = b.jenis_id', 'left');
@@ -141,16 +128,14 @@ class M_material_item extends CI_Model
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 		$insert = $this->db->insert_batch('import.import_global_user', $data);
 		if ($insert) {
 			return true;
 		}
 	}
 
-	public function insertTable($data)
-	{
+	public function insertTable($data){
 		$this->db->query("INSERT INTO material.material_item SELECT item_id, company_code, jenis_id, gl_account_id, item_nama, item_kode, item_harga, item_stok, item_tgl_expired, when_create, who_create, item_katalog_number, item_merk, item_satuan, item_stok_alert FROM import.import_material_item WHERE import_kode = '" . $data['import_kode'] . "' AND UPPER(item_nama) NOT IN (SELECT UPPER(item_nama) FROM material.material_item)");
 
 		return $this->db->affected_rows();
@@ -158,8 +143,7 @@ class M_material_item extends CI_Model
 	/* INSERT IMPORT */
 
 	/* DELETE TABLE */
-	public function deleteTable($id)
-	{
+	public function deleteTable($id){
 		$this->db->where('import_kode', $id);
 		$this->db->delete('import.import_material_item');
 

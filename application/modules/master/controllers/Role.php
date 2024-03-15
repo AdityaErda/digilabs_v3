@@ -1,19 +1,16 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Role extends MY_Controller
-{
+class Role extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('master/M_role');
 	}
 
 	/* INDEX */
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Role';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -28,16 +25,14 @@ class Role extends MY_Controller
 	/* INDEX */
 
 	/* GET */
-	public function getRole()
-	{
+	public function getRole(){
 		$param['role_id'] = $this->input->get('role_id');
 
 		$data = $this->M_role->getRole($param);
 		echo json_encode($data);
 	}
 
-	public function getMenuRole()
-	{
+	public function getMenuRole(){
 		$param['role_id'] = $this->input->get('role_id');
 
 		$data = $this->M_role->getMenuRole($param);
@@ -48,8 +43,7 @@ class Role extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertRole()
-	{
+	public function insertRole(){
 		$isi = $this->session->userdata();
 
 		$data['role_id'] = create_id();
@@ -61,8 +55,7 @@ class Role extends MY_Controller
 		$this->M_role->insertRole($data);
 	}
 
-	public function insertMenuRole()
-	{
+	public function insertMenuRole(){
 		$this->M_role->deleteMenuRole($this->input->post('role_id_temp'));
 		foreach ($this->input->post('menu') as $value) {
 			$data['menu_role_id'] = uniqid();
@@ -76,8 +69,7 @@ class Role extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateRole()
-	{
+	public function updateRole(){
 		$isi = $this->session->userdata();
 
 		$id = anti_inject($this->input->post('role_id'));
@@ -93,15 +85,13 @@ class Role extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteRole()
-	{
+	public function deleteRole(){
 		$this->M_role->deleteRole($this->input->get('role_id'));
 	}
 	/* DELETE */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import Role';
 		$data = $this->session->userdata();
 		$data['header_menu'] = $this->input->get('header_menu');
@@ -116,8 +106,7 @@ class Role extends MY_Controller
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_role->getImport($param);
@@ -126,8 +115,7 @@ class Role extends MY_Controller
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 		$data_session = $this->session->userdata();
 
 		$config = array(
@@ -166,8 +154,7 @@ class Role extends MY_Controller
 		}
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		$this->M_role->insertTable($param);
 		$this->M_role->deleteTable($this->input->get('import_kode'));
@@ -177,8 +164,7 @@ class Role extends MY_Controller
 	/* INSERT IMPORT */
 
 	/* FK */
-	public function fk_menu_role()
-	{
+	public function fk_menu_role(){
 		foreach ($this->M_role->getRole() as $value) {
 			$this->M_role->deleteMenuRole($value['role_id']);
 			foreach ($this->M_role->getMenu() as $val) {

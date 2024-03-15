@@ -1,61 +1,43 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Rumus_multiple extends MY_Controller
-{
+class Rumus_multiple extends MY_Controller{
 
-  public function __construct()
-  {
+  public function __construct(){
     parent::__construct();
 
     $this->load->model('master/M_rumus_multiple');
   }
 
   /* INDEX */
-  public function index()
-  {
+  public function index(){
     $isi['judul'] = 'Perhitungan Sample Rutin';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
     $data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-    $this->load->view('tampilan/header', $isi);
-    $this->load->view('tampilan/sidebar', $data);
-    $this->load->view('master/rumus_multiple');
-    $this->load->view('tampilan/footer');
-    $this->load->view('master/rumus_multiple_js');
+    $this->template->template_master('master/rumus_multiple',$isi,$data);
   }
 
-  public function index_import()
-  {
+  public function index_import(){
     $isi['judul'] = 'Import Perhitungan Sample Rutin';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
     $data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-    $this->load->view('tampilan/header', $isi);
-    $this->load->view('tampilan/sidebar', $data);
-    $this->load->view('master/rumus_multiple_import');
-    $this->load->view('tampilan/footer');
-    $this->load->view('master/rumus_multiple_import_js');
+    $this->template->template_master('master/rumus_multiple_import',$isi,$data);
   }
 
-  public function index_import_detail()
-  {
+  public function index_import_detail(){
     $isi['judul'] = 'Import Parameter Rumus';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
     $data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-    $this->load->view('tampilan/header', $isi);
-    $this->load->view('tampilan/sidebar', $data);
-    $this->load->view('master/rumus_multiple_parameter_import');
-    $this->load->view('tampilan/footer');
-    $this->load->view('master/rumus_multiple_parameter_import_js');
+    $this->template->template_master('master/rumus_multiple_parameter_import',$isi,$data);
   }
 
-  public function index_import_detail_detail()
-  {
+  public function index_import_detail_detail(){
     $isi['judul'] = 'Import Detail Parameter';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -70,8 +52,7 @@ class Rumus_multiple extends MY_Controller
   /* INDEX */
 
   /* GET */
-  public function getRumusMultiple()
-  {
+  public function getRumusMultiple(){
     $param = [];
     if ($this->input->get_post('multiple_rumus_id')) {
       $param['multiple_rumus_id'] = anti_inject_replace($this->input->get_post('multiple_rumus_id'));
@@ -80,8 +61,7 @@ class Rumus_multiple extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getJenisSample()
-  {
+  public function getJenisSample(){
     $listJenis['results'] = array();
     $param = [];
     if ($this->input->get_post('jenis_nama')) {
@@ -98,8 +78,7 @@ class Rumus_multiple extends MY_Controller
   /* GET */
 
   /* Insert */
-  public function insertRumusMultiple()
-  {
+  public function insertRumusMultiple(){
     $isi = $this->session->userdata();
 
     $data['multiple_rumus_id'] = create_id();
@@ -113,8 +92,7 @@ class Rumus_multiple extends MY_Controller
   /* Insert */
 
   /* Update */
-  public function updateRumusMultiple()
-  {
+  public function updateRumusMultiple(){
     $isi = $this->session->userdata();
 
     $id = anti_inject($this->input->post('multiple_rumus_id'));
@@ -130,15 +108,13 @@ class Rumus_multiple extends MY_Controller
   /* Update */
 
   /* Delete */
-  public function deleteRumusMultiple()
-  {
+  public function deleteRumusMultiple(){
     $this->M_rumus_multiple->deleteRumusMultiple($this->input->get('multiple_rumus_id'));
   }
   /* Delete */
 
   /* Get Parameter & Detail Paramater */
-  public function getDetailRumusMultiple()
-  {
+  public function getDetailRumusMultiple(){
     $param = array();
 
     if ($this->input->get('id_multiple_rumus')) $param['id_multiple_rumus'] = $this->input->get('id_multiple_rumus');
@@ -150,8 +126,7 @@ class Rumus_multiple extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getListRumus()
-  {
+  public function getListRumus(){
     $rumus['rumus_detail_input'] = $this->input->get('rumus_detail_input');
     $param['id_parameter'] = $this->input->get('id_parameter');
     $param['detail_parameter_rumus_id'] = $this->input->get('detail_parameter_rumus_id');
@@ -165,8 +140,7 @@ class Rumus_multiple extends MY_Controller
     echo json_encode($hasil);
   }
 
-  public function getUrutanRumus($value = '')
-  {
+  public function getUrutanRumus($value = ''){
     $select = "*";
     $where = array('rumus_detail_urut' => $this->input->get('rumus_detail_urut'), 'id_parameter' => $this->input->get('detail_multiple_rumus_id'));
     $data = $this->M_rumus_multiple->getUrutanRumus($select, $where, null, null, null)->row();
@@ -178,8 +152,7 @@ class Rumus_multiple extends MY_Controller
     }
   }
 
-  public function getParameterRumus()
-  {
+  public function getParameterRumus(){
     $param['id_parameter'] = anti_inject($this->input->get_post('id_parameter'));
     $param['detail_parameter_rumus_id'] = anti_inject($this->input->get_post('detail_parameter_rumus_id'));
 
@@ -189,8 +162,7 @@ class Rumus_multiple extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getMaksUrut()
-  {
+  public function getMaksUrut(){
     $data = $this->db->query("SELECT MAX(CAST(rumus_detail_urut AS INT)) as terakhir FROM sample.sample_parameter_rumus WHERE id_parameter = '" . $this->input->get_post('id_parameter') . "'")->row_array();
     $datanya['last'] = $data['terakhir'] + 1;
     echo json_encode($datanya);
@@ -198,8 +170,7 @@ class Rumus_multiple extends MY_Controller
   /*Get Parameter & Detail Paramater */
 
   /* Insert Parameter & Detail Paramater */
-  public function insertRumusMultipleDetail()
-  {
+  public function insertRumusMultipleDetail(){
     $isi = $this->session->userdata();
 
     $data['detail_multiple_rumus_id'] = create_id();
@@ -212,8 +183,7 @@ class Rumus_multiple extends MY_Controller
     $this->M_rumus_multiple->insertRumusMultipleDetail($data);
   }
 
-  public function insertDetailParameter()
-  {
+  public function insertDetailParameter(){
     $isi = $this->session->userdata();
 
     $rumus_detail_input = ($this->input->post('rumus_detail_input') != FALSE) ? anti_inject($this->input->post('rumus_detail_input')) : NULL;
@@ -235,8 +205,7 @@ class Rumus_multiple extends MY_Controller
   /* Insert Parameter & Detail Paramater */
 
   /* Update Parameter & Detail Paramater */
-  public function updateRumusMultipleDetail()
-  {
+  public function updateRumusMultipleDetail(){
     $isi = $this->session->userdata();
 
     $id = anti_inject($this->input->post('detail_multiple_rumus_id'));
@@ -251,8 +220,7 @@ class Rumus_multiple extends MY_Controller
     $this->M_rumus_multiple->updateRumusMultipleDetail($data, $id);
   }
 
-  public function updateDetailParameter()
-  {
+  public function updateDetailParameter(){
     $isi = $this->session->userdata();
 
     $rumus_detail_template = ($this->input->post('rumus_detail_template') != FALSE) ? anti_inject($this->input->post('rumus_detail_template')) : NULL;
@@ -275,20 +243,17 @@ class Rumus_multiple extends MY_Controller
   /* Update Parameter & Detail Paramater */
 
   /* Delete Parameter & Detail Paramater */
-  public function deleteRumusMultipleDetail()
-  {
+  public function deleteRumusMultipleDetail(){
     $this->M_rumus_multiple->deleteRumusMultipleDetail($this->input->get('detail_multiple_rumus_id'));
   }
 
-  public function deleteDetailParameter()
-  {
+  public function deleteDetailParameter(){
     $this->M_rumus_multiple->deleteDetailParameter($this->input->get('detail_parameter_rumus_id'));
   }
   /* Delete Parameter & Detail Paramater */
 
   /* Get Import */
-  public function getImport()
-  {
+  public function getImport(){
     $param['import_kode'] = $this->input->get('import_kode');
 
     $data = $this->M_rumus_multiple->getImport($param);
@@ -296,8 +261,7 @@ class Rumus_multiple extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getImportParameter()
-  {
+  public function getImportParameter(){
     $param['import_kode'] = $this->input->get('import_kode');
 
     $data = $this->M_rumus_multiple->getImportParameter($param);
@@ -305,8 +269,7 @@ class Rumus_multiple extends MY_Controller
     echo json_encode($data);
   }
 
-  public function getImportDetailParameter()
-  {
+  public function getImportDetailParameter(){
     $param['import_kode'] = $this->input->get('import_kode');
 
     $data = $this->M_rumus_multiple->getImportDetailParameter($param);
@@ -316,8 +279,7 @@ class Rumus_multiple extends MY_Controller
   /* Get Import */
 
   /* Insert Import */
-  public function insertImport()
-  {
+  public function insertImport(){
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 
@@ -367,8 +329,7 @@ class Rumus_multiple extends MY_Controller
     }
   }
 
-  public function insertTable()
-  {
+  public function insertTable(){
     $param['import_kode'] = $this->input->get('import_kode');
     $this->M_rumus_multiple->insertTable($param);
     $this->M_rumus_multiple->deleteTable($this->input->get('import_kode'));
@@ -378,8 +339,7 @@ class Rumus_multiple extends MY_Controller
   /* Insert Import */
 
   /* Insert Import Paramater */
-  public function insertImportParameter()
-  {
+  public function insertImportParameter(){
     ini_set('display_errors', 1);
     // error_reporting(E_ALL);
     error_reporting(0);
@@ -428,8 +388,7 @@ class Rumus_multiple extends MY_Controller
     }
   }
 
-  public function insertTableParameter()
-  {
+  public function insertTableParameter(){
     $param['import_kode'] = $this->input->get('import_kode');
     $this->M_rumus_multiple->insertTableParameter($param);
     $this->M_rumus_multiple->deleteTableParameter($this->input->get('import_kode'));
@@ -439,8 +398,7 @@ class Rumus_multiple extends MY_Controller
   /* Insert Import Parameter */
 
   /* Insert Import Detail Parameter */
-  public function insertImportDetailParameter()
-  {
+  public function insertImportDetailParameter(){
     ini_set('display_errors', 1);
     error_reporting(0);
     // error_reporting(E_ALL);
@@ -490,8 +448,7 @@ class Rumus_multiple extends MY_Controller
     }
   }
 
-  public function insertTableDetailParameter()
-  {
+  public function insertTableDetailParameter(){
     $param['import_kode'] = $this->input->get('import_kode');
     $this->M_rumus_multiple->insertTableDetailParameter($param);
     $this->M_rumus_multiple->deleteTableDetailParameter($this->input->get('import_kode'));
@@ -500,8 +457,7 @@ class Rumus_multiple extends MY_Controller
   }
   /* Insert Import Detail Parameter */
 
-  public function indexMamas()
-  {
+  public function indexMamas(){
     $this->load->view('master/mamas');
   }
 } /* . End Proses Rumus_multiple */

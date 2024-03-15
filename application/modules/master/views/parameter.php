@@ -17,10 +17,6 @@
     </div>
   </section>
   <!-- Container Header -->
-  <?php
-  $sql = $this->db->query("SELECT * FROM global.global_tenaga_kerja ORDER BY tenaga_kerja_jabatan ASC");
-  $data = $sql->result_array();
-  ?>
   <!-- Container Body -->
   <section class="content">
     <div class="container-fluid">

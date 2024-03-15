@@ -6,52 +6,29 @@
     /* Isi Table */
     $('#table thead tr').clone(true).addClass('filters').appendTo('#table thead');
     $('#table').DataTable({
-      orderCellsTop: true,
-      initComplete: function() {
-        $('.dataTables_scrollHead').on('scroll', function() {
+    orderCellsTop: true,
+    initComplete: function() {
+      $('.dataTables_scrollHead').on('scroll', function() {
           $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
-        });
-        var api = this.api();
-
-        api
-          .columns()
-          .eq(0)
-          .each(function(colIdx) {
-            var cell = $('.filters th').eq(
-              $(api.column(colIdx).header()).index()
-            );
-            var title = $(cell).text();
-            $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
-            $(
-                'input',
-                $('.filters th').eq($(api.column(colIdx).header()).index())
-              )
-              .off('keyup change')
-              .on('keyup change', function(e) {
-                e.stopPropagation();
-
-                $(this).attr('title', $(this).val());
-                var regexr = '({search})';
-                //$(this).parents('th').find('select').val();
-
-                var cursorPosition = this.selectionStart;
-                // Search the column for that value
-                api
-                  .column(colIdx)
-                  .search(
-                    this.value != '' ?
-                    regexr.replace('{search}', '(((' + this.value + ')))') :
-                    '',
-                    this.value != '',
-                    this.value == ''
-                  )
-                  .draw();
-
-                $(this)
-                  .focus()[0]
-                  .setSelectionRange(cursorPosition, cursorPosition);
-              });
+      });
+      var api = this.api();
+      api.columns().eq(0).each(function(colIdx) {
+        var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+        var title = $(cell).text();
+        $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
+        $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+          .off('keyup change')
+          .on('keyup change', function(e) {
+            e.stopPropagation();
+            $(this).attr('title', $(this).val());
+            var regexr = '({search})';
+            var cursorPosition = this.selectionStart;
+            api.column(colIdx)
+                .search(this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '', this.value != '', this.value == '')
+                .draw();
+            $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
           });
+        });
       },
       "scrollX": true,
       "lengthMenu": [

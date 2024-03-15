@@ -141,6 +141,13 @@ class M_parameter extends CI_Model {
     }
   /* DELETE PARAMETER ASET */
 
+    public function gettenagakerja(){
+      $this->db->select('*');
+      $this->db->from('global.global_tenaga_kerja a');
+      $this->db->order_by('tenaga_kerja_jabatan', 'ASC');
+      $query = $this->db->get();
+      return $query->result_array();
+    }
 }
 
 /* End of file M_parameter.php */

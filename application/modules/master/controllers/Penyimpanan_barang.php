@@ -18,12 +18,8 @@ class Penyimpanan_barang extends MY_Controller
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
-
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/penyimpanan_barang');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/penyimpanan_barang_js');
+		
+		$this->template->template_master('master/penyimpanan_barang',$isi,$data);
 	}
 	/* INDEX */
 

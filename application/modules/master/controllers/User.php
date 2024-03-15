@@ -1,34 +1,26 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class User extends MY_Controller
-{
+class User extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('master/M_user');
 		$this->load->model('master/M_role');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'User';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/user');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/user_js');
+		$this->template->template_master('master/user',$isi,$data);
 	}
 
 	/* GET */
-	public function getUser()
-	{
+	public function getUser(){
 		$param['user_id'] = $this->input->get('user_id');
 		$param['id_seksi'] = $this->input->get('id_seksi');
 
@@ -37,8 +29,7 @@ class User extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getRole()
-	{
+	public function getRole(){
 		$listRole['results'] = array();
 
 		$param['role_nama'] = $this->input->get('role_nama');
@@ -52,8 +43,7 @@ class User extends MY_Controller
 		echo json_encode($listRole);
 	}
 
-	public function getSeksiUser()
-	{
+	public function getSeksiUser(){
 		$listSeksi['results'] = array();
 
 		$param['seksi_nama'] = $this->input->get('seksi_nama');
@@ -69,8 +59,7 @@ class User extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertUser()
-	{
+	public function insertUser(){
 		$isi = $this->session->userdata();
 
 		if (!empty($_FILES['user_tanda_tangan']['name'])) {
@@ -113,8 +102,7 @@ class User extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateUser()
-	{
+	public function updateUser(){
 		$isi = $this->session->userdata();
 
 		if (isset($_FILES['user_tanda_tangan']['name'])) {
@@ -156,15 +144,13 @@ class User extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteUser()
-	{
+	public function deleteUser(){
 		$this->M_user->deleteUser($this->input->get('user_id'));
 	}
 	/* DELETE */
 
 	/* GET SEKSI */
-	public function getSeksi()
-	{
+	public function getSeksi(){
 		$param['seksi_id'] = $this->input->get('seksi_id');
 		$param['seksi_nama'] = $this->input->get('seksi_nama');
 
@@ -174,8 +160,7 @@ class User extends MY_Controller
 	/* GET SEKSI */
 
 	/* GET KASIE */
-	public function getNamaKasie()
-	{
+	public function getNamaKasie(){
 		$KasieNama['results'] = array();
 		$param['user_nama_lengkap'] = $this->input->get('user_nama_lengkap');
 
@@ -191,8 +176,7 @@ class User extends MY_Controller
 	/* GET KASIE */
 
 	/* Insert Kasie */
-	public function updateKasieNama()
-	{
+	public function updateKasieNama(){
 		$id = htmlentities($this->input->get_post('identitas_kasie_nama'));
 		$param['seksi_kepala'] = htmlentities($this->input->get_post('kasie_nama'));
 
@@ -201,8 +185,7 @@ class User extends MY_Controller
 	/* Insert Kasie */
 
 	/* INSERT SEKSI */
-	public function insertSeksi()
-	{
+	public function insertSeksi(){
 		$isi = $this->session->userdata();
 
 		$data['seksi_id'] = create_id();
@@ -218,8 +201,7 @@ class User extends MY_Controller
 	/* INSERT SEKSI */
 
 	/* UPDATE SEKSI */
-	public function updateSeksi()
-	{
+	public function updateSeksi(){
 		$isi = $this->session->userdata();
 
 		$id = anti_inject($this->input->post('seksi_id'));
@@ -236,15 +218,13 @@ class User extends MY_Controller
 	/* UPDATE SEKSI */
 
 	/* DELETE SEKSI */
-	public function deleteSeksi()
-	{
+	public function deleteSeksi(){
 		$this->M_user->deleteSeksi($this->input->get('seksi_id'));
 	}
 	/* DELETE SEKSI */
 
 	/* INDEX IMPORT SEKSI */
-	public function index_seksi_import()
-	{
+	public function index_seksi_import(){
 		$isi['judul'] = 'Import Seksi';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -259,8 +239,7 @@ class User extends MY_Controller
 	/* INDEX IMPORT SEKSI */
 
 	/* GET IMPORT SEKSI */
-	public function getImportSeksi()
-	{
+	public function getImportSeksi(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_user->getImportSeksi($param);
@@ -269,8 +248,7 @@ class User extends MY_Controller
 	/* GET IMPORT SEKSI */
 
 	/* INSERT IMPORT SEKSI */
-	public function insertImportSeksi()
-	{
+	public function insertImportSeksi(){
 
 		error_reporting(0);
 		$data_session = $this->session->userdata();
@@ -323,8 +301,7 @@ class User extends MY_Controller
 				header("Location: " . base_url('master/user/index_seksi_import?header_menu=0&menu_id=0&import_kode=0'));
 	}
 
-	public function insertTableSeksi()
-	{
+	public function insertTableSeksi(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		$this->M_user->insertTableSeksi($param);
 		$this->M_user->deleteTableSeksi($this->input->get('import_kode'));
@@ -334,8 +311,7 @@ class User extends MY_Controller
 	/* INSERT IMPORT SEKSI */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import User';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -350,8 +326,7 @@ class User extends MY_Controller
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_user->getImport($param);
@@ -360,8 +335,7 @@ class User extends MY_Controller
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 
 		error_reporting(0);
 		$data_session = $this->session->userdata();
@@ -425,8 +399,7 @@ class User extends MY_Controller
 		header("Location: " . base_url('master/user/index_import?header_menu=0&menu_id=0&import_kode=0'));
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		foreach ($this->M_user->getImport($param) as $value) {
 			$param['id_seksi'] = $value['id_seksi'];

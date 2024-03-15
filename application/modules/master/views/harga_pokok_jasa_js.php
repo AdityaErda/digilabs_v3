@@ -129,57 +129,31 @@
     /* Isi Table */
     $('#table thead tr').clone(true).addClass('filters').appendTo('#table thead');
     $('#table').DataTable({
-        orderCellsTop: true,
-        initComplete: function () {
-        $('.dataTables_scrollHead').on('scroll', function () {
-            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+    orderCellsTop: true,
+    initComplete: function() {
+      $('.dataTables_scrollHead').on('scroll', function () {
+          $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+      });
+      var api = this.api();
+      api.columns().eq(0).each(function(colIdx) {
+        var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+        var title = $(cell).text();
+        $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
+
+        $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+          .off('keyup change')
+          .on('keyup change', function(e) {
+              e.stopPropagation();
+              $(this).attr('title', $(this).val());
+              var regexr = '({search})';
+              var cursorPosition = this.selectionStart;
+              api.column(colIdx)
+                  .search(this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '', this.value != '', this.value == '')
+                  .draw();
+              $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+          });
         });
-            var api = this.api();
- 
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
- 
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('keyup change', function (e) {
-                            e.stopPropagation();
- 
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
- 
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
-                                )
-                                .draw();
- 
-                            $(this)
-                                .focus()[0]
-                                .setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
-        },
+      },
       "scrollX": true,
       "lengthMenu":[[5,10,25,50,-1],[5,10,25,50,"All"]],
       "dom": 'lBfrtip',
@@ -221,54 +195,52 @@
       if(!json.user_id){
         fun_notifLogout();
       }else{
-    $('#simpan').css('display', 'none');
-    $('#edit').css('display', 'block');
-    $.getJSON('<?= base_url('master/harga_pokok_jasa/getHargaPokokJasa') ?>', {
-      harga_pokok_jasa_id: id
-    }, function(json) {
-      $.each(json, function(index, val) {
-        $('#' + index).val(val);
-      });
-      let harga_item = parseInt(json.harga_item); 
-      let harga_aset = parseInt(json.harga_aset); 
-      let harga_sample = parseInt(json.harga_sample); 
-      $('#penyimpanan_item_barang_harga_view').val('Rp '+harga_item.toLocaleString());
-      $('#penyimpanan_aset_harga_view').val('Rp '+harga_aset.toLocaleString());
-      $('#penyimpanan_jenis_sample_det_harga_view').val('Rp '+harga_sample.toLocaleString());
+        $('#simpan').css('display', 'none');
+        $('#edit').css('display', 'block');
+        $.getJSON('<?= base_url('master/harga_pokok_jasa/getHargaPokokJasa') ?>', {
+          harga_pokok_jasa_id: id
+        }, function(json) {
+          $.each(json, function(index, val) {
+            $('#' + index).val(val);
+          });
+          let harga_item = parseInt(json.harga_item); 
+          let harga_aset = parseInt(json.harga_aset); 
+          let harga_sample = parseInt(json.harga_sample); 
+          $('#penyimpanan_item_barang_harga_view').val('Rp '+harga_item.toLocaleString());
+          $('#penyimpanan_aset_harga_view').val('Rp '+harga_aset.toLocaleString());
+          $('#penyimpanan_jenis_sample_det_harga_view').val('Rp '+harga_sample.toLocaleString());
 
-      $('#id_item').append('<option selected value="' + json.item_id + '">' + json.item_nama + '</option>');
-      $('#id_item').select2('data', {
-        id: json.item_id,
-        text: json.itemt_nama
-      });
-      $('#id_item').trigger('change');
+          $('#id_item').append('<option selected value="' + json.item_id + '">' + json.item_nama + '</option>');
+          $('#id_item').select2('data', {
+            id: json.item_id,
+            text: json.itemt_nama
+          });
+          $('#id_item').trigger('change');
 
-      $('#id_aset').append('<option selected value="' + json.aset_id + '">' + json.aset_nama + '</option>');
-      $('#id_aset').select2('data', {
-        id: json.aset_id,
-        text: json.aset_nama
-      });
+          $('#id_aset').append('<option selected value="' + json.aset_id + '">' + json.aset_nama + '</option>');
+          $('#id_aset').select2('data', {
+            id: json.aset_id,
+            text: json.aset_nama
+          });
 
-      $('#penyimpanan_jenis_sample').trigger('change');
-      $('#penyimpanan_jenis_sample').append('<option selected value="' + json.jenis_id + '">' + json.jenis_nama + '</option>');
-      $('#penyimpanan_jenis_sample').select2('data', {
-        id: json.jenis_id,
-        text: json.jenis_nama
-      });
-      $('#penyimpanan_jenis_sample').trigger('change');
+          $('#penyimpanan_jenis_sample').trigger('change');
+          $('#penyimpanan_jenis_sample').append('<option selected value="' + json.jenis_id + '">' + json.jenis_nama + '</option>');
+          $('#penyimpanan_jenis_sample').select2('data', {
+            id: json.jenis_id,
+            text: json.jenis_nama
+          });
+          $('#penyimpanan_jenis_sample').trigger('change');
 
-      $('#id_sample').trigger('change');
-      $('#id_sample').append('<option selected value="' + json.id_sample + '">' + json.identitas_nama + '</option>');
-      $('#id_sample').select2('data', {
-        id: json.id_sample,
-        text: json.aset_nama
-      });
-      $('#id_sample').trigger('change');
-
-     
+          $('#id_sample').trigger('change');
+          $('#id_sample').append('<option selected value="' + json.id_sample + '">' + json.identitas_nama + '</option>');
+          $('#id_sample').select2('data', {
+            id: json.id_sample,
+            text: json.aset_nama
+          });
+          $('#id_sample').trigger('change');
+        });
+      }
     });
-  }
-  });
   }
   /* View Update */
 
@@ -279,22 +251,22 @@
       if(!json.user_id){
         fun_notifLogout();
       }else{
-    if ($('#harga_pokok_jasa_id').val() != '') var url = '<?= base_url('master/harga_pokok_jasa/updateHargaPokokJasa') ?>'; 
-    else var url = '<?= base_url('master/harga_pokok_jasa/insertHargaPokokJasa') ?>';
+        if ($('#harga_pokok_jasa_id').val() != '') var url = '<?= base_url('master/harga_pokok_jasa/updateHargaPokokJasa') ?>'; 
+        else var url = '<?= base_url('master/harga_pokok_jasa/insertHargaPokokJasa') ?>';
 
-    e.preventDefault();
-    $.ajax({
-      url: url,
-      data: $('#form_modal').serialize(),
-      type: 'POST',
-      dataType: 'html',
-      success: function(isi) {
-        $('#close').click();
-        toastr.success('Berhasil');
+        e.preventDefault();
+        $.ajax({
+          url: url,
+          data: $('#form_modal').serialize(),
+          type: 'POST',
+          dataType: 'html',
+          success: function(isi) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          }
+        });
       }
     });
-  }
-  });
   });
   /* Proses */
 
@@ -304,16 +276,16 @@
       if(!json.user_id){
         fun_notifLogout();
       }else{
-    $.confirmModal('Apakah anda yakin akan menghapusnya?', function(el) {
-      $.get('<?= base_url('master/harga_pokok_jasa/deleteHargaPokokJasa') ?>', {
-        harga_pokok_jasa_id: id
-      }, function(data) {
-        $('#close').click();
-        toastr.success('Berhasil');
-      });
+        $.confirmModal('Apakah anda yakin akan menghapusnya?', function(el) {
+          $.get('<?= base_url('master/harga_pokok_jasa/deleteHargaPokokJasa') ?>', {
+            harga_pokok_jasa_id: id
+          }, function(data) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          });
+        });
+      }
     });
-  }
-  });
   }
   /* Fun Delete */
 
@@ -323,16 +295,16 @@
       if(!json.user_id){
         fun_notifLogout();
       }else{
-    $.confirmModal('Apakah anda yakin akan mereset seluruh data jenis barang ?', function(el) {
-      $.get('<?= base_url('master/harga_pokok_jasa/resetHargaPokokJasa') ?>', {
-        harga_pokok_jasa_id: 'id'
-      }, function(data) {
-        $('#close').click();
-        toastr.success('Berhasil');
-      });
+        $.confirmModal('Apakah anda yakin akan mereset seluruh data jenis barang ?', function(el) {
+          $.get('<?= base_url('master/harga_pokok_jasa/resetHargaPokokJasa') ?>', {
+            harga_pokok_jasa_id: 'id'
+          }, function(data) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          });
+        });
+      }
     });
-  }
-  });
   }
   /* Fun Reset */
   /* Fun Close */

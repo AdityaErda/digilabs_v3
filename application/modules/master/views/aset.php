@@ -96,12 +96,6 @@
                                   <input type="text" class="form-control float-right tanggal" id="aset_tahun_perolehan" name="aset_tahun_perolehan" onchange="fun_umur(this.value)">
                                 </div>
                               </div>
-                              <!-- <div class="form-group row col-md-12">
-                                          <label class="col-md-4">Tahun Perolehan</label>
-                                          <div class="input-group col-md-8">
-                                            <input type="number" class="form-control" id="aset_tahun_perolehan" name="aset_tahun_perolehan" value="" placeholder="Tahun Perolehan" onkeyup="fun_umur(this.value)">
-                                          </div>
-                                        </div> -->
                               <div class="form-group row col-md-12">
                                 <label class="col-md-4">Umur Ekonomis *</label>
                                 <div class="input-group col-md-8">

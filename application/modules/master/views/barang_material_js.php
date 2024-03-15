@@ -7,54 +7,34 @@
       $('#table').DataTable({
         orderCellsTop: true,
         initComplete: function () {
-        $('.dataTables_scrollHead').on('scroll', function () {
-            $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
-        });
-            var api = this.api();
- 
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
- 
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('keyup change', function (e) {
-                            e.stopPropagation();
- 
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
- 
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
-                                )
-                                .draw();
- 
-                            $(this)
-                                .focus()[0]
-                                .setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
+          $('.dataTables_scrollHead').on('scroll', function () {
+              $('.dataTables_scrollBody').scrollLeft($(this).scrollLeft());
+          });
+          var api = this.api();
+          // For each column
+          api.columns().eq(0).each(function (colIdx) {
+            // Set the header cell to contain the input element
+            var cell = $('.filters th').eq(
+                $(api.column(colIdx).header()).index()
+            );
+            var title = $(cell).text();
+            $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
+            // On every keypress in this input
+            $('input',$('.filters th').eq($(api.column(colIdx).header()).index())).off('keyup change').on('keyup change', function (e) {
+              e.stopPropagation();
+              // Get the search value
+              $(this).attr('title', $(this).val());
+              var regexr = '({search})'; //$(this).parents('th').find('select').val();
+              var cursorPosition = this.selectionStart;
+              // Search the column for that value
+              api.column(colIdx).search(
+                  this.value != ''? regexr.replace('{search}', '(((' + this.value + ')))'): '',
+                  this.value != '',
+                  this.value == ''
+              ).draw();
+              $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+            });
+          });
         },
         "scrollX": true,
         "lengthMenu":[[5,10,25,50,-1],[5,10,25,50,"All"]],
@@ -95,51 +75,26 @@
       $('#table_detail').DataTable({
         orderCellsTop: true,
         initComplete: function () {
-            var api = this.api();
- 
-            // For each column
-            api
-                .columns()
-                .eq(0)
-                .each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters_detail th').eq(
-                        $(api.column(colIdx).header()).index()
-                    );
-                    var title = $(cell).text();
-                    $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />');
- 
-                    // On every keypress in this input
-                    $(
-                        'input',
-                        $('.filters_detail th').eq($(api.column(colIdx).header()).index())
-                    )
-                        .off('keyup change')
-                        .on('keyup change', function (e) {
-                            e.stopPropagation();
- 
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
- 
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search(
-                                    this.value != ''
-                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-                                        : '',
-                                    this.value != '',
-                                    this.value == ''
-                                )
-                                .draw();
- 
-                            $(this)
-                                .focus()[0]
-                                .setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
+          var api = this.api();
+          api.columns().eq(0).each(function (colIdx) {
+            var cell = $('.filters_detail th').eq($(api.column(colIdx).header()).index());
+            var title = $(cell).text();
+            $(cell).html('<input type="text" class="form-control" style="width:100%" placeholder="' + title + '" />')
+            .find('input')
+            .off('keyup change')
+            .on('keyup change', function (e) {
+              e.stopPropagation();
+              $(this).attr('title', $(this).val());
+              var regexr = '({search})';
+              var cursorPosition = this.selectionStart;
+              api.column(colIdx).search(
+                  this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '',
+                  this.value != '',
+                  this.value == ''
+              ).draw();
+              $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+            });
+          });
         },
         "scrollX": true,
         "lengthMenu":[[5,10,25,50,-1],[5,10,25,50,"All"]],
@@ -246,11 +201,11 @@
   });
 
   /* View Update */
-    function fun_edit(id) {
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
-      if(!json.user_id){
-        fun_notifLogout();
-      }else{
+  function fun_edit(id) {
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+    if(!json.user_id){
+      fun_notifLogout();
+    }else{
       $('#simpan').css('display', 'none');
       $('#edit').css('display', 'block');
       $.getJSON('<?= base_url('master/barang_material/getBarangMaterial') ?>', {item_id: id}, function(json) {
@@ -271,67 +226,67 @@
         $('#gl_account_id').trigger('change');
       });
     }
-    });
+  });
   }
   /* View Update */
 
   /* Proses */
-    $("#form_modal").on("submit", function (e) {
-      e.preventDefault();
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+  $("#form_modal").on("submit", function (e) {
+    e.preventDefault();
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
       if(!json.user_id){
         fun_notifLogout();
       }else{
-      if ($('#item_id').val() != '') var url = '<?= base_url('master/barang_material/updateBarangMaterial') ?>';
-      else var url = '<?= base_url('master/barang_material/insertBarangMaterial') ?>';
+        if ($('#item_id').val() != '') var url = '<?= base_url('master/barang_material/updateBarangMaterial') ?>';
+        else var url = '<?= base_url('master/barang_material/insertBarangMaterial') ?>';
 
-      e.preventDefault();
-      $.ajax({
-        url:url,
-        data:$('#form_modal').serialize(),
-        type:'POST',
-        dataType: 'html',
-        success:function(isi) {
-          $('#close').click();
-          toastr.success('Berhasil');
-        }
-      });
-    }
-  })
-    });
+        e.preventDefault();
+        $.ajax({
+          url:url,
+          data:$('#form_modal').serialize(),
+          type:'POST',
+          dataType: 'html',
+          success:function(isi) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          }
+        });
+      }
+    })
+  });
   /* Proses */
 
   /* Fun Delete */
-    function fun_delete(id) {
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+  function fun_delete(id) {
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
       if(!json.user_id){
         fun_notifLogout();
       }else{
-     $.confirmModal('Apakah anda yakin akan menghapusnya?', function(el) {
-        $.get('<?= base_url('master/barang_material/deleteBarangMaterial') ?>', {item_id: id}, function(data) {
-          $('#close').click();
-          toastr.success('Berhasil');
+       $.confirmModal('Apakah anda yakin akan menghapusnya?', function(el) {
+          $.get('<?= base_url('master/barang_material/deleteBarangMaterial') ?>', {item_id: id}, function(data) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          });
         });
-      });
-    }
+      }
     })
-    }
+  }
   /* Fun Delete */
   /* Fun Reset */
-    function fun_reset() {
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+  function fun_reset() {
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
       if(!json.user_id){
         fun_notifLogout();
       }else{
-     $.confirmModal('Apakah anda yakin akan mereset seluruh data barang material?', function(el) {
-        $.get('<?= base_url('master/barang_material/resetBarangMaterial') ?>', {item_id: 'id'}, function(data) {
-          $('#close').click();
-          toastr.success('Berhasil');
+       $.confirmModal('Apakah anda yakin akan mereset seluruh data barang material?', function(el) {
+          $.get('<?= base_url('master/barang_material/resetBarangMaterial') ?>', {item_id: 'id'}, function(data) {
+            $('#close').click();
+            toastr.success('Berhasil');
+          });
         });
-      });
-    }
-  })
-    }
+      }
+    })
+  }
   /* Fun Reset */
 
   /* Fun Close */
@@ -352,125 +307,125 @@
   });
 
   /* Fun History */
-    function fun_history (id) {
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+  function fun_history (id) {
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
       if(!json.user_id){
         fun_notifLogout();
       }else{
-      $('#div_history').css('display', 'block');
-      $('#div_detail').css('display', 'none');
-      $('#table_history').DataTable().ajax.url('<?= base_url('master/barang_material/getHistory?item_id=') ?>'+id).load();
-      $('#id_item').val(id);
-      $('html, body').animate({
-        scrollTop: $("#div_history").offset().top
-      }, 10);
+        $('#div_history').css('display', 'block');
+        $('#div_detail').css('display', 'none');
+        $('#table_history').DataTable().ajax.url('<?= base_url('master/barang_material/getHistory?item_id=') ?>'+id).load();
+        $('#id_item').val(id);
+        $('html, body').animate({
+          scrollTop: $("#div_history").offset().top
+        }, 10);
 
-      $.ajax({
-        url: "<?= base_url('master/barang_material/getHistory?item_id=') ?>"+id,
-        method: "GET",
-        async: true,
-        dataType: 'json',
-        success: function(isi) {
-          var label = [];
-          var value = []
+        $.ajax({
+          url: "<?= base_url('master/barang_material/getHistory?item_id=') ?>"+id,
+          method: "GET",
+          async: true,
+          dataType: 'json',
+          success: function(isi) {
+            var label = [];
+            var value = []
 
-          $.each(isi, function(index, val) {
-            label.push(val.log_when);
-            value.push(val.barang_harga);
-          });
+            $.each(isi, function(index, val) {
+              label.push(val.log_when);
+              value.push(val.barang_harga);
+            });
 
-          $('#myChart').remove();
-          $('#div_myChart').append('<canvas id="myChart" style="width: 100%;"></canvas>');
-          var ctx = document.getElementById('myChart').getContext('2d');
-          var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: label,
-              datasets: [{
-                label: 'History',
-                data: value,
-                backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-                borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1
-              }]
-            },
-            options: {
-              scales: {
-                y: {
-                  beginAtZero: true
+            $('#myChart').remove();
+            $('#div_myChart').append('<canvas id="myChart" style="width: 100%;"></canvas>');
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: label,
+                datasets: [{
+                  label: 'History',
+                  data: value,
+                  backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                  borderColor: ['rgba(255, 99, 132, 1)'],
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
                 }
               }
-            }
-          });
-        }
-      });
-    }
-  })
-    }
+            });
+          }
+        });
+      }
+    })
+  }
   /* Fun History */
 
   /* Fun Detail */
-    function fun_detail (id) {
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+  function fun_detail (id) {
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
       if(!json.user_id){
         fun_notifLogout();
       }else{
-      $('#div_history').css('display', 'none');
-      $('#div_detail').css('display', 'block');
-      $('#table_detail').DataTable().ajax.url('<?= base_url('master/barang_material/getKomposisi?item_id=') ?>'+id).load();
-      $('#id_item').val(id);
-      $('html, body').animate({
-        scrollTop: $("#div_detail").offset().top
-      }, 10);
-      setTimeout(function() {$('.warna').removeAttr('style')}, 500);
-      setTimeout(function() {$('#'+id).parents('tr').attr('style','color: red')}, 1000);
-    }
-  })
-    }
+        $('#div_history').css('display', 'none');
+        $('#div_detail').css('display', 'block');
+        $('#table_detail').DataTable().ajax.url('<?= base_url('master/barang_material/getKomposisi?item_id=') ?>'+id).load();
+        $('#id_item').val(id);
+        $('html, body').animate({
+          scrollTop: $("#div_detail").offset().top
+        }, 10);
+        setTimeout(function() {$('.warna').removeAttr('style')}, 500);
+        setTimeout(function() {$('#'+id).parents('tr').attr('style','color: red')}, 1000);
+      }
+    })
+  }
   /* Fun Detail */
 
   /* Fun Tambah Detail */
-    function fun_tambah_detail() {
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+  function fun_tambah_detail() {
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
       if(!json.user_id){
         fun_notifLogout();
       }else{
-      $('#temp_item_id').val($('#id_item').val());
-    }
-  })
-    }
+        $('#temp_item_id').val($('#id_item').val());
+      }
+    })
+  }
   /* Fun Tambah Detail */
 
   /* View Update Detail */
-    function fun_edit_detail(id) {
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+  function fun_edit_detail(id) {
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
       if(!json.user_id){
         fun_notifLogout();
       }else{
-      $('#simpan_detail').css('display', 'none');
-      $('#edit_detail').css('display', 'block');
-      $.getJSON('<?= base_url('master/barang_material/getKomposisi') ?>', {komposisi_id: id}, function(json) {
-        $.each(json, function(index, val) {
-          $('#'+index).val(val);
-        });
-        $('#temp_item_id').val(json.item_id);
+        $('#simpan_detail').css('display', 'none');
+        $('#edit_detail').css('display', 'block');
+        $.getJSON('<?= base_url('master/barang_material/getKomposisi') ?>', {komposisi_id: id}, function(json) {
+          $.each(json, function(index, val) {
+            $('#'+index).val(val);
+          });
+          $('#temp_item_id').val(json.item_id);
 
-        $('#komposisi_item').append('<option selected value="'+json.komposisi_item+'">'+json.nama_item+' - '+json.harga_item+'</option>');
-        $('#komposisi_item').select2('data', {id:json.komposisi_item, text:json.nama_item+' - '+json.harga_item});
-        $('#komposisi_item').trigger('change');
-      });
-    }
-  })
-    }
+          $('#komposisi_item').append('<option selected value="'+json.komposisi_item+'">'+json.nama_item+' - '+json.harga_item+'</option>');
+          $('#komposisi_item').select2('data', {id:json.komposisi_item, text:json.nama_item+' - '+json.harga_item});
+          $('#komposisi_item').trigger('change');
+        });
+      }
+    })
+  }
   /* View Update Detail */
 
   /* Proses Detail */
-    $("#form_modal_detail").on("submit", function (e) {
-      e.preventDefault();
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
-      if(!json.user_id){
-        fun_notifLogout();
-      }else{
+  $("#form_modal_detail").on("submit", function (e) {
+    e.preventDefault();
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+    if(!json.user_id){
+      fun_notifLogout();
+    }else{
       if ($('#komposisi_id').val() != '') var url = '<?= base_url('master/barang_material/updateKomposisi') ?>';
       else var url = '<?= base_url('master/barang_material/insertKomposisi') ?>';
 
@@ -487,36 +442,36 @@
       });
       }
     })
-    });
+  });
   /* Proses Detail */
 
   /* Fun Delete Detail */
-    function fun_delete_detail(id) {
-      $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
+  function fun_delete_detail(id) {
+    $.getJSON('<?= base_url('login/login/checkLogin') ?>', {}, function(json) {
       if(!json.user_id){
         fun_notifLogout();
       }else{
-      $.confirmModal('Apakah anda yakin akan menghapusnya?', function(el) {
-        $.get('<?= base_url('master/barang_material/deleteKomposisi') ?>', {komposisi_id: id}, function(data) {
-          $('#close_detail').click();
-          toastr.success('Berhasil');
+        $.confirmModal('Apakah anda yakin akan menghapusnya?', function(el) {
+          $.get('<?= base_url('master/barang_material/deleteKomposisi') ?>', {komposisi_id: id}, function(data) {
+            $('#close_detail').click();
+            toastr.success('Berhasil');
+          });
         });
-      });
-    }
-  })
-    }
+      }
+    })
+  }
   /* Fun Delete Detail */
 
   /* Fun Close Detail */
-    function fun_close_detail() {
-      $('#simpan_detail').css('display', 'block');
-      $('#edit_detail').css('display', 'none');
-      $("#komposisi_item").empty();
-      $('#form_modal_detail')[0].reset();
-      $('#table_detail').DataTable().ajax.reload();
-      $('#table').DataTable().ajax.reload();
-      fun_loading();
-    }
+  function fun_close_detail() {
+    $('#simpan_detail').css('display', 'block');
+    $('#edit_detail').css('display', 'none');
+    $("#komposisi_item").empty();
+    $('#form_modal_detail')[0].reset();
+    $('#table_detail').DataTable().ajax.reload();
+    $('#table').DataTable().ajax.reload();
+    fun_loading();
+  }
   /* Fun Close Detail */
 
   $('#modal_detail').on('hidden.bs.modal', function (e) {

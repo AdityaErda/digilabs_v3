@@ -11,4 +11,9 @@ class M_uhpd extends CI_Model {
 			return $this->db->affected_rows();
 		}
 	/* UPDATE */
+
+	public function getUhpd(){
+		$query = $this->db->order_by('tenaga_kerja_jabatan', 'ASC')->get('global.global_tenaga_kerja');
+		return $query->result_array();
+	}
 }

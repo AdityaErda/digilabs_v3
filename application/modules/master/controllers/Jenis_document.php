@@ -1,35 +1,27 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Jenis_document extends MY_Controller
-{
+class Jenis_document extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('master/M_document_jenis');
 	}
 
 	/* INDEX */
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Jenis Document';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_document');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_document_js');
+		$this->template->template_master('master/jenis_document',$isi,$data);
 	}
 	/* INDEX */
 
 	/* GET */
-	public function getJenisDocument()
-	{
+	public function getJenisDocument(){
 		$param['jenis_id'] = $this->input->get('jenis_id');
 
 		$data = $this->M_document_jenis->getJenisDocument($param);
@@ -38,8 +30,7 @@ class Jenis_document extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertJenisDocument()
-	{
+	public function insertJenisDocument(){
 		$isi = $this->session->userdata();
 
 		$data['jenis_id'] = create_id();
@@ -53,8 +44,7 @@ class Jenis_document extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateJenisDocument()
-	{
+	public function updateJenisDocument(){
 		$isi = $this->session->userdata();
 
 		$id = anti_inject($this->input->post('jenis_id'));
@@ -70,37 +60,29 @@ class Jenis_document extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteJenisDocument()
-	{
+	public function deleteJenisDocument(){
 		$this->M_document_jenis->deleteJenisDocument($this->input->get('jenis_id'));
 	}
 	/* DELETE */
 	/* DELETE */
-	public function resetJenisDocument()
-	{
+	public function resetJenisDocument(){
 		$this->M_document_jenis->resetJenisDocument();
 	}
 	/* DELETE */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import Jenis Document';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_document_import');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_document_import_js');
+		$this->template->template_master('master/jenis_document_import',$isi,$data);
 	}
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_document_jenis->getImport($param);
@@ -109,8 +91,7 @@ class Jenis_document extends MY_Controller
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 
 		error_reporting(0);
 		$data_session = $this->session->userdata();
@@ -161,8 +142,7 @@ class Jenis_document extends MY_Controller
 		}
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		$this->M_document_jenis->insertTable($param);
 		$this->M_document_jenis->deleteTable($this->input->get('import_kode'));

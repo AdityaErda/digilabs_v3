@@ -1,38 +1,28 @@
 <?php
-
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Parameter extends MY_Controller
-{
+class Parameter extends MY_Controller{
 
-
-  public function __construct()
-  {
+  public function __construct(){
     parent::__construct();
     // load model
     $this->load->model('master/M_parameter');
   }
 
   /* INDEX PARAMETER */
-  public function index()
-  {
+  public function index(){
     $isi['judul'] = 'Parameter';
     $data = $this->session->userdata();
     $data['id_sidebar'] = $this->input->get('id_sidebar');
     $data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
+    $data['data'] = $this->M_parameter->gettenagakerja();
 
-    $this->load->view('tampilan/header', $isi);
-    $this->load->view('tampilan/sidebar', $data);
-    $this->load->view('master/parameter');
-    $this->load->view('tampilan/footer');
-    $this->load->view('master/parameter_js');
+    $this->template->template_master('master/parameter',$isi,$data);
   }
   /* INDEX PARAMETER */
 
   /* GET PARAMETER */
-  public function getParameter()
-  {
+  public function getParameter(){
     $param['parameter_id'] = anti_inject($this->input->get_post('parameter_id'));
 
     $data = $this->M_parameter->getParameter($param);
@@ -42,8 +32,7 @@ class Parameter extends MY_Controller
   /* GET PARAMETER */
 
   /* GET PARAMETER JAsA */
-  public function getParameterJasa()
-  {
+  public function getParameterJasa(){
     $param['id_parameter'] = anti_inject($this->input->get_post('id_parameter'));
 
     $data = $this->M_parameter->getParameterJasa($param);
@@ -53,8 +42,7 @@ class Parameter extends MY_Controller
   /* GET PARAMETER JAsA */
 
   /* GET PARAMETER MATERIAL */
-  public function getParameterMaterial()
-  {
+  public function getParameterMaterial(){
     $param['id_parameter'] = anti_inject($this->input->get_post('id_parameter'));
     $param['parameter_material_id'] = anti_inject($this->input->get_post('parameter_material_id'));
 
@@ -65,8 +53,7 @@ class Parameter extends MY_Controller
   /* GET PARAMETER MATERIAL */
 
   /* GET PARAMETER ASET */
-  public function getParameterAset()
-  {
+  public function getParameterAset(){
     $param['id_parameter'] = anti_inject($this->input->get_post('id_parameter'));
     $param['parameter_aset_id'] = anti_inject($this->input->get_post('parameter_aset_id'));
 
@@ -77,8 +64,7 @@ class Parameter extends MY_Controller
   /* GET PARAMETER ASET */
 
   /* GET ASET */
-  public function getAset()
-  {
+  public function getAset(){
     $list['results'] = array();
     $where_aset = ($this->input->get('aset_nama') != null) ? "UPPER(aset_nama) LIKE '%" . strtoupper($this->input->get('aset_nama')) . "%'" : '1=1';
 
@@ -109,8 +95,7 @@ class Parameter extends MY_Controller
   /* GET ASET */
 
   /* GET ASET ISI */
-  public function getAsetIsi()
-  {
+  public function getAsetIsi(){
     $isi = array();
 
     $sql = $this->db->query("SELECT * FROM material.material_aset WHERE aset_id = '" . $_GET['aset_id'] . "'");
@@ -132,8 +117,7 @@ class Parameter extends MY_Controller
   /* GET ASET ISI */
 
   /* INSERT PARAMETER */
-  public function insertParameter()
-  {
+  public function insertParameter(){
     $sesi = $this->session->userdata();
 
     $param['parameter_id'] = anti_inject(create_id());
@@ -157,8 +141,7 @@ class Parameter extends MY_Controller
   /* INSERT PARAMETER */
 
   /* INSERT PARAMETER JASA */
-  public function insertParameterJasa()
-  {
+  public function insertParameterJasa(){
     $this->M_parameter->deleteParameterJasa($this->input->get_post('id_parameter_jasa'));
 
     $sql = $this->db->query("SELECT * FROM global.global_tenaga_kerja ORDER BY tenaga_kerja_jabatan ASC");
@@ -199,8 +182,7 @@ class Parameter extends MY_Controller
   /* INSERT PARAMETER JASA */
 
   /* INSERT PARAMETER MATERIAL */
-  public function insertParameterMaterial()
-  {
+  public function insertParameterMaterial(){
     $param['parameter_material_id'] = anti_inject(create_id());
     $param['id_parameter'] = anti_inject($this->input->get_post('id_parameter_material'));
     $param['id_material'] = anti_inject($this->input->get_post('id_material'));
@@ -232,8 +214,7 @@ class Parameter extends MY_Controller
   /* INSERT PARAMETER MATERIAL */
 
   /* INSERT PARAMETER ASET */
-  public function insertParameterAset()
-  {
+  public function insertParameterAset(){
     $param['parameter_aset_id'] = anti_inject(create_id());
     $param['id_parameter'] = anti_inject($this->input->get_post('id_parameter_aset'));
     $param['id_aset'] = anti_inject($this->input->get_post('id_aset'));
@@ -265,8 +246,7 @@ class Parameter extends MY_Controller
   /* INSERT PARAMETER ASET */
 
   /* UPDATE PARAMETER */
-  public function updateParameter()
-  {
+  public function updateParameter(){
     $id = anti_inject($this->input->get_post('parameter_id'));
     $param['parameter_nama'] = anti_inject($this->input->get_post('parameter_nama'));
     $param['parameter_biaya_lain'] = anti_inject($this->input->get_post('parameter_biaya_lain'));
@@ -286,8 +266,7 @@ class Parameter extends MY_Controller
   /* UPDATE PARAMETER */
 
   /* UPDATE PARAMETER MATERIAL */
-  public function updateParameterMaterial()
-  {
+  public function updateParameterMaterial(){
     $id = anti_inject($this->input->get_post('parameter_material_id'));
     $param['id_material'] = anti_inject($this->input->get_post('id_material'));
     $param['parameter_material_jumlah'] = anti_inject($this->input->get_post('parameter_material_jumlah'));
@@ -318,8 +297,7 @@ class Parameter extends MY_Controller
   /* UPDATE PARAMETER MATERIAL */
 
   /* UPDATE PARAMETER ASET */
-  public function updateParameterAset()
-  {
+  public function updateParameterAset(){
     $id = anti_inject($this->input->get_post('parameter_aset_id'));
     $param['id_aset'] = anti_inject($this->input->get_post('id_aset'));
     $param['parameter_aset_jumlah'] = anti_inject($this->input->get_post('parameter_aset_jumlah'));
@@ -350,8 +328,7 @@ class Parameter extends MY_Controller
   /* UPDATE PARAMETER ASET */
 
   /* HAPUS PARAMETER */
-  public function deleteParameter()
-  {
+  public function deleteParameter(){
     $id = anti_inject($this->input->get_post('parameter_id'));
 
     $this->M_parameter->deleteParameter($id);
@@ -359,8 +336,7 @@ class Parameter extends MY_Controller
   /* HAPUS PARAMETER */
 
   /* HAPUS PARAMETER MATERIAL */
-  public function deleteParameterMaterial()
-  {
+  public function deleteParameterMaterial(){
     $id = anti_inject($this->input->get_post('parameter_material_id'));
 
     $this->M_parameter->deleteParameterMaterial($id);
@@ -388,8 +364,7 @@ class Parameter extends MY_Controller
   /* HAPUS PARAMETER MATERIAL */
 
   /* HAPUS PARAMETER ASET */
-  public function deleteParameterAset()
-  {
+  public function deleteParameterAset(){
     $id = anti_inject($this->input->get_post('parameter_aset_id'));
 
     $this->M_parameter->deleteParameterAset($id);

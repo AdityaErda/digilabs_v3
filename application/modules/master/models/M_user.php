@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_user extends CI_Model
-{
+class M_user extends CI_Model{
 	/* GET */
-	public function getUser($data = null)
-	{
+	public function getUser($data = null){
 		$this->db->select('a.*, b.role_id, b.role_nama, c.seksi_id, c.seksi_nama');
 		$this->db->from('global.global_user a');
 		$this->db->join('global.global_role b', 'a.role_id = b.role_id', 'left');
@@ -20,8 +18,7 @@ class M_user extends CI_Model
 	/* GET */
 
 	/* INSERT */
-	public function insertUser($data)
-	{
+	public function insertUser($data){
 		$this->db->insert('global.global_user', $data);
 
 		return $this->db->affected_rows();
@@ -29,8 +26,7 @@ class M_user extends CI_Model
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateUser($data, $id)
-	{
+	public function updateUser($data, $id){
 		$this->db->set($data);
 		$this->db->where('user_id', $id);
 		$this->db->update('global.global_user');
@@ -40,8 +36,7 @@ class M_user extends CI_Model
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteUser($id)
-	{
+	public function deleteUser($id){
 		$this->db->where('user_id', $id);
 		$this->db->delete('global.global_user');
 
@@ -50,8 +45,7 @@ class M_user extends CI_Model
 	/* DELETE */
 
 	/* GET SEKSI */
-	public function getSeksi($data = null)
-	{
+	public function getSeksi($data = null){
 		$this->db->select('*');
 		$this->db->from('global.global_seksi a');
 		if (isset($data['seksi_nama'])) $this->db->where("upper(seksi_nama) LIKE '%" . strtoupper($data['seksi_nama']) . "%'");
@@ -63,8 +57,7 @@ class M_user extends CI_Model
 	/* GET SEKSI */
 
 	/* GET KASIE */
-	public function getNamaKasie($data = null)
-	{
+	public function getNamaKasie($data = null){
 		$this->db->select('*');
 		$this->db->from('global.global_user a');
 		// $this->db->join('global.global seksi b', 'a.id_seksi = b.seksi_id', 'left');
@@ -77,8 +70,7 @@ class M_user extends CI_Model
 	/* GET KASIE */
 
 	/* Insert Kasie */
-	public function updateKasieNama($id, $data = null)
-	{
+	public function updateKasieNama($id, $data = null){
 		$this->db->where('seksi_id', $id);
 		$this->db->update('global.global_seksi', $data);
 
@@ -87,8 +79,7 @@ class M_user extends CI_Model
 	/* Insert Kasie */
 
 	/* INSERT SEKSI */
-	public function insertSeksi($data)
-	{
+	public function insertSeksi($data){
 		$this->db->insert('global.global_seksi', $data);
 
 		return $this->db->affected_rows();
@@ -96,8 +87,7 @@ class M_user extends CI_Model
 	/* INSERT SEKSI */
 
 	/* UPDATE SEKSI */
-	public function updateSeksi($data, $id)
-	{
+	public function updateSeksi($data, $id){
 		$this->db->set($data);
 		$this->db->where('seksi_id', $id);
 		$this->db->update('global.global_seksi');
@@ -107,8 +97,7 @@ class M_user extends CI_Model
 	/* UPDATE SEKSI */
 
 	/* DELETE SEKSI */
-	public function deleteSeksi($id)
-	{
+	public function deleteSeksi($id){
 		$this->db->where('seksi_id', $id);
 		$this->db->delete('global.global_seksi');
 
@@ -117,8 +106,7 @@ class M_user extends CI_Model
 	/* DELETE SEKSI */
 
 	/* GET IMPORT SEKSI */
-	public function getImportSeksi($data = null)
-	{
+	public function getImportSeksi($data = null){
 		$this->db->select('*');
 		$this->db->from('import.import_global_seksi');
 		if (isset($data['import_kode'])) $this->db->where('import_kode', $data['import_kode']);
@@ -129,16 +117,14 @@ class M_user extends CI_Model
 	/* GET IMPORT SEKSI */
 
 	/* INSERT IMPORT SEKSI */
-	public function insertImportSeksi()
-	{
+	public function insertImportSeksi(){
 		$insert = $this->db->insert_batch('import.import_global_seksi', $data);
 		if ($insert) {
 			return true;
 		}
 	}
 
-	public function insertTableSeksi($data)
-	{
+	public function insertTableSeksi($data){
 		$this->db->query("INSERT INTO global.global_seksi SELECT seksi_id, seksi_kode, seksi_nama, when_create, who_create FROM import.import_global_seksi WHERE import_kode = '" . $data['import_kode'] . "' AND seksi_nama NOT IN (SELECT seksi_nama FROM global.global_seksi)");
 
 		return $this->db->affected_rows();
@@ -146,8 +132,7 @@ class M_user extends CI_Model
 	/* INSERT IMPORT SEKSI */
 
 	/* DELETE TABLE SEKSI */
-	public function deleteTableSeksi($id)
-	{
+	public function deleteTableSeksi($id){
 		$this->db->where('import_kode', $id);
 		$this->db->delete('import.import_global_seksi');
 
@@ -156,8 +141,7 @@ class M_user extends CI_Model
 	/* DELETE TABLE SEKSI */
 
 	/* GET IMPORT */
-	public function getImport($data = null)
-	{
+	public function getImport($data = null){
 		$this->db->select('a.*, b.role_nama, c.seksi_nama');
 		$this->db->from('import.import_global_user a');
 		$this->db->join('global.global_role b', 'a.role_id = b.role_id', 'left');
@@ -170,16 +154,14 @@ class M_user extends CI_Model
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 		$insert = $this->db->insert_batch('import.import_global_user', $data);
 		if ($insert) {
 			return true;
 		}
 	}
 
-	public function insertTable($data)
-	{
+	public function insertTable($data){
 		$this->db->query("INSERT INTO global.global_user SELECT user_id, role_id, user_nama_lengkap, user_tgl_lahir, user_tempat_lahir, user_username, user_password, null, when_create, who_create, id_seksi FROM import.import_global_user WHERE import_kode = '" . $data['import_kode'] . "' AND UPPER(user_username) NOT IN (SELECT UPPER(user_username) FROM global.global_user WHERE id_seksi='" . $data['id_seksi'] . "')");
 
 		return $this->db->affected_rows();
@@ -187,8 +169,7 @@ class M_user extends CI_Model
 	/* INSERT IMPORT */
 
 	/* DELETE TABLE */
-	public function deleteTable($id)
-	{
+	public function deleteTable($id){
 		$this->db->where('import_kode', $id);
 		$this->db->delete('import.import_global_user');
 

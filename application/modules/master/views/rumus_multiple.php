@@ -258,12 +258,6 @@
                                   <input type="number" name="rumus_detail_urut" id="rumus_detail_urut" class="form-control" placeholder="Urutan Rumus">
                                 </div>
                               </div>
-                              <!-- <div class="form-group row col-md-12">
-                                                                <label class="col-md-4">Urutan Template</label>
-                                                                <div class="input-group col-md-8">
-                                                                    <input type="number" name="rumus_detail_template" id="rumus_detail_template" class="form-control" placeholder="Urutan Template">
-                                                                </div>
-                                                            </div> -->
                               <div class="form-group row col-md-12">
                                 <label class="col-md-4">Nama Parameter</label>
                                 <div class="input-group col-md-8">

@@ -4,30 +4,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Peminta_jasa extends MY_Controller
 {
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('master/M_sample_peminta_jasa');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Peminta Jasa';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/peminta_jasa');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/peminta_jasa_js');
+		$this->template->template_master('master/peminta_jasa',$isi,$data);
 	}
 
 	/* GET */
-	public function getPemintaJasa()
-	{
+	public function getPemintaJasa(){
 		$param = [];
 		if ($this->input->get('peminta_jasa_id')) {
 			$param['peminta_jasa_id'] = $this->input->get('peminta_jasa_id');
@@ -43,8 +36,7 @@ class Peminta_jasa extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertPemintaJasa()
-	{
+	public function insertPemintaJasa(){
 		$isi = $this->session->userdata();
 
 		$data['peminta_jasa_id'] = create_id();
@@ -59,8 +51,7 @@ class Peminta_jasa extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updatePemintaJasa()
-	{
+	public function updatePemintaJasa(){
 		$isi = $this->session->userdata();
 
 		$id = anti_inject($this->input->post('peminta_jasa_id'));
@@ -77,36 +68,28 @@ class Peminta_jasa extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deletePemintaJasa()
-	{
+	public function deletePemintaJasa(){
 		$this->M_sample_peminta_jasa->deletePemintaJasa($this->input->get('peminta_jasa_id'));
 	}
 
-	public function resetPemintaJasa()
-	{
+	public function resetPemintaJasa(){
 		$this->M_sample_peminta_jasa->resetPemintaJasa();
 	}
 	/* DELETE */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import Sample Peminta Jasa';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/peminta_jasa_import');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/peminta_jasa_import_js');
+		$this->template->template_master('master/peminta_jasa_import',$isi,$data);
 	}
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_sample_peminta_jasa->getImport($param);
@@ -115,8 +98,7 @@ class Peminta_jasa extends MY_Controller
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 
 		error_reporting(0);
 		$data_session = $this->session->userdata();
@@ -168,8 +150,7 @@ class Peminta_jasa extends MY_Controller
 		}
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		$this->M_sample_peminta_jasa->insertTable($param);
 		$this->M_sample_peminta_jasa->deleteTable($this->input->get('import_kode'));

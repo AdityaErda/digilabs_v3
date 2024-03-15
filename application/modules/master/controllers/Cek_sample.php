@@ -2,33 +2,25 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Cek_sample extends MY_Controller
-{
+class Cek_sample extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		//Do your magic here
 		$this->load->model('M_cek_sample');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Cek Sample';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
-
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/cek_sample');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/cek_sample_js');
+		
+		$this->template->template_master('master/cek_sample',$isi,$data);
 	}
 
 	/* Get */
-	public function getTemplateLogsheet()
-	{
+	public function getTemplateLogsheet(){
 		$param = array(
 			'template_logsheet_id' => $this->input->get_post('template_logsheet_id'),
 		);
@@ -37,23 +29,20 @@ class Cek_sample extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getcekSample()
-	{
+	public function getcekSample(){
 		$param['cek_sample_id'] = $this->input->get_post('cek_sample_id');
 		$data = $this->M_cek_sample->getSample($param);
 		echo json_encode($data);
 	}
 
-	public function getCekSampleDetail()
-	{
+	public function getCekSampleDetail(){
 		$param['cek_sample_id'] = $this->input->get_post('cek_sample_id');
 		$param['rumus_id'] = $this->input->get_post('rumus_id');
 		$data = $this->M_cek_sample->getSampleDetail($param);
 		echo json_encode($data);
 	}
 
-	public function getCekSampleDetailDetail()
-	{
+	public function getCekSampleDetailDetail(){
 		$param['cek_sample_detail_id'] = $this->input->get_post('cek_sample_detail_id');
 		$data = $this->M_cek_sample->getSampleDetailDetail($param);
 
@@ -63,8 +52,7 @@ class Cek_sample extends MY_Controller
 	/* Get */
 
 	/* Insert */
-	public function insertTemplateLogsheet()
-	{
+	public function insertTemplateLogsheet(){
 		$isi = $this->session->userdata();
 
 		$data['template_logsheet_id'] = create_id();
@@ -79,8 +67,7 @@ class Cek_sample extends MY_Controller
 	/* Insert */
 
 	/* Update */
-	public function updateTemplateLogsheet()
-	{
+	public function updateTemplateLogsheet(){
 		$isi = $this->session->userdata();
 
 		$id = $this->input->post('template_logsheet_id');
@@ -97,16 +84,14 @@ class Cek_sample extends MY_Controller
 	/* Update */
 
 	/* Delete */
-	public function deleteTemplateLogsheet()
-	{
+	public function deleteTemplateLogsheet(){
 		$this->M_template_logsheet->deleteTemplateLogsheet($this->input->get('template_logsheet_id'));
 	}
 
 	/* Delete */
 
 	/* Get Detail */
-	public function getDetailLogsheet()
-	{
+	public function getDetailLogsheet(){
 		$param = array();
 
 		if ($this->input->get('id_logsheet_template')) $param['id_logsheet_template'] = $this->input->get('id_logsheet_template');
@@ -118,8 +103,7 @@ class Cek_sample extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getMasterRumus()
-	{
+	public function getMasterRumus(){
 		$listJenis['results'] = array();
 
 		$param['rumus_nama'] = $this->input->get('rumus_nama');
@@ -135,8 +119,7 @@ class Cek_sample extends MY_Controller
 	/* Get Detail */
 
 	/* Insert Detail */
-	public function insertTemplateLogsheetDetail()
-	{
+	public function insertTemplateLogsheetDetail(){
 		$isi = $this->session->userdata();
 
 		$data['template_logsheet_detail_id'] = create_id();
@@ -152,8 +135,7 @@ class Cek_sample extends MY_Controller
 	/* Insert Detail */
 
 	/* Update Detail */
-	public function updateTemplateLogsheetDetail()
-	{
+	public function updateTemplateLogsheetDetail(){
 		$isi = $this->session->userdata();
 
 		$id = $this->input->post('template_logsheet_detail_id');
@@ -171,15 +153,13 @@ class Cek_sample extends MY_Controller
 	/* Update Detail */
 
 	/* Delete Detail*/
-	public function deleteTemplateLogsheetDetail()
-	{
+	public function deleteTemplateLogsheetDetail(){
 		$this->M_template_logsheet->deleteTemplateLogsheetDetail($this->input->get('template_logsheet_detail_id'));
 	}
 
 	/* Delete Detail */
 
-	public function prosesCekSample()
-	{
+	public function prosesCekSample(){
 		error_reporting(0);
 
 		$data1 = $this->db->query("SELECT * FROM sample.sample_cek_sample a WHERE a.id_template_logsheet = '" . $this->input->get_post('template_logsheet_id_import') . "'")->result_array();

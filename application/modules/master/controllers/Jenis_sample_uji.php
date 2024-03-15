@@ -1,35 +1,27 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Jenis_sample_uji extends MY_Controller
-{
+class Jenis_sample_uji extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('master/M_sample_jenis');
 	}
 
 	/* INDEX */
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Jenis Sample Uji';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_sample_uji');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_sample_uji_js');
+		$this->template->template_master('master/jenis_sample_uji',$isi,$data);
 	}
 	/* INDEX */
 
 	/* GET */
-	public function getJenisSampleUji()
-	{
+	public function getJenisSampleUji(){
 		$param['jenis_id'] = $this->input->get('jenis_id');
 		$param['jenis_nama'] = $this->input->get_post('q');
 
@@ -39,8 +31,7 @@ class Jenis_sample_uji extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertJenisSampleUji()
-	{
+	public function insertJenisSampleUji(){
 		$isi = $this->session->userdata();
 
 		$data['jenis_id'] = create_id();
@@ -57,8 +48,7 @@ class Jenis_sample_uji extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateJenisSampleUji()
-	{
+	public function updateJenisSampleUji(){
 		$isi = $this->session->userdata();
 
 		$id = $this->input->post('jenis_id');
@@ -77,20 +67,17 @@ class Jenis_sample_uji extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteJenisSampleUji()
-	{
+	public function deleteJenisSampleUji(){
 		$this->M_sample_jenis->deleteJenisSampleUji($this->input->get('jenis_id'));
 	}
 
-	public function resetJenisSampleUji()
-	{
+	public function resetJenisSampleUji(){
 		$this->M_sample_jenis->resetJenisSampleUji();
 	}
 	/* DELETE */
 
 	/* GET DETAIL */
-	public function getSampleIdentitas()
-	{
+	public function getSampleIdentitas(){
 		$param = array();
 
 		if ($this->input->get('jenis_id')) $param['jenis_id'] = $this->input->get('jenis_id');
@@ -103,8 +90,7 @@ class Jenis_sample_uji extends MY_Controller
 	/* GET DETAIL */
 
 	/* INSERT DETAIL */
-	public function insertSampleIdentitas()
-	{
+	public function insertSampleIdentitas(){
 		$isi = $this->session->userdata();
 
 		$data['identitas_id'] = create_id();
@@ -123,8 +109,7 @@ class Jenis_sample_uji extends MY_Controller
 	/* INSERT DETAIL */
 
 	/* UPDATE DETAIL */
-	public function updateSampleIdentitas()
-	{
+	public function updateSampleIdentitas(){
 		$isi = $this->session->userdata();
 
 		$id = $this->input->post('identitas_id');
@@ -145,31 +130,24 @@ class Jenis_sample_uji extends MY_Controller
 	/* UPDATE DETAIL */
 
 	/* DELETE DETAIL */
-	public function deleteSampleIdentitas()
-	{
+	public function deleteSampleIdentitas(){
 		$this->M_sample_jenis->deleteSampleIdentitas($this->input->get('identitas_id'));
 	}
 	/* DELETE DETAIL */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import Sample Jenis';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_sample_uji_import');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_sample_uji_import_js');
+		$this->template->template_master('master/jenis_sample_uji_import',$isi,$data);
 	}
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_sample_jenis->getImport($param);
@@ -178,55 +156,7 @@ class Jenis_sample_uji extends MY_Controller
 	}
 	/* GET IMPORT */
 
-	/* INSERT IMPORT */
-	// public function insertImport()
-	// {
-	// 	$data_session = $this->session->userdata();
-
-	// 	$config = array(
-	// 		'upload_path'   => FCPATH . '/upload/',
-	// 		'allowed_types' => 'xls|csv'
-	// 	);
-
-	// 	$this->load->library('upload', $config);
-	// 	if ($this->upload->do_upload('file')) {
-	// 		$data = $this->upload->data();
-	// 		@chmod($data['full_path'], 0777);
-
-	// 		$this->load->library('Spreadsheet_Excel_Reader');
-	// 		$this->spreadsheet_excel_reader->setOutputEncoding('CP1251');
-	// 		$this->db->db_set_charset('latin1', 'latin1_swedish_ci');
-
-	// 		$this->spreadsheet_excel_reader->read($data['full_path']);
-	// 		$sheets = $this->spreadsheet_excel_reader->sheets[0];
-	// 		error_reporting(0);
-
-	// 		$data_excel = array();
-	// 		$id = create_id();
-	// 		for ($i = 2; $i <= $sheets['numRows']; $i++) {
-	// 			if ($sheets['cells'][$i][1] == '') break;
-
-	// 			$data_excel[$i - 1]['import_kode']    = $id;
-	// 			$data_excel[$i - 1]['jenis_id']    = create_id();
-	// 			$data_excel[$i - 1]['jenis_kode']  = $sheets['cells'][$i][2];
-	// 			$data_excel[$i - 1]['jenis_nama']  = $sheets['cells'][$i][1];
-	// 			$data_excel[$i - 1]['jenis_parameter']  = $sheets['cells'][$i][3];
-	// 			// $data_excel[$i - 1]['pengambil_sample']  = $sheets['cells'][$i][4];
-	// 			$data_excel[$i - 1]['when_create']  = date('Y-m-d H:i:s');
-	// 			$data_excel[$i - 1]['who_create']  = $data_session['user_nama_lengkap'];
-	// 		}
-
-	// 		$this->db->insert_batch('import.import_sample_jenis', $data_excel);
-
-	// 		header("Location: " . base_url('master/jenis_sample_uji/index_import?header_menu=0&menu_id=0&import_kode=' . $id));
-	// 	} else {
-	// 		$error = $this->upload->display_errors();
-	// 		print_r($error);
-	// 	}
-	// }
-
-	public function insertImport()
-	{
+	public function insertImport(){
 		ini_set('display_errors', 1);
 		error_reporting(E_ALL);
 		$data_session = $this->session->userdata();
@@ -273,8 +203,7 @@ class Jenis_sample_uji extends MY_Controller
 		}
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		$this->M_sample_jenis->insertTable($param);
 		$this->M_sample_jenis->deleteTable($this->input->get('import_kode'));
@@ -284,24 +213,18 @@ class Jenis_sample_uji extends MY_Controller
 	/* INSERT IMPORT */
 
 	/* INDEX IMPORT DETAIL */
-	public function index_identitas_import()
-	{
+	public function index_identitas_import(){
 		$isi['judul'] = 'Import Identitas';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_sample_uji_identitas_import');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_sample_uji_identitas_import_js');
+		$this->template->template_master('master/jenis_sample_uji_identitas_import',$isi,$data);
 	}
 	/* INDEX IMPORT DETAIL */
 
 	/* GET IMPORT DETAIL */
-	public function getImportIdentitas()
-	{
+	public function getImportIdentitas(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_sample_jenis->getImportIdentitas($param);
@@ -310,8 +233,7 @@ class Jenis_sample_uji extends MY_Controller
 	/* GET IMPORT DETAIL */
 
 	/* INSERT IMPORT DETAIL */
-	public function insertImportIdentitas()
-	{
+	public function insertImportIdentitas(){
 		$data_session = $this->session->userdata();
 
 		$config = array(
@@ -356,8 +278,7 @@ class Jenis_sample_uji extends MY_Controller
 		}
 	}
 
-	public function insertTableIdentitas()
-	{
+	public function insertTableIdentitas(){
 		$param_identitas['import_kode'] = $this->input->get('import_kode');
 
 		foreach ($this->M_sample_jenis->getImportIdentitas($param_identitas) as $row) {
@@ -375,8 +296,7 @@ class Jenis_sample_uji extends MY_Controller
 	/* INSERT IMPORT DETAIL */
 
 	// UPDATE RUMUS
-	public function updateRumus()
-	{
+	public function updateRumus(){
 		$id = htmlentities($this->input->get_post('identitas_id_rumus'));
 		$param['identitas_harga'] = htmlentities($this->input->get_post('identitas_harga_rumus'));
 		$param['identitas_jumlah_tenaga_kerja'] = htmlentities($this->input->get_post('identitas_jumlah_tenaga_kerja_rumus'));
@@ -388,8 +308,7 @@ class Jenis_sample_uji extends MY_Controller
 	// UPDATE RUMUS
 
 	// cetak rumus
-	public function cetakRumus()
-	{
+	public function cetakRumus(){
 		$data['session'] = $this->session->userdata();
 		$data['judul'] = 'Cetak Rumus';
 
@@ -400,21 +319,11 @@ class Jenis_sample_uji extends MY_Controller
 
 		$this->load->view('master/cetak_rumus_uji', $data, FALSE);
 
-		// foreach ($jenis as $value) {
-		// 	foreach ($value as $key => $val) {
-		// 		$isi[$key] = $val;
-		// 	}
-		// 	$isi['hasil'] = $this->M_sample_jenis->getSampleIdentitas(array('jenis_id' => $value['jenis_id']));
-		// 	array_push($dataX, $isi);
-		// }
-		// $data['rumus'] = $dataX;
-
 	}
 	// cetak rumus
 
 	// TAMBAHAN
-	public function getPengambilList()
-	{
+	public function getPengambilList(){
 		$pengambil['results'] = array();
 		$param['param_search'] = $this->input->get('param_search');
 		foreach ($this->M_sample_jenis->getPengambil($param) as $key => $value) {

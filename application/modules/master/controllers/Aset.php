@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Aset extends MY_Controller
-{
+class Aset extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		isLogin();
@@ -14,24 +12,18 @@ class Aset extends MY_Controller
 	}
 
 	/* INDEX */
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Aset';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/aset');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/aset_js');
+		$this->template->template_master('master/aset',$isi,$data);
 	}
 	/* INDEX */
 
 	/* GET */
-	public function getAset()
-	{
+	public function getAset(){
 		$param['aset_id'] = $this->input->get('aset_id');
 		$param['tahun'] = $this->input->get('tahun');
 
@@ -41,8 +33,7 @@ class Aset extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertAset()
-	{
+	public function insertAset(){
 		$isi = $this->session->userdata();
 
 		if (isset($_FILES['aset_foto'])) {
@@ -99,8 +90,7 @@ class Aset extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateAset()
-	{
+	public function updateAset(){
 		$isi = $this->session->userdata();
 
 		if (isset($_FILES['aset_foto'])) {
@@ -178,20 +168,17 @@ class Aset extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteAset()
-	{
+	public function deleteAset(){
 		$this->M_material_aset->deleteAset($this->input->get('aset_id'));
 	}
 
-	public function resetAset()
-	{
+	public function resetAset(){
 		$this->M_material_aset->resetAset();
 	}
 	/* DELETE */
 
 	/* GET DETAIL */
-	public function getAsetDetail()
-	{
+	public function getAsetDetail(){
 		$param = array();
 
 		if ($this->input->get('aset_id')) $param['aset_id'] = $this->input->get('aset_id');
@@ -201,8 +188,7 @@ class Aset extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getPemintaJasa()
-	{
+	public function getPemintaJasa(){
 		$listPemintaJasa['results'] = array();
 
 		$param['peminta_jasa_nama'] = $this->input->get('peminta_jasa_nama');
@@ -218,8 +204,7 @@ class Aset extends MY_Controller
 	/* GET DETAIL */
 
 	/* INSERT DETAIL */
-	public function insertAsetDetail()
-	{
+	public function insertAsetDetail(){
 		$isi = $this->session->userdata();
 
 		$data['aset_detail_id'] = create_id();
@@ -237,8 +222,7 @@ class Aset extends MY_Controller
 	/* INSERT DETAIL */
 
 	/* UPDATE DETAIL */
-	public function updateAsetDetail()
-	{
+	public function updateAsetDetail(){
 		$id = anti_inject($this->input->post('aset_detail_id'));
 		$data = array(
 			'aset_id' => anti_inject($this->input->post('temp_aset_id_detail')),
@@ -254,8 +238,7 @@ class Aset extends MY_Controller
 	/* UPDATE DETAIL */
 
 	/* DELETE DETAIL */
-	public function deleteAsetDetail()
-	{
+	public function deleteAsetDetail(){
 		$isi = $this->session->userdata();
 
 		$param['aset_detail_id'] = $this->input->get('aset_detail_id');
@@ -275,8 +258,7 @@ class Aset extends MY_Controller
 	/* DELETE DETAIL */
 
 	/* FUN TAMBAHAN */
-	public function fun_jumlah($id)
-	{
+	public function fun_jumlah($id){
 		$param['aset_id'] = $id;
 		$isi = $this->M_material_aset->getJumlahAsetDetail($param);
 
@@ -289,8 +271,7 @@ class Aset extends MY_Controller
 	/* FUN TAMBAHAN */
 
 	/* GET DOCUMENT */
-	public function getAsetDocument()
-	{
+	public function getAsetDocument(){
 		$param = array();
 
 		if ($this->input->get('aset_id')) $param['aset_id'] = $this->input->get('aset_id');
@@ -302,8 +283,7 @@ class Aset extends MY_Controller
 	/* GET DOCUMENT */
 
 	/* INSERT DOCUMENT */
-	public function insertAsetDocument()
-	{
+	public function insertAsetDocument(){
 		$data['aset_document_id'] = create_id();
 		$data['aset_id'] = anti_inject($this->input->post('aset_id'));
 		$data['aset_document_nama'] = anti_inject($this->input->post('aset_document_nama'));
@@ -312,8 +292,7 @@ class Aset extends MY_Controller
 		$this->M_material_aset->insertAsetDocument($data);
 	}
 
-	public function insertAsetDocumentFile()
-	{
+	public function insertAsetDocumentFile(){
 
 		if (isset($_FILES['file'])) {
 			$upload_path = FCPATH . './document/';
@@ -346,8 +325,7 @@ class Aset extends MY_Controller
 	/* INSERT DOCUMENT */
 
 	/* UPDATE DOCUMENT */
-	public function updateAsetDocument()
-	{
+	public function updateAsetDocument(){
 		$id = anti_inject($this->input->post('aset_document_id'));
 		$data = array(
 			'aset_id' => anti_inject($this->input->post('aset_id')),
@@ -359,15 +337,13 @@ class Aset extends MY_Controller
 	/* UPDATE DOCUMENT */
 
 	/* DELETE DOCUMENT */
-	public function deleteAsetDocument()
-	{
+	public function deleteAsetDocument(){
 		$this->M_material_aset->deleteAsetDocument($this->input->post('aset_document_id'));
 	}
 	/* DELETE DOCUMENT */
 
 	/* GET DOWNLOAD */
-	public function getAsetDownload()
-	{
+	public function getAsetDownload(){
 		$param = array();
 
 		if ($this->input->get('aset_id')) $param['aset_id'] = $this->input->get('aset_id');
@@ -379,24 +355,18 @@ class Aset extends MY_Controller
 	/* GET DOWNLOAD */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import Aset';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/aset_import');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/aset_import_js');
+		$this->template->template_master('master/aset_import',$isi,$data);
 	}
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_material_aset->getImport($param);
@@ -405,8 +375,7 @@ class Aset extends MY_Controller
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 		ini_set('display_errors', 1);
 		error_reporting(E_ALL);
 		$data_session = $this->session->userdata();
@@ -459,8 +428,7 @@ class Aset extends MY_Controller
 		}
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		$this->M_material_aset->insertTable($param);
 		$this->M_material_aset->deleteTable($this->input->get('import_kode'));
@@ -470,24 +438,18 @@ class Aset extends MY_Controller
 	/* INSERT IMPORT */
 
 	/* INDEX IMPORT DETAIL */
-	public function index_import_detail()
-	{
+	public function index_import_detail(){
 		$isi['judul'] = 'Import Aset Detail';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/aset_detail_import');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/aset_detail_import_js');
+		$this->template->template_master('master/aset_detail_import',$isi,$data);
 	}
 	/* INDEX IMPORT DETAIL */
 
 	/* GET IMPORT DETAIL */
-	public function getImportDetail()
-	{
+	public function getImportDetail(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_material_aset->getImportDetail($param);
@@ -496,8 +458,7 @@ class Aset extends MY_Controller
 	/* GET IMPORT DETAIL */
 
 	/* INSERT IMPORT */
-	public function insertImportDetail()
-	{
+	public function insertImportDetail(){
 		$data_session = $this->session->userdata();
 
 		$config = array(
@@ -566,8 +527,7 @@ class Aset extends MY_Controller
 		}
 	}
 
-	public function insertTableDetail()
-	{
+	public function insertTableDetail(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		foreach ($this->M_material_aset->getImportDetail($param) as $value) {
@@ -593,45 +553,7 @@ class Aset extends MY_Controller
 
 
 	/* QRCODE */
-	public function printQrcode()
-	{
-		// $param['aset_detail_id'] = $this->input->get('aset_detail_id');
-		// $data_detail = $this->M_material_aset->getAsetDetail($param);
-
-		// $param['aset_id'] = $data_detail['aset_id'];
-		// $data = $this->M_material_aset->getAset($param);
-
-		// $data['aset_detail_id'] = $data_detail['aset_detail_id'];
-		// $data['aset_nomor'] = $data_detail['aset_nomor'];
-
-		// /* QRCODE */
-		// $this->load->library('ciqrcode'); //pemanggilan library QR CODE
-
-		// $config['cacheable']    = true; //boolean, the default is true
-		// $config['cachedir']     = './application/cache/'; //string, the default is application/cache/
-		// $config['errorlog']     = './application/logs/'; //string, the default is application/logs/
-		// $config['imagedir']     = './img/'; //direktori penyimpanan qr code
-		// $config['quality']      = true; //boolean, the default is true
-		// $config['size']         = '1024'; //interger, the default is 1024
-		// $config['black']        = array(224, 255, 255); // array, default is array(255,255,255)
-		// $config['white']        = array(70, 130, 180); // array, default is array(0,0,0)
-		// $this->ciqrcode->initialize($config);
-
-		// $nim = $param['aset_detail_id'];
-		// $image_name = $nim . '.png'; //buat name dari qr code sesuai dengan nim
-
-		// // $url = base_url('master/aset/ResultQrcode/?aset_id_detail=' . $param['aset_detail_id']);
-		// $url = 'cobajhsbugerbdfgubbdj';
-
-		// $params['data'] = $url; //data yang akan di jadikan QR CODE
-		// $params['level'] = 'H'; //H=High
-		// $params['size'] = 10;
-		// $params['savename'] = FCPATH . $config['imagedir'] . $image_name; //simpan image QR CODE ke folder assets/images/
-		// $this->ciqrcode->generate($params);
-		// /* QRCODE */
-
-		// $this->load->view('master/print_qrcode', $data);
-
+	public function printQrcode(){
 		$param['aset_detail_id'] = $this->input->get('aset_detail_id');
 		$data_detail = $this->M_material_aset->getAsetDetail($param);
 
@@ -655,16 +577,14 @@ class Aset extends MY_Controller
 
 	/* Hasil Scan QRCODE */
 
-	public function ResultQrcode()
-	{
+	public function ResultQrcode(){
 		$this->load->view('master/result_qrcode', $data);
 		$this->load->view('master/result_qrcode_js');
 	}
 	/* Hasil Scan QRCODE */
 
 	/* Ambil data qrcode */
-	public function getResultQrcode()
-	{
+	public function getResultQrcode(){
 		$param['aset_detail_id'] = $this->input->get('aset_detail_id');
 		$data_detail = $this->M_material_aset->getAsetDetail($param);
 

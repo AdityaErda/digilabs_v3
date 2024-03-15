@@ -1,35 +1,27 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Jenis_barang extends MY_Controller
-{
+class Jenis_barang extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('master/M_material_jenis');
 	}
 
 	/* INDEX */
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Jenis Barang';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_barang');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_barang_js');
+		$this->template->template_master('master/jenis_barang',$isi,$data);
 	}
 	/* INDEX */
 
 	/* GET */
-	public function getJenisBarang()
-	{
+	public function getJenisBarang(){
 		$param['jenis_id'] = $this->input->get('jenis_id');
 
 		$data = $this->M_material_jenis->getJenisBarang($param);
@@ -38,8 +30,7 @@ class Jenis_barang extends MY_Controller
 	/* GET */
 
 	/* INSERT */
-	public function insertJenisBarang()
-	{
+	public function insertJenisBarang(){
 		$isi = $this->session->userdata();
 
 		$data['jenis_id'] = create_id();
@@ -53,8 +44,7 @@ class Jenis_barang extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateJenisBarang()
-	{
+	public function updateJenisBarang(){
 		$isi = $this->session->userdata();
 
 		$id = anti_inject($this->input->post('jenis_id'));
@@ -70,37 +60,29 @@ class Jenis_barang extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteJenisBarang()
-	{
+	public function deleteJenisBarang(){
 		$this->M_material_jenis->deleteJenisBarang($this->input->get('jenis_id'));
 	}
 	/* DELETE */
 	/* RESET */
-	public function resetJenisBarang()
-	{
+	public function resetJenisBarang(){
 		$this->M_material_jenis->resetJenisBarang();
 	}
 	/* RESET */
 
 	/* INDEX IMPORT */
-	public function index_import()
-	{
+	public function index_import(){
 		$isi['judul'] = 'Import Jenis Barang';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('master/jenis_barang_import');
-		$this->load->view('tampilan/footer');
-		$this->load->view('master/jenis_barang_import_js');
+		$this->template->template_master('master/jenis_barang_import',$isi,$data);
 	}
 	/* INDEX IMPORT */
 
 	/* GET IMPORT */
-	public function getImport()
-	{
+	public function getImport(){
 		$param['import_kode'] = $this->input->get('import_kode');
 
 		$data = $this->M_material_jenis->getImport($param);
@@ -109,8 +91,7 @@ class Jenis_barang extends MY_Controller
 	/* GET IMPORT */
 
 	/* INSERT IMPORT */
-	public function insertImport()
-	{
+	public function insertImport(){
 
 		error_reporting(0);
 		$data_session = $this->session->userdata();
@@ -161,8 +142,7 @@ class Jenis_barang extends MY_Controller
 		}
 	}
 
-	public function insertTable()
-	{
+	public function insertTable(){
 		$param['import_kode'] = $this->input->get('import_kode');
 		$this->M_material_jenis->insertTable($param);
 		$this->M_material_jenis->deleteTable($this->input->get('import_kode'));
