@@ -1,12 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Request extends MY_Controller
-{
+class Request extends MY_Controller{
 
-
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		isLogin();
 		$this->load->model('api/M_user', 'M_user_api');
@@ -18,8 +15,7 @@ class Request extends MY_Controller
 		$this->load->model('sample/M_nomor');
 	}
 
-	public function index()
-	{
+	public function index(){
 		// $this->checkLogin();
 		$isi['judul'] = 'Sample & Calibration Request';
 		$data = $this->session->userdata();
@@ -27,16 +23,11 @@ class Request extends MY_Controller
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 		// $data['tipe'] = $this->input->get('tipe');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/request_baru');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/request_baru_js');
+		$this->template->template_master('sample/request_baru',$isi,$data);
 	}
 
 	// Add
-	public function addRequest()
-	{
+	public function addRequest(){
 		$isi['judul'] = 'Sample & Calibration Request';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -78,16 +69,12 @@ class Request extends MY_Controller
 			$data['vp_nama'] = $dataVP['user_nama'];
 			$data['vp_post_title'] = $dataVP['user_post_title'];
 		}
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/request_add');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/request_add_js');
+
+		$this->template->template_master('sample/request_add',$isi,$data);
 	}
 
 	// Edit
-	public function editRequest()
-	{
+	public function editRequest(){
 		$isi['judul'] = 'Sample & Calibration Request';
 		$data = $this->session->userdata();
 		$session = $this->session->userdata();
@@ -100,20 +87,15 @@ class Request extends MY_Controller
 		$param['transaksi_status'] = $this->input->get_post('status');
 
 
-		$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-		$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
-		$result['sample_detail'] = $this->M_request->getRequestDetail($param);
+		$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+		$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+		$data['sample_detail'] = $this->M_request->getRequestDetail($param);
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/request_edit', $result);
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/request_edit_js');
+		$this->template->template_master('sample/request_edit',$isi,$data);
 	}
 
 	// Preview
-	public function previewRequest()
-	{
+	public function previewRequest(){
 		$isi['judul'] = 'Preview Sample & Calibration Request';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -124,21 +106,16 @@ class Request extends MY_Controller
 		$param['transaksi_non_rutin_id'] = $this->input->get_post('non_rutin');
 		$param['transaksi_status'] = $this->input->get_post('status');
 
-		$result['sample'] = $this->M_request->getRequestNew($param, $where = null);
+		$data['sample'] = $this->M_request->getRequestNew($param, $where = null);
 
-		$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-		$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
-		$result['sample_detail'] = $this->M_request->getRequestDetail($param);
+		$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+		$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+		$data['sample_detail'] = $this->M_request->getRequestDetail($param);
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/request_preview', $result);
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/request_preview_js');
+		$this->template->template_master('sample/request_preview',$isi,$data);
 	}
 
-	public function cetakPreviewRequest()
-	{
+	public function cetakPreviewRequest(){
 		$session = $this->session->userdata();
 		$param['transaksi_non_rutin_id'] = anti_inject($this->input->get_post('non_rutin'));
 		$param['transaksi_status'] = anti_inject($this->input->get_post('status'));
@@ -150,8 +127,7 @@ class Request extends MY_Controller
 	}
 
 	/* GET */
-	public function getRequestMain()
-	{
+	public function getRequestMain(){
 		$isi = $this->session->userdata();
 
 		if ($this->input->get('tgl_cari')) $tgl = explode(' - ', $this->input->get('tgl_cari'));
@@ -209,8 +185,7 @@ class Request extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getRequest()
-	{
+	public function getRequest(){
 		$isi = $this->session->userdata();
 
 		if ($this->input->get('tgl_cari')) $tgl = explode(' - ', $this->input->get('tgl_cari'));
@@ -253,8 +228,7 @@ class Request extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getRequestDOF()
-	{
+	public function getRequestDOF(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
 		$param['transaksi_detail_group'] = $this->input->get_post('transaksi_detail_group');
@@ -263,8 +237,7 @@ class Request extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getRequestDashboard()
-	{
+	public function getRequestDashboard(){
 		$isi = $this->session->userdata();
 		// print_r($isi);
 		if ($this->input->get('tgl_cari')) $tgl = explode(' - ', $this->input->get('tgl_cari'));
@@ -303,8 +276,7 @@ class Request extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getRequestDetail()
-	{
+	public function getRequestDetail(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
 		$param['transaksi_non_rutin_id'] = $this->input->get_post('transaksi_non_rutin_id');
@@ -315,8 +287,7 @@ class Request extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getRequestHistory()
-	{
+	public function getRequestHistory(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
 		$param['transaksi_non_rutin_id'] = $this->input->get_post('transaksi_non_rutin_id');
@@ -327,8 +298,7 @@ class Request extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getPemintaJasa()
-	{
+	public function getPemintaJasa(){
 		$list['results'] = array();
 
 		$param['peminta_jasa_nama'] = $this->input->get('peminta_jasa_nama');
@@ -342,8 +312,7 @@ class Request extends MY_Controller
 		echo json_encode($list);
 	}
 
-	public function getJenisSampleUJi()
-	{
+	public function getJenisSampleUJi(){
 		$list['results'] = array();
 
 		$param['jenis_nama'] = $this->input->get('jenis_nama');
@@ -358,8 +327,7 @@ class Request extends MY_Controller
 		echo json_encode($list);
 	}
 
-	public function getJenisPekerjaan()
-	{
+	public function getJenisPekerjaan(){
 		$list['results'] = array();
 
 		$param['sample_pekerjaan_nama'] = $this->input->get('sample_pekerjaan_nama');
@@ -373,8 +341,7 @@ class Request extends MY_Controller
 		echo json_encode($list);
 	}
 
-	public function getSampleIdentitas()
-	{
+	public function getSampleIdentitas(){
 		$list['results'] = array();
 
 		$param['identitas_nama'] = $this->input->get('identitas_nama');
@@ -389,8 +356,7 @@ class Request extends MY_Controller
 		echo json_encode($list);
 	}
 
-	public function getIdentitas()
-	{
+	public function getIdentitas(){
 		$param['identitas_nama'] = $this->input->get('search');
 		$param['jenis_id'] = $this->input->get('jenis_id');
 		$data = $this->M_sample_jenis->getSampleIdentitas($param);
@@ -400,8 +366,7 @@ class Request extends MY_Controller
 
 	/* INSERT */
 
-	public function insertDraft()
-	{
+	public function insertDraft(){
 		$session = $this->session->userdata();
 		$data_user['direct_superior'] = substr($session['user_direct_superior'], 0, 6);
 		$user = $this->M_user_api->getUserList($data_user);
@@ -531,8 +496,7 @@ class Request extends MY_Controller
 	}
 
 
-	public function insertAjukan()
-	{
+	public function insertAjukan(){
 		$session = $this->session->userdata();
 		$data_user['direct_superior'] = substr($session['user_direct_superior'], 0, 6);
 		$user = $this->M_user_api->getUserList($data_user);
@@ -685,8 +649,7 @@ class Request extends MY_Controller
 		sampleLog($data_transaksi['transaksi_id'], null, $data_transaksi['id_transaksi_non_rutin'], $data_transaksi['transaksi_tipe'], $data_transaksi['transaksi_status'], 'Pekerjaan Telah Diajukan Oleh PIC ');
 	}
 
-	public function insertProces()
-	{
+	public function insertProces(){
 		$session = $this->session->userdata();
 		$data_user['direct_superior'] = substr($session['user_direct_superior'], 0, 6);
 		$user = $this->M_user_api->getUserList($data_user);
@@ -905,8 +868,7 @@ class Request extends MY_Controller
 		$this->M_request->updateRequestNon($data_transaksi, $id_non_rutin);
 	}
 
-	public function updateDraft()
-	{
+	public function updateDraft(){
 		$session = $this->session->userdata();
 		$data_user['direct_superior'] = substr($session['user_direct_superior'], 0, 6);
 		$user = $this->M_user_api->getUserList($data_user);
@@ -1044,8 +1006,7 @@ class Request extends MY_Controller
 		}
 	}
 
-	public function updateAjukan()
-	{
+	public function updateAjukan(){
 		$session = $this->session->userdata();
 		$data_user['direct_superior'] = substr($session['user_direct_superior'], 0, 6);
 		$user = $this->M_user_api->getUserList($data_user);
@@ -1189,8 +1150,7 @@ class Request extends MY_Controller
 		}
 	}
 
-	public function insertKeterangan()
-	{
+	public function insertKeterangan(){
 
 		$session = $this->session->userdata();
 
@@ -1237,8 +1197,7 @@ class Request extends MY_Controller
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateRequestOld()
-	{
+	public function updateRequestOld(){
 		$isi = $this->session->userdata();
 
 		if (isset($_FILES['transaksi_detail_foto'])) {
@@ -1303,8 +1262,7 @@ class Request extends MY_Controller
 		$this->M_request->updateRequestDetail($data_detail, $id_detail);
 	}
 
-	public function updateRequest()
-	{
+	public function updateRequest(){
 		$sql = $this->db->query("SELECT * FROM sample.sample_transaksi_detail WHERE id_non_rutin = '" . $this->input->get_post('transaksi_non_rutin_id')
 			. "'");
 		if ($sql->num_rows() == 0) {
@@ -1383,21 +1341,18 @@ class Request extends MY_Controller
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteRequest()
-	{
+	public function deleteRequest(){
 		$this->M_request->deleteRequestDetail($this->input->get('transaksi_non_rutin_id')); // Delete Request Detail
 		$this->M_request->deleteRequest($this->input->get('transaksi_non_rutin_id')); // Delete Request
 	}
 
-	public function deleteSampleDetail()
-	{
+	public function deleteSampleDetail(){
 		$this->M_request->deleteSampleDetail($this->input->get('transaksi_detail_id'));
 	}
 	/* DELETE */
 
 	// EASY UI ATTACH
-	public function getEasyuiAttach()
-	{
+	public function getEasyuiAttach(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
 		$param['transaksi_non_rutin_id'] = $this->input->get_post('transaksi_non_rutin_id');
@@ -1408,8 +1363,7 @@ class Request extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function insertEasyuiAttachFile()
-	{
+	public function insertEasyuiAttachFile(){
 		$config['upload_path'] = FCPATH . './upload/attach';
 		$config['allowed_types'] = 'application/pdf|.doc|.docx|.xls|.xlsx|.ppt|.pptx|image/jpeg|image/png|image/gif|image/bmp';
 		// $config['max_size']  = '15000';
@@ -1431,8 +1385,7 @@ class Request extends MY_Controller
 		print($newSampleFile);
 	}
 
-	public function insertEasyuiAttach()
-	{
+	public function insertEasyuiAttach(){
 		$session = $this->session->userdata();
 		$param = array(
 			'transaksi_attach_id' => create_id(),
@@ -1446,8 +1399,7 @@ class Request extends MY_Controller
 		$this->M_request->insertAttach($param);
 	}
 
-	public function editEasyuiAttach()
-	{
+	public function editEasyuiAttach(){
 		$session = $this->session->userdata();
 		$id = $this->input->get_post('transaksi_attach_id');
 		$param = array(
@@ -1461,8 +1413,7 @@ class Request extends MY_Controller
 		$this->M_request->updateAttach($id, $param);
 	}
 
-	public function deleteEasyuiAttach()
-	{
+	public function deleteEasyuiAttach(){
 		$this->M_request->deleteEasyuiSample(anti_inject($this->input->get_post('transaksi_detail_id')));
 		echo $this->db->last_query();
 	}
@@ -1470,8 +1421,7 @@ class Request extends MY_Controller
 	// EASY UI ATTACH
 
 	// EASY UI CRUD
-	public function getEasyuiSample()
-	{
+	public function getEasyuiSample(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
 		$param['transaksi_non_rutin_id'] = $this->input->get_post('transaksi_non_rutin_id');
@@ -1482,8 +1432,7 @@ class Request extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function insertEasyuiSampleFile()
-	{
+	public function insertEasyuiSampleFile(){
 		// $config['upload_path'] = FCPATH . './document/';
 		// $config['allowed_types'] = 'application/pdf|.doc|.docx|.xls|.xlsx|.ppt|.pptx|image/jpeg|image/png|image/gif|image/bmp';
 		// $config['max_size']  = '15000';
@@ -1505,8 +1454,7 @@ class Request extends MY_Controller
 		print($newSampleFile);
 	}
 
-	public function insertEasyuiSample()
-	{
+	public function insertEasyuiSample(){
 		// initialize form
 		$param_detail['transaksi_detail_id'] = anti_inject(create_id());
 		// $param_detail['transaksi_id'] = $this->input->get_post('transaksi_id');
@@ -1523,8 +1471,7 @@ class Request extends MY_Controller
 		$this->M_request->insertRequestDetail($param_detail);
 	}
 
-	public function editEasyuiSample()
-	{
+	public function editEasyuiSample(){
 		$id_detail = anti_inject($this->input->get_post('transaksi_detail_id'));
 		$param_detail['jenis_id'] = anti_inject($this->input->get_post('jenis_id'));
 		$param_detail['transaksi_detail_jumlah'] = anti_inject($this->input->get_post('transaksi_detail_jumlah'));
@@ -1535,24 +1482,21 @@ class Request extends MY_Controller
 		$this->M_request->updateRequestDetail($param_detail, $id_detail);
 	}
 
-	public function deleteEasyuiSample()
-	{
+	public function deleteEasyuiSample(){
 		$this->M_request->deleteEasyuiSample(anti_inject($this->input->get_post('transaksi_detail_id')));
 		echo $this->db->last_query();
 	}
 	// EASY UI CRUD
 
 	// cetak
-	public function cetakKeterangan()
-	{
+	public function cetakKeterangan(){
 		$param['transaksi_keterangan_id'] = anti_inject($this->input->get_post('transaksi_keterangan_id'));
 		$data['keterangan'] = $this->M_request->getKeterangan($param);
 		$this->load->view('sample/cetak/memo', $data, FALSE);
 	}
 	// cetak
 
-	public function downloadFile()
-	{
+	public function downloadFile(){
 		$files = $this->input->get_post('file');
 		$file = FCPATH . ('document/' . $files);
 		force_download($file, NULL);

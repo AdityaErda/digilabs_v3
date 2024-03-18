@@ -1,13 +1,10 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_request extends CI_Model
-{
+class M_request extends CI_Model{
 	/* GET */
-
 	// load table awal
-	public function getRequestMain($data = '', $where = '')
-	{
+	public function getRequestMain($data = '', $where = ''){
 		$this->db->select("*, to_char(a.transaksi_tgl, 'DD-MM-YYYY') AS transaksi_detail_tgl_pengajuan_baru");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_peminta_jasa b', 'a.transaksi_id_peminta_jasa=b.peminta_jasa_id', 'left');
@@ -39,8 +36,7 @@ class M_request extends CI_Model
 
 	// load dalam form
 
-	public function getAllRequest($data = '')
-	{
+	public function getAllRequest($data = ''){
 		$this->db->select("a.who_seksi_create,a.transaksi_nomor, a.transaksi_tipe, a.transaksi_status, a.transaksi_tgl,a.when_create,b.peminta_jasa_id,b.transaksi_detail_no_memo,b.transaksi_detail_note, b.transaksi_detail_pic_pengirim,b.transaksi_detail_ext_pengirim,b.transaksi_detail_nomor_sample, d.peminta_jasa_nama, g.transaksi_non_rutin_id,h.*,  to_char(b.transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY') AS transaksi_detail_tgl_pengajuan_baru, to_char(b.transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(b.transaksi_detail_tgl_estimasi, 'DD-MM-YYYY') AS transaksi_detail_tgl_estimasi_baru, b.transaksi_detail_note as note_awal,i.*,j.*,a.transaksi_judul,b.transaksi_detail_pic_telepon,a.transaksi_id_template_keterangan,k.user_nik_sap,k.user_nama,k.user_post_title,l.user_nik_sap as nik_reviewer,l.user_nama as nama_reviewer,l.user_post_title as title_reviewer,m.user_nik_sap as nik_approver,m.user_nama as nama_approver,m.user_post_title as title_approver, n.user_nik_sap as nik_tujuan,n.user_nama as nama_tujuan,n.user_post_title as title_tujuan,o.user_nik_sap as nik_drafter,o.user_nama as nama_drafter,o.user_post_title as title_drafter,p.user_nik_sap as nik_pic_pengirim,p.user_nama as nama_pic_pengirim,p.user_post_title as title_pic_pengirim,a.transaksi_drafter,a.transaksi_attach,a.transaksi_sifat,a.transaksi_kecepatan_tanggap,a.id_transaksi_non_rutin,a.transaksi_klasifikasi_id,a.transaksi_id_user,transaksi_pic_ext,transaksi_pic_telepon,b.id_user_disposisi,b.id_seksi_disposisi,a.transaksi_reject_alasan,b.transaksi_detail_reject_alasan,a.transaksi_id,q.jenis_nama,transaksi_reviewer_poscode,transaksi_approver_poscode,transaksi_drafter_poscode,transaksi_tujuan_poscode,transaksi_pic_pengirim_id,transaksi_pic_poscode,transaksi_detail_status,transaksi_detail_id,is_proses");
 		$this->db->distinct();
 		$this->db->from('sample.sample_transaksi a');
@@ -91,8 +87,7 @@ class M_request extends CI_Model
 	}
 
 
-	public function getRequestAll($data = '')
-	{
+	public function getRequestAll($data = ''){
 		$this->db->select("a.*, a.id_transaksi_non_rutin AS transaksi_non_rutin_id, b.*, c.*, d.user_nik_sap AS nik_reviewer, d.user_nama AS nama_reviewer, d.user_post_title AS title_reviewer, e.user_nik_sap AS nik_approver, e.user_nama AS nama_approver, e.user_post_title AS title_approver, f.user_nik_sap AS nik_tujuan, f.user_nama AS nama_tujuan, f.user_post_title AS title_tujuan, g.user_nik_sap AS nik_drafter, g.user_nama AS nama_drafter, g.user_post_title AS title_drafter, g.user_nik_sap AS nik_pic_pengirim, g.user_nama AS nama_pic_pengirim, g.user_post_title AS title_pic_pengirim");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_peminta_jasa b', 'a.transaksi_id_peminta_jasa = b.peminta_jasa_id', 'left');
@@ -127,8 +122,7 @@ class M_request extends CI_Model
 	// load detail
 
 
-	public function getRequest($data = null, $where = null)
-	{
+	public function getRequest($data = null, $where = null){
 		$this->db->select("a.transaksi_nomor,a.transaksi_tgl,a.when_create,a.transaksi_sifat,a.transaksi_kecepatan_tanggap,a.transaksi_id,a.transaksi_nomor, a.transaksi_tipe, a.transaksi_status,b.transaksi_detail_status,b.transaksi_detail_no_memo, b.transaksi_detail_no_surat,b.transaksi_detail_note,b.transaksi_detail_nomor,b.transaksi_detail_nomor_sample, c.jenis_nama, d.peminta_jasa_nama, e.sample_pekerjaan_nama, f.identitas_nama, g.*, to_char(b.transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY') AS transaksi_detail_tgl_pengajuan_baru, to_char(b.transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(b.transaksi_detail_tgl_estimasi, 'DD-MM-YYYY') AS transaksi_detail_tgl_estimasi_baru, b.transaksi_detail_note as note_awal");
 		$this->db->distinct();
 		$this->db->from('sample.sample_transaksi a');
@@ -172,8 +166,7 @@ class M_request extends CI_Model
 
 
 
-	public function getRequestUtama($data = null, $where = null)
-	{
+	public function getRequestUtama($data = null, $where = null){
 		$this->db->select("a.who_seksi_create,a.transaksi_nomor, a.transaksi_tipe, a.transaksi_status, b.peminta_jasa_id,b.transaksi_detail_no_memo,b.transaksi_detail_note, b.transaksi_detail_pic_pengirim,b.transaksi_detail_ext_pengirim, d.peminta_jasa_nama, g.transaksi_non_rutin_id,h.*,  to_char(b.transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY') AS transaksi_detail_tgl_pengajuan_baru, to_char(b.transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(b.transaksi_detail_tgl_estimasi, 'DD-MM-YYYY') AS transaksi_detail_tgl_estimasi_baru, b.transaksi_detail_note as note_awal,i.*,j.*,a.transaksi_judul,b.transaksi_detail_pic_telepon,a.transaksi_id_template_keterangan,k.user_nik_sap,k.user_nama,k.user_post_title,l.user_nik_sap as nik_reviewer,l.user_nama as nama_reviewer,l.user_post_title as title_reviewer,m.user_nik_sap as nik_approver,m.user_nama as nama_approver,m.user_post_title as title_approver, n.user_nik_sap as nik_tujuan,n.user_nama as nama_tujuan,n.user_post_title as title_tujuan,o.user_nik_sap as nik_drafter,o.user_nama as nama_drafter,o.user_post_title as title_drafter,p.user_nik_sap as nik_pic_pengirim,p.user_nama as nama_pic_pengirim,p.user_post_title as title_pic_pengirim,a.transaksi_drafter,a.transaksi_attach,a.transaksi_sifat,a.transaksi_kecepatan_tanggap,a.id_transaksi_non_rutin,a.transaksi_klasifikasi_id,a.transaksi_id_user,transaksi_pic_ext,transaksi_pic_telepon,b.id_user_disposisi,b.id_seksi_disposisi");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.transaksi_id = b.transaksi_id AND a.transaksi_status=b.transaksi_detail_status', 'left');
@@ -280,8 +273,7 @@ class M_request extends CI_Model
 		return (isset($data['transaksi_non_rutin_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getRequestNew($data = null, $where = null)
-	{
+	public function getRequestNew($data = null, $where = null){
 		$this->db->select("a.transaksi_nomor, a.transaksi_tipe, a.transaksi_status, b.peminta_jasa_id,b.jenis_pekerjaan_id,b.transaksi_detail_no_memo,b.transaksi_detail_note, b.transaksi_detail_pic_pengirim,b.transaksi_detail_ext_pengirim, d.peminta_jasa_nama, e.sample_pekerjaan_nama,g.transaksi_non_rutin_id,h.*,  to_char(b.transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY') AS transaksi_detail_tgl_pengajuan_baru, to_char(b.transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(b.transaksi_detail_tgl_estimasi, 'DD-MM-YYYY') AS transaksi_detail_tgl_estimasi_baru, b.transaksi_detail_note as note_awal,i.*,j.*,a.transaksi_judul,b.transaksi_detail_pic_telepon,a.transaksi_id_template_keterangan,k.user_nik_sap,k.user_nama,k.user_post_title,l.user_nik_sap as nik_reviewer,l.user_nama as nama_reviewer,l.user_post_title as title_reviewer,m.user_nik_sap as nik_approver,m.user_nama as nama_approver,m.user_post_title as title_approver, n.user_nik_sap as nik_tujuan,n.user_nama as nama_tujuan,n.user_post_title as title_tujuan,o.user_nik_sap as nik_drafter,o.user_nama as nama_drafter,o.user_post_title as title_drafter,p.user_nik_sap as nik_pic_pengirim,p.user_nama as nama_pic_pengirim,p.user_post_title as title_pic_pengirim,a.transaksi_drafter,a.transaksi_attach,a.transaksi_sifat,a.transaksi_kecepatan_tanggap,a.id_transaksi_non_rutin,a.transaksi_klasifikasi_id,a.transaksi_id_user,transaksi_pic_ext,transaksi_pic_telepon,b.id_user_disposisi,b.id_seksi_disposisi");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.id_transaksi_detail = b.transaksi_detail_id AND a.transaksi_status=b.transaksi_detail_status', 'left');
@@ -388,8 +380,7 @@ class M_request extends CI_Model
 		return (isset($data['transaksi_non_rutin_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getRequestDOF($param = null)
-	{
+	public function getRequestDOF($param = null){
 		if (isset($param['transaksi_id'])) $this->db->where('a.transaksi_id', $param['transaksi_id']);
 		if (isset($param['transaksi_detail_id'])) $this->db->where('b.transaksi_detail_id', $param['transaksi_detail_id']);
 		if (isset($param['transaksi_detail_group'])) $this->db->where('b.transaksi_detail_group', $param['transaksi_detail_group']);
@@ -420,8 +411,7 @@ class M_request extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getKeterangan($value = '')
-	{
+	public function getKeterangan($value = ''){
 		$this->db->select('a.*,b.user_post_title as keterangan_asal,c.user_post_title as keterangan_tujuan');
 		$this->db->from('sample.sample_transaksi_keterangan a');
 		$this->db->join('global.global_api_user b', ' b.user_poscode = a.transaksi_keterangan_asal', 'left');
@@ -433,8 +423,7 @@ class M_request extends CI_Model
 		return (isset($value['transaksi_keterangan_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getRequestDetail($value = '')
-	{
+	public function getRequestDetail($value = ''){
 		$this->db->select('*');
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_jenis b', 'b.jenis_id = a.jenis_id', 'left');
@@ -461,8 +450,7 @@ class M_request extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getRequestHistory($value = '')
-	{
+	public function getRequestHistory($value = ''){
 		$this->db->select('b.transaksi_judul,b.transaksi_status,c.peminta_jasa_nama,d.user_nama as pic_nama,a.sample_log_status,a.sample_log_keterangan,a.sample_log_who,a.sample_log_when');
 		$this->db->from('sample.sample_log a');
 		$this->db->join('sample.sample_transaksi b', 'b.id_transaksi_non_rutin = a.sample_log_id_non_rutin', 'left');
@@ -485,29 +473,25 @@ class M_request extends CI_Model
 	/* GET */
 
 	/* INSERT */
-	public function insertRequest($data)
-	{
+	public function insertRequest($data){
 		$this->db->insert('sample.sample_transaksi', $data);
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertKeterangan($data)
-	{
+	public function insertKeterangan($data){
 		$this->db->insert('sample.sample_transaksi_keterangan', $data);
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertReject($id, $data)
-	{
+	public function insertReject($id, $data){
 		$this->db->where('id_transaksi_non_rutin', $id);
 		$this->db->update('sample.sample_transaksi', $data);
 		return $this->db->affected_rows();
 	}
 
-	public function insertRejectDetail($id, $status, $data)
-	{
+	public function insertRejectDetail($id, $status, $data){
 		$this->db->where('id_non_rutin', $id);
 		$this->db->where('transaksi_detail_status', $status);
 		$this->db->update('sample.sample_transaksi_detail', $data);
@@ -516,8 +500,7 @@ class M_request extends CI_Model
 	/* INSERT */
 
 	/* UPDATE */
-	public function updateRequest($data, $id)
-	{
+	public function updateRequest($data, $id){
 		$this->db->set($data);
 		$this->db->where('transaksi_id', $id);
 		$this->db->update('sample.sample_transaksi');
@@ -525,8 +508,7 @@ class M_request extends CI_Model
 		return $this->db->affected_rows();
 	}
 
-	public function updateRequestNon($data, $id)
-	{
+	public function updateRequestNon($data, $id){
 		$this->db->set($data);
 		$this->db->where('id_transaksi_non_rutin', $id);
 		$this->db->update('sample.sample_transaksi');
@@ -536,8 +518,7 @@ class M_request extends CI_Model
 	/* UPDATE */
 
 	/* DELETE */
-	public function deleteRequest($id)
-	{
+	public function deleteRequest($id){
 		$this->db->where('id_transaksi_non_rutin', $id);
 		$this->db->delete('sample.sample_transaksi');
 
@@ -546,8 +527,7 @@ class M_request extends CI_Model
 	/* DELETE */
 
 	/* INSERT DETAIL */
-	public function insertRequestDetail($data)
-	{
+	public function insertRequestDetail($data){
 		$this->db->insert('sample.sample_transaksi_detail', $data);
 
 		return $this->db->affected_rows();
@@ -555,8 +535,7 @@ class M_request extends CI_Model
 	/* INSERT DETAIL */
 
 	/* UPDATE DETAIL */
-	public function updateRequestDetail($data, $id)
-	{
+	public function updateRequestDetail($data, $id){
 		$this->db->set($data);
 		$this->db->where('transaksi_detail_id', $id);
 		$this->db->update('sample.sample_transaksi_detail');
@@ -566,16 +545,14 @@ class M_request extends CI_Model
 	/* UPDATE DETAIL */
 
 	/* DELETE DETAIL */
-	public function deleteRequestDetail($id)
-	{
+	public function deleteRequestDetail($id){
 		$this->db->where('id_non_rutin', $id);
 		$this->db->delete('sample.sample_transaksi_detail');
 
 		return $this->db->affected_rows();
 	}
 
-	public function deleteSampleDetail($id)
-	{
+	public function deleteSampleDetail($id){
 		$this->db->where('transaksi_detail_id', $id);
 		$this->db->delete('sample.sample_transaksi_detail');
 
@@ -584,16 +561,14 @@ class M_request extends CI_Model
 	/* DELETE DETAIL */
 
 	// INSERT NON RUTIN
-	public function insertNonRutin($data = null)
-	{
+	public function insertNonRutin($data = null){
 		$this->db->insert('sample.sample_transaksi_non_rutin', $data);
 		return $this->db->affected_rows();
 	}
 	// INSERT NON RUTIN
 
 	// UPDATE NON RUTIN
-	public function updateNonRutin($data = null, $id)
-	{
+	public function updateNonRutin($data = null, $id){
 		$this->db->where('transaksi_non_rutin_id', $id);
 		$this->db->update('sample.sample_transaksi_non_rutin', $data);
 		return $this->db->affected_rows();
@@ -602,16 +577,14 @@ class M_request extends CI_Model
 	// UPDATE NON RUTIN
 
 	// INSERT ATTACH
-	public function insertAttach($data = '')
-	{
+	public function insertAttach($data = ''){
 		$this->db->insert('sample.sample_transaksi_attach', $data);
 		return $this->db->affected_rows();
 	}
 	// INSERT ATTACH
 
 	// UPDATE ATTACH
-	public function updateAttach($id, $data = '')
-	{
+	public function updateAttach($id, $data = ''){
 		$this->db->where('transaksi_attach_id', $id);
 		$this->db->update('sample.sample_transaksi_attach', $data);
 		return  $this->db->affected_rows();
@@ -619,8 +592,7 @@ class M_request extends CI_Model
 	// UPDATE ATTACH
 
 	// EASYUI CRUD
-	public function getEasyuiSample($data = null)
-	{
+	public function getEasyuiSample($data = null){
 		$this->db->select('*');
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_jenis b', 'a.jenis_id = b.jenis_id', 'left');
@@ -635,8 +607,7 @@ class M_request extends CI_Model
 		return (isset($data['transaksi_detail_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function deleteEasyuiSample($id)
-	{
+	public function deleteEasyuiSample($id){
 		$this->db->where('transaksi_detail_id', $id);
 		$this->db->delete('sample.sample_transaksi_detail');
 		return $this->db->affected_rows();
@@ -645,8 +616,7 @@ class M_request extends CI_Model
 	// EASYUI CRUD
 
 	// EASYUI ATTACH
-	public function getEasyuiAttach($data = '')
-	{
+	public function getEasyuiAttach($data = ''){
 		$this->db->select('*');
 		$this->db->from('sample.sample_transaksi_attach a');
 		// $this->db->join('sample.sample_transaksi b', 'a.transaksi_attach_id_transaksi = b.transaksi_id', 'left');

@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_lab extends CI_Model
-{
+class M_lab extends CI_Model{
 
-	public function getLab($data = null, $where = null)
-	{
+	public function getLab($data = null, $where = null){
 		$this->db->select("a.transaksi_tgl,a.when_create,a.who_seksi_create,a.transaksi_nomor, a.transaksi_tipe, a.transaksi_status,a.transaksi_reviewer,a.transaksi_approver,a.transaksi_drafter,a.transaksi_tujuan,b.id_user_disposisi, b.peminta_jasa_id,b.transaksi_detail_no_memo,b.transaksi_detail_note, b.transaksi_detail_pic_pengirim,b.transaksi_detail_ext_pengirim, c.peminta_jasa_nama,  to_char(b.transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY') AS transaksi_detail_tgl_pengajuan_baru, to_char(b.transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(b.transaksi_detail_tgl_estimasi, 'DD-MM-YYYY') AS transaksi_detail_tgl_estimasi_baru, b.transaksi_detail_note as note_awal,a.transaksi_judul,a.transaksi_id_template_keterangan,a.transaksi_drafter,a.transaksi_attach,a.transaksi_sifat,a.transaksi_kecepatan_tanggap,a.id_transaksi_non_rutin,a.transaksi_klasifikasi_id,a.transaksi_id_user,transaksi_pic_ext,transaksi_pic_telepon,b.id_user_disposisi,b.id_seksi_disposisi");
 		$this->db->distinct();
 		$this->db->from('sample.sample_transaksi a');
@@ -46,8 +44,7 @@ class M_lab extends CI_Model
 		return (isset($data['transaksi_non_rutin_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getLabDetail($value = '')
-	{
+	public function getLabDetail($value = ''){
 		$this->db->select('*');
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_jenis b', 'b.jenis_id = a.jenis_id', 'left');
@@ -72,8 +69,7 @@ class M_lab extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getSeksiDisposisi($value = '')
-	{
+	public function getSeksiDisposisi($value = ''){
 		$this->db->select('*');
 		$this->db->from('sample.sample_seksi_disposisi a');
 		$this->db->join('global.global_seksi b', 'b.seksi_id = a.id_seksi', 'left');
@@ -87,16 +83,14 @@ class M_lab extends CI_Model
 		return (isset($value['seksi_disposisi_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getMaxNoLab()
-	{
+	public function getMaxNoLab(){
 		$this->db->select("MAX(transaksi_detail_urut) as urut");
 		$this->db->from("sample.sample_transaksi_detail");
 		$sql = $this->db->get();
 		return $sql->row_array();
 	}
 
-	public function getMaxNoLabBaru($param = '')
-	{
+	public function getMaxNoLabBaru($param = ''){
 
 		if (isset($param['transaksi_tipe'])) $this->db->where('transaksi_tipe', $param['transaksi_tipe']);
 
@@ -108,8 +102,7 @@ class M_lab extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getNoLabBaru($param = '')
-	{
+	public function getNoLabBaru($param = ''){
 
 		if (isset($param['range'])) $this->db->like('UPPER(transaksi_detail_nomor_sample)',STRTOUPPER($param['range']),'AFTER');
 		if (isset($param['transaksi_tipe'])) $this->db->where('transaksi_tipe', $param['transaksi_tipe']);
@@ -122,8 +115,7 @@ class M_lab extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function insertLabDetail($value = '')
-	{
+	public function insertLabDetail($value = ''){
 		// $data['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id')[$key];
 		// $data['transaksi_detail_judul'] = $this->input->get_post('item_judul')[$key];
 		// $data['jenis_id'] = $this->input->get_post('jenis_id')[$key];

@@ -1,12 +1,10 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_inbox extends CI_Model
-{
+class M_inbox extends CI_Model{
 	/* GET */
 
-	public function getTransaksiTipe($data = null)
-	{
+	public function getTransaksiTipe($data = null){
 		$this->db->select('a.transaksi_tipe');
 		$this->db->from('sample.sample_transaksi a');
 		if (isset($data['transaksi_id'])) $this->db->where('transaksi_id', $data['id_transaksi']);
@@ -16,8 +14,7 @@ class M_inbox extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getInboxMain()
-	{
+	public function getInboxMain(){
 		$this->db->select("a.transaksi_id,a.transaksi_tgl,a.when_create,a.who_seksi_create,a.transaksi_nomor, a.transaksi_tipe, a.transaksi_status,a.transaksi_reviewer,a.transaksi_approver,a.transaksi_drafter,a.transaksi_tujuan,b.is_urgent,b.transaksi_detail_nomor_sample,b.id_user_disposisi, b.peminta_jasa_id,b.transaksi_detail_no_memo,b.transaksi_detail_note, b.transaksi_detail_pic_pengirim,b.transaksi_detail_ext_pengirim, c.peminta_jasa_nama, d.transaksi_non_rutin_id,  to_char(b.transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY') AS transaksi_detail_tgl_pengajuan_baru, to_char(b.transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(b.transaksi_detail_tgl_estimasi, 'DD-MM-YYYY') AS transaksi_detail_tgl_estimasi_baru, b.transaksi_detail_note as note_awal,a.transaksi_judul,b.transaksi_detail_pic_telepon,a.transaksi_id_template_keterangan,a.transaksi_drafter,a.transaksi_attach,a.transaksi_sifat,a.transaksi_kecepatan_tanggap,a.id_transaksi_non_rutin,a.transaksi_klasifikasi_id,a.transaksi_id_user,transaksi_pic_ext,transaksi_pic_telepon,b.id_user_disposisi,b.id_seksi_disposisi");
 		// $this->db->distinct();
 		$this->db->from('sample.sample_transaksi a');
@@ -67,8 +64,7 @@ class M_inbox extends CI_Model
 		return (isset($data['transaksi_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getInbox($data = null, $where = null)
-	{
+	public function getInbox($data = null, $where = null){
 		$this->db->select("a.transaksi_id, a.transaksi_tipe, a.transaksi_status, a.transaksi_nomor, b.*, c.jenis_nama, d.peminta_jasa_nama, e.sample_pekerjaan_nama, a.transaksi_tgl, f.identitas_nama, to_char(transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_pengajuan_baru, to_char(transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(transaksi_detail_tgl_estimasi, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_estimasi_baru,a.transaksi_id_template_keterangan,i.logsheet_id,i.id_template_logsheet,i.logsheet_tipe,i.is_approve,i.logsheet_analisis,i.logsheet_review");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.transaksi_id = b.transaksi_id', 'left');
@@ -128,8 +124,7 @@ class M_inbox extends CI_Model
 	}
 
 
-	public function getDisposisi($data = null)
-	{
+	public function getDisposisi($data = null){
 		$this->db->select('COUNT(*) AS total');
 		$this->db->from('sample.sample_seksi_disposisi');
 		$this->db->where('id_transaksi', $data['transaksi_id']);
@@ -140,8 +135,7 @@ class M_inbox extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getPetugas($data = null)
-	{
+	public function getPetugas($data = null){
 		$this->db->select('COUNT(*) AS total');
 		$this->db->from('sample.sample_petugas');
 		$this->db->where('id_transaksi', $data['transaksi_id']);
@@ -152,8 +146,7 @@ class M_inbox extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getTransaksiSeksiDisposisi($data = null)
-	{
+	public function getTransaksiSeksiDisposisi($data = null){
 		$this->db->select('*');
 		$this->db->from('sample.sample_seksi_disposisi a');
 		$this->db->join('global.global_seksi b', 'a.id_seksi = b.seksi_id', 'left');
@@ -163,8 +156,7 @@ class M_inbox extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getHistory($data = null)
-	{
+	public function getHistory($data = null){
 		$this->db->select('a.who_create,a.when_create,a.seksi_disposisi_history_alasan,b.seksi_nama as seksi_asal,c.seksi_nama as seksi_tujuan');
 		$this->db->from('sample.sample_seksi_disposisi_history a');
 		$this->db->join('global.global_seksi b', 'b.seksi_id = a.id_seksi_asal', 'left');
@@ -179,8 +171,7 @@ class M_inbox extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getRumus($data = '')
-	{
+	public function getRumus($data = ''){
 		$this->db->select('*');
 		$this->db->from('sample.sample_perhitungan_sample a');
 		$this->db->join('sample.sample_perhitungan_sample_detail b', 'b.id_rumus = a.rumus_id', 'left');
@@ -193,8 +184,7 @@ class M_inbox extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getLogsheet($data = '')
-	{
+	public function getLogsheet($data = ''){
 		$this->db->select('a.*,b.user_tanda_tangan as ttd_analisis,c.user_tanda_tangan as ttd_review,b.user_nama_lengkap as nama_analisis,c.user_nama_lengkap as nama_review');
 		$this->db->from('sample.sample_logsheet a');
 		$this->db->join('global.global_user b', 'b.user_username = a.logsheet_analisis', 'left');
@@ -209,8 +199,7 @@ class M_inbox extends CI_Model
 		return (isset($data['logsheet_id'])) ? $sql->row_array() : $sql->result_array();
 	}
 
-	public function getLogsheetDetail($data = '')
-	{
+	public function getLogsheetDetail($data = ''){
 		$this->db->select('*');
 		$this->db->from('sample.sample_logsheet a');
 		$this->db->join('sample.sample_logsheet_detail b', 'a.logsheet_id = b.logsheet_id', 'left');
@@ -232,8 +221,7 @@ class M_inbox extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getLogsheetDetailGroup($data = '')
-	{
+	public function getLogsheetDetailGroup($data = ''){
 		$this->db->select("rumus_metoda,rumus_satuan,rumus_avg,logsheet_nomor_sample");
 		$this->db->distinct();
 		$this->db->from('sample.sample_logsheet a');
@@ -255,8 +243,7 @@ class M_inbox extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getLogsheetDetailDetail($data = '')
-	{
+	public function getLogsheetDetailDetail($data = ''){
 		$this->db->select('*');
 		$this->db->from('sample.sample_logsheet_detail_detail a');
 		$this->db->join('sample.sample_logsheet_detail b', 'a.id_logsheet_detail = b.logsheet_detail_id', 'left');
@@ -274,8 +261,7 @@ class M_inbox extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getInboxDetail($data = null)
-	{
+	public function getInboxDetail($data = null){
 		$this->db->select("a.transaksi_detail_status,a.who_create,b.jenis_nama,c.identitas_nama, to_char(transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_pengajuan_baru, to_char(transaksi_detail_tgl_memo, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_memo_baru, to_char(transaksi_detail_tgl_estimasi, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_estimasi_baru, to_char(a.when_create, 'DD-MM-YYYY HH24:MI:SS') AS when_create_baru,transaksi_detail_note");
 		$this->db->distinct();
 		$this->db->from('sample.sample_transaksi_detail a');
@@ -303,8 +289,7 @@ class M_inbox extends CI_Model
 	/* GET */
 
 	/* INSERT */
-	public function insertInbox($data)
-	{
+	public function insertInbox($data){
 		// $this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "', id_seksi, identitas_id, jenis_id, peminta_jasa_id, a.transaksi_id, transaksi_detail_pic_pengirim, transaksi_detail_ext_pengirim, '" . $data['transaksi_detail_jumlah'] . "', '" . $data['transaksi_detail_parameter'] . "', transaksi_detail_tgl_pengajuan, '" . $data['transaksi_detail_tgl_memo'] . "', '" . $data['transaksi_detail_no_memo'] . "', transaksi_detail_foto, '" . $data['transaksi_detail_tgl_estimasi'] . "', NULL, NULL, is_urgent, jenis_pekerjaan_id, '" . $data['when_create'] . "', '" . $data['who_create'] . "', '" . $data['transaksi_detail_note'] . "', '" . $data['transaksi_detail_status'] . "' FROM sample.sample_transaksi_detail a LEFT JOIN sample.sample_transaksi b ON a.transaksi_detail_id = b.id_transaksi_detail WHERE b.transaksi_id = '" . $data['transaksi_id'] . "'");
 
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "',id_seksi,identitas_id,jenis_id,a.peminta_jasa_id,a.transaksi_id,transaksi_detail_pic_pengirim,transaksi_detail_ext_pengirim,'" . $data['transaksi_detail_jumlah'] . "','" . $data['transaksi_detail_parameter'] . "',transaksi_detail_tgl_pengajuan,'" . $data['transaksi_detail_tgl_memo'] . "',transaksi_detail_no_memo,transaksi_detail_foto,'" . $data['transaksi_detail_tgl_estimasi'] . "',transaksi_detail_file,transaksi_detail_no_surat,is_urgent,jenis_pekerjaan_id,'" . $data['when_create'] . "','" . $data['who_create'] . "','" . $data['transaksi_detail_note'] . "','" . $data['transaksi_detail_status'] . "',is_khusus,id_user,who_seksi_create,id_non_rutin,transaksi_detail_nomor,transaksi_detail_urut,transaksi_detail_keterangan,transaksi_detail_kode_tracking,transaksi_detail_klasifikasi_id,transaksi_detail_nomor_sample,transaksi_detail_id_template_keterangan,transaksi_detail_id_template_keterangan,transaksi_detail_pic_telepon,transaksi_detail_attach,transaksi_detail_judul,transaksi_detail_identitas,transaksi_detail_deskripsi_parameter,transaksi_detail_catatan,id_user_disposisi,id_disposisi,id_seksi_disposisi,'" . $data['transaksi_detail_reject_alasan'] . "',transaksi_detail_agreement_keterangan,is_sampling,is_proses,transaksi_detail_tgl_sampling,transaksi_detail_tgl_pengujian FROM sample.sample_transaksi_detail a WHERE transaksi_detail_id = '" . $data['transaksi_detail_id_awal'] . "' AND transaksi_detail_status = '" . $data['transaksi_detail_status_awal'] . "'");
@@ -312,43 +297,37 @@ class M_inbox extends CI_Model
 		return $this->db->affected_rows();
 	}
 
-	public function insertInboxDiterima($data = null)
-	{
+	public function insertInboxDiterima($data = null){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "',id_seksi,identitas_id,jenis_id,peminta_jasa_id,'" . $data['transaksi_id'] . "',transaksi_detail_pic_pengirim,transaksi_detail_ext_pengirim,'" . $data['transaksi_detail_jumlah'] . "','" . $data['transaksi_detail_parameter'] . "',transaksi_detail_tgl_pengajuan,transaksi_detail_tgl_memo,transaksi_detail_no_memo,transaksi_detail_foto,transaksi_detail_tgl_memo,transaksi_detail_file,transaksi_detail_no_surat,is_urgent,jenis_pekerjaan_id,'" . $data['when_create'] . "','" . $data['who_create'] . "',transaksi_detail_note,'" . $data['transaksi_detail_status'] . "',is_khusus,id_user,'" . $data['who_seksi_create'] . "',id_non_rutin,transaksi_detail_nomor,transaksi_detail_urut,transaksi_detail_keterangan,transaksi_detail_kode_tracking,transaksi_detail_klasifikasi_id,transaksi_detail_nomor_sample,transaksi_detail_id_template_keterangan,transaksi_detail_is_template_keterangan,transaksi_detail_pic_telepon,transaksi_detail_attach,transaksi_detail_judul,transaksi_detail_identitas,'" . $data['transaksi_detail_deskripsi_parameter'] . "',transaksi_detail_catatan,id_user_disposisi,id_disposisi,id_seksi_disposisi,transaksi_detail_reject_alasan,transaksi_detail_agreement_keterangan,is_sampling,NULL,transaksi_detail_tgl_sampling,transaksi_detail_tgl_pengujian FROM sample.sample_transaksi_detail WHERE transaksi_detail_id = '" . $data['transaksi_detail_id_temp'] . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertInboxNew($data = null)
-	{
+	public function insertInboxNew($data = null){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "',id_seksi,identitas_id,jenis_id,peminta_jasa_id,'" . $data['transaksi_id'] . "',transaksi_detail_pic_pengirim,transaksi_detail_ext_pengirim,'" . $data['transaksi_detail_jumlah'] . "','" . $data['transaksi_detail_parameter'] . "',transaksi_detail_tgl_pengajuan,transaksi_detail_tgl_memo,'" . $data['transaksi_detail_no_memo'] . "',transaksi_detail_foto,'" . $data['transaksi_detail_tgl_memo'] . "',transaksi_detail_file,transaksi_detail_no_surat,is_urgent,jenis_pekerjaan_id,'" . $data['when_create'] . "','" . $data['who_create'] . "','" . $data['transaksi_detail_note'] . "','" . $data['transaksi_detail_status'] . "',is_khusus,id_user,'" . $data['who_seksi_create'] . "',id_non_rutin,transaksi_detail_nomor,transaksi_detail_urut,transaksi_detail_keterangan,transaksi_detail_kode_tracking,transaksi_detail_klasifikasi_id,transaksi_detail_nomor_sample,transaksi_detail_id_template_keterangan,transaksi_detail_is_template_keterangan,transaksi_detail_pic_telepon,transaksi_detail_attach,transaksi_detail_judul,transaksi_detail_identitas,transaksi_detail_deskripsi_parameter,transaksi_detail_catatan,id_user_disposisi,id_disposisi,id_seksi_disposisi,transaksi_detail_reject_alasan,transaksi_detail_agreement_keterangan,is_sampling,NULL,transaksi_detail_tgl_sampling,transaksi_detail_tgl_pengujian FROM sample.sample_transaksi_detail WHERE transaksi_detail_id = '" . $data['transaksi_detail_id_temp'] . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertInboxAlihkan($data = null)
-	{
+	public function insertInboxAlihkan($data = null){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "',id_seksi,identitas_id,jenis_id,peminta_jasa_id,'" . $data['transaksi_id'] . "',transaksi_detail_pic_pengirim,transaksi_detail_ext_pengirim,transaksi_detail_jumlah,transaksi_detail_parameter,transaksi_detail_tgl_pengajuan,transaksi_detail_tgl_memo,transaksi_detail_no_memo,transaksi_detail_foto,transaksi_detail_tgl_memo,transaksi_detail_file,transaksi_detail_no_surat,is_urgent,jenis_pekerjaan_id,'" . $data['when_create'] . "','" . $data['who_create'] . "',transaksi_detail_note,'" . $data['transaksi_detail_status'] . "',is_khusus,id_user,'" . $data['who_seksi_create'] . "',id_non_rutin,transaksi_detail_nomor,transaksi_detail_urut,transaksi_detail_keterangan,transaksi_detail_kode_tracking,transaksi_detail_klasifikasi_id,NULL,transaksi_detail_id_template_keterangan,transaksi_detail_is_template_keterangan,transaksi_detail_pic_telepon,transaksi_detail_attach,transaksi_detail_judul,transaksi_detail_identitas,transaksi_detail_deskripsi_parameter,transaksi_detail_catatan,'2105087',id_disposisi,id_seksi_disposisi,'" . $data['transaksi_detail_reject_alasan'] . "',transaksi_detail_agreement_keterangan,is_sampling,NULL,transaksi_detail_tgl_sampling,transaksi_detail_tgl_pengujian FROM sample.sample_transaksi_detail WHERE transaksi_detail_id = '" . $data['transaksi_detail_id_temp'] . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertInboxLogsheet($data = null)
-	{
+	public function insertInboxLogsheet($data = null){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "',id_seksi,identitas_id,jenis_id,peminta_jasa_id,'" . $data['transaksi_id'] . "',transaksi_detail_pic_pengirim,transaksi_detail_ext_pengirim,transaksi_detail_jumlah,transaksi_detail_parameter,transaksi_detail_tgl_pengajuan,transaksi_detail_tgl_memo,transaksi_detail_no_memo,transaksi_detail_foto,transaksi_detail_tgl_memo,transaksi_detail_file,transaksi_detail_no_surat,is_urgent,jenis_pekerjaan_id,'" . $data['when_create'] . "','" . $data['who_create'] . "',transaksi_detail_note,'" . $data['transaksi_detail_status'] . "',is_khusus,id_user,'" . $data['who_seksi_create'] . "',id_non_rutin,transaksi_detail_nomor,transaksi_detail_urut,transaksi_detail_keterangan,transaksi_detail_kode_tracking,transaksi_detail_klasifikasi_id,transaksi_detail_nomor_sample,transaksi_detail_id_template_keterangan,transaksi_detail_is_template_keterangan,transaksi_detail_pic_telepon,transaksi_detail_attach,transaksi_detail_judul,transaksi_detail_identitas,transaksi_detail_deskripsi_parameter,transaksi_detail_catatan,id_user_disposisi,id_disposisi,id_seksi_disposisi,transaksi_detail_reject_alasan,transaksi_detail_agreement_keterangan,is_sampling,NULL,transaksi_detail_tgl_sampling,transaksi_detail_tgl_pengujian FROM sample.sample_transaksi_detail WHERE transaksi_detail_id = '" . $data['transaksi_detail_id_temp'] . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertInboxClossed($data = null)
-	{
+	public function insertInboxClossed($data = null){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "',id_seksi,identitas_id,jenis_id,peminta_jasa_id,'" . $data['transaksi_id'] . "',transaksi_detail_pic_pengirim,transaksi_detail_ext_pengirim,transaksi_detail_jumlah,transaksi_detail_parameter,transaksi_detail_tgl_pengajuan,transaksi_detail_tgl_memo,transaksi_detail_no_memo,transaksi_detail_foto,transaksi_detail_tgl_memo,transaksi_detail_file,'" . $data['transaksi_detail_no_surat'] . "',is_urgent,jenis_pekerjaan_id,'" . $data['when_create'] . "','" . $data['who_create'] . "',transaksi_detail_note,'" . $data['transaksi_detail_status'] . "',is_khusus,id_user,'" . $data['who_seksi_create'] . "',id_non_rutin,transaksi_detail_nomor,transaksi_detail_urut,transaksi_detail_keterangan,transaksi_detail_kode_tracking,transaksi_detail_klasifikasi_id,transaksi_detail_nomor_sample,transaksi_detail_id_template_keterangan,transaksi_detail_is_template_keterangan,transaksi_detail_pic_telepon,transaksi_detail_attach,transaksi_detail_judul,transaksi_detail_identitas,transaksi_detail_deskripsi_parameter,transaksi_detail_catatan,id_user_disposisi,id_disposisi,id_seksi_disposisi,transaksi_detail_reject_alasan,transaksi_detail_agreement_keterangan,is_sampling,NULL,transaksi_detail_tgl_sampling,transaksi_detail_tgl_pengujian FROM sample.sample_transaksi_detail WHERE transaksi_detail_id = '" . $data['transaksi_detail_id_temp'] . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertInboxRejectKasie($data = null)
-	{
+	public function insertInboxRejectKasie($data = null){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "',id_seksi,identitas_id,jenis_id,peminta_jasa_id,'" . $data['transaksi_id'] . "',transaksi_detail_pic_pengirim,transaksi_detail_ext_pengirim,transaksi_detail_jumlah,transaksi_detail_parameter,transaksi_detail_tgl_pengajuan,transaksi_detail_tgl_memo,transaksi_detail_no_memo,transaksi_detail_foto,transaksi_detail_tgl_memo,transaksi_detail_file,transaksi_detail_no_surat,is_urgent,jenis_pekerjaan_id,'" . $data['when_create'] . "','" . $data['who_create'] . "',transaksi_detail_note,'" . $data['transaksi_detail_status'] . "',is_khusus,id_user,'" . $data['who_seksi_create'] . "',id_non_rutin,transaksi_detail_nomor,transaksi_detail_urut,transaksi_detail_keterangan,transaksi_detail_kode_tracking,transaksi_detail_klasifikasi_id,transaksi_detail_nomor_sample,transaksi_detail_id_template_keterangan,transaksi_detail_is_template_keterangan,transaksi_detail_pic_telepon,transaksi_detail_attach,transaksi_detail_judul,transaksi_detail_identitas,transaksi_detail_deskripsi_parameter,transaksi_detail_catatan,id_user_disposisi,id_disposisi,id_seksi_disposisi, '" . $data['transaksi_detail_reject_alasan'] . "',transaksi_detail_agreement_keterangan,is_sampling,NULL,transaksi_detail_tgl_sampling,transaksi_detail_tgl_pengujian FROM sample.sample_transaksi_detail WHERE transaksi_detail_id = '" . $data['transaksi_detail_id_temp'] . "'");
 
 		return $this->db->affected_rows();
@@ -357,8 +336,7 @@ class M_inbox extends CI_Model
 	/* INSERT */
 
 	// INSERT BATAL
-	public function insertBatal($data = '')
-	{
+	public function insertBatal($data = ''){
 
 
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "',id_seksi,identitas_id,jenis_id,peminta_jasa_id,'" . $data['transaksi_id'] . "',transaksi_detail_pic_pengirim,transaksi_detail_ext_pengirim,transaksi_detail_jumlah,transaksi_detail_parameter,transaksi_detail_tgl_pengajuan,transaksi_detail_tgl_memo,transaksi_detail_no_memo,transaksi_detail_foto,transaksi_detail_tgl_estimasi,transaksi_detail_file,transaksi_detail_no_surat,is_urgent,jenis_pekerjaan_id,'" . $data['when_create'] . "','" . $data['who_create'] . "',transaksi_detail_note,'" . $data['transaksi_detail_status'] . "',is_khusus,id_user,'" . $data['who_seksi_create'] . "',id_non_rutin,transaksi_detail_nomor,transaksi_detail_urut,transaksi_detail_keterangan,transaksi_detail_kode_tracking,transaksi_detail_klasifikasi_id,transaksi_detail_nomor_sample,transaksi_detail_id_template_keterangan,transaksi_detail_is_template_keterangan,transaksi_detail_pic_telepon,transaksi_detail_attach,transaksi_detail_judul,transaksi_detail_identitas,transaksi_detail_deskripsi_parameter,transaksi_detail_catatan,id_user_disposisi,id_disposisi,id_seksi_disposisi,'" . $data['transaksi_detail_reject_alasan'] . "',transaksi_detail_agreement_keterangan,is_sampling,NULL,transaksi_detail_tgl_sampling,transaksi_detail_tgl_pengujian FROM sample.sample_transaksi_detail WHERE transaksi_detail_id = '" . $data['transaksi_detail_id_temp'] . "'");
@@ -366,8 +344,7 @@ class M_inbox extends CI_Model
 	// INSERT BATAL
 
 	/* INSERT CLOSSED */
-	public function insertInboxClossedx($data)
-	{
+	public function insertInboxClossedx($data){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "', id_seksi, identitas_id, jenis_id, peminta_jasa_id, a.transaksi_id, transaksi_detail_pic_pengirim, transaksi_detail_ext_pengirim, transaksi_detail_jumlah, transaksi_detail_parameter, transaksi_detail_tgl_pengajuan, '" . $data['transaksi_detail_tgl_memo'] . "', '" . $data['transaksi_detail_no_memo'] . "', transaksi_detail_foto, '" . $data['transaksi_detail_tgl_estimasi'] . "', '" . $data['transaksi_detail_file'] . "', '" . $data['transaksi_detail_no_surat'] . "', is_urgent, jenis_pekerjaan_id, '" . $data['when_create'] . "', '" . $data['who_create'] . "', '" . $data['transaksi_detail_note'] . "', '" . $data['transaksi_detail_status'] . "' FROM sample.sample_transaksi_detail a LEFT JOIN sample.sample_transaksi b ON a.transaksi_detail_id = b.id_transaksi_detail WHERE b.transaksi_id = '" . $data['transaksi_id'] . "'");
 
 		return $this->db->affected_rows();
@@ -375,29 +352,25 @@ class M_inbox extends CI_Model
 	/* INSERT CLOSSED */
 
 	/* SPLIT */
-	public function insertTransaksiSplit($id, $id_baru, $nomor_baru, $urut)
-	{
+	public function insertTransaksiSplit($id, $id_baru, $nomor_baru, $urut){
 		$this->db->query("INSERT INTO sample.sample_transaksi SELECT '" . $id_baru . "', company_code, transaksi_tgl, transaksi_tipe, transaksi_status, when_create, who_create, id_transaksi_detail||'_'||'" . $urut . "', '" . $nomor_baru . "', '" . NULL . "', who_seksi_create FROM sample.sample_transaksi WHERE transaksi_id = '" . $id . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertTransaksiDetailSplit($id, $id_baru, $urut)
-	{
+	public function insertTransaksiDetailSplit($id, $id_baru, $urut){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT transaksi_detail_id||'_'||'" . $urut . "', id_seksi, identitas_id, jenis_id, peminta_jasa_id, '" . $id_baru . "', transaksi_detail_pic_pengirim, transaksi_detail_ext_pengirim, transaksi_detail_jumlah, transaksi_detail_parameter, transaksi_detail_tgl_pengajuan, transaksi_detail_tgl_memo, transaksi_detail_no_memo, transaksi_detail_foto, transaksi_detail_tgl_estimasi, transaksi_detail_file, transaksi_detail_no_surat, is_urgent, jenis_pekerjaan_id, when_create, who_create, transaksi_detail_note, transaksi_detail_status, is_khusus, id_user, who_seksi_create FROM sample.sample_transaksi_detail WHERE transaksi_id = '" . $id . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertTransaksiSeksiDisposisiSplit($id, $id_baru, $urut)
-	{
+	public function insertTransaksiSeksiDisposisiSplit($id, $id_baru, $urut){
 		$this->db->query("INSERT INTO sample.sample_seksi_disposisi SELECT seksi_disposisi_id||'_'||'" . $urut . "', id_seksi, '" . $id_baru . "' FROM sample.sample_seksi_disposisi WHERE id_transaksi = '" . $id . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function insertTransaksiPetugasSplit($id, $id_baru, $urut)
-	{
+	public function insertTransaksiPetugasSplit($id, $id_baru, $urut){
 		$this->db->query("INSERT INTO sample.sample_petugas SELECT petugas_id||'_'||'" . $urut . "', '" . $id_baru . "', id_user FROM sample.sample_petugas WHERE id_transaksi = '" . $id . "'");
 
 		return $this->db->affected_rows();
@@ -405,21 +378,18 @@ class M_inbox extends CI_Model
 	/* SPLIT */
 
 	// INSERT HISTORY DISPOSISI
-	public function insertHistoryDisposisi($data)
-	{
+	public function insertHistoryDisposisi($data){
 		$this->db->insert('sample.sample_seksi_disposisi_history', $data);
 		return $this->db->affected_rows();
 	}
 
-	public function insertAlihkan($data)
-	{
+	public function insertAlihkan($data){
 		$this->db->insert('sample.sample_seksi_disposisi', $data);
 
 		return $this->db->affected_rows();
 	}
 
-	public function hapusDisposisiLama($id)
-	{
+	public function hapusDisposisiLama($id){
 		$this->db->where('seksi_disposisi_id', $id);
 		$this->db->delete('sample.sample_seksi_disposisi');
 
@@ -427,34 +397,29 @@ class M_inbox extends CI_Model
 	}
 	// INSERT HISTORY DISPOSISI
 
-	public function insertLogSheet($data = '')
-	{
+	public function insertLogSheet($data = ''){
 		$this->db->insert('sample.sample_logsheet', $data);
 		return	$this->db->affected_rows();
 	}
 
-	public function insertLogSheetDetail($data = '')
-	{
+	public function insertLogSheetDetail($data = ''){
 		$this->db->insert('sample.sample_logsheet_detail', $data);
 		return	$this->db->affected_rows();
 	}
 
-	public function insertLogSheetDetailDetail($data = '')
-	{
+	public function insertLogSheetDetailDetail($data = ''){
 		$this->db->insert('sample.sample_logsheet_detail_detail', $data);
 		return	$this->db->affected_rows();
 	}
 
 	// UPDATE
-	public function updateLogSheet($id, $data = '')
-	{
+	public function updateLogSheet($id, $data = ''){
 		$this->db->where('logsheet_id', $id);
 		$this->db->update('sample.sample_logsheet', $data);
 		return	$this->db->affected_rows();
 	}
 
-	public function updateTransaksiSeksiDisposisi($where, $data)
-	{
+	public function updateTransaksiSeksiDisposisi($where, $data){
 
 		if (isset($where['id_seksi'])) $this->db->where('id_seksi', $where['id_seksi']);
 		if (isset($where['id_transaksi'])) $this->db->where('id_transaksi', $where['id_transaksi']);
@@ -467,31 +432,27 @@ class M_inbox extends CI_Model
 	// UPDATE
 
 	// DELETE
-	public function deleteDisposisi($param = '')
-	{
+	public function deleteDisposisi($param = ''){
 		$this->db->where('id_transaksi', $param['id_transaksi']);
 		$this->db->where('id_transaksi_detail', $param['id_transaksi_detail']);
 		$this->db->delete('sample.sample_seksi_disposisi');
 		return	$this->db->affected_rows();
 	}
 
-	public function deleteLogsheet($param)
-	{
+	public function deleteLogsheet($param){
 		if (isset($param['id_transaksi'])) $this->db->where('id_transaksi', $param['id_transaksi']);
 		if (isset($param['id_transaksi_detail'])) $this->db->where('id_transaksi_detail', $param['id_transaksi_detail']);
 		$this->db->delete('sample.sample_logsheet');
 		return $this->db->affected_rows();
 	}
 
-	public function deleteLogsheetDetail($param)
-	{
+	public function deleteLogsheetDetail($param){
 		if (isset($param['logsheet_id'])) $this->db->where('logsheet_id', $param['logsheet_id']);
 		$this->db->delete('sample.sample_logsheet_detail');
 		return $this->db->affected_rows();
 	}
 
-	public function deleteLogsheetDetailDetail($param)
-	{
+	public function deleteLogsheetDetailDetail($param){
 		if (isset($param['id_logsheet'])) $this->db->where('id_logsheet', $param['id_logsheet']);
 		if (isset($param['id_logsheet_detail'])) $this->db->where('id_logsheet_detail', $param['id_logsheet_detail']);
 		$this->db->delete('sample.sample_logsheet_detail_detail');

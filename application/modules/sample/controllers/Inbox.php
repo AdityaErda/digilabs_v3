@@ -12,11 +12,9 @@
 	use Aspose\Words\Model\Requests\ConvertDocumentRequest;
 	use SebastianBergmann\Environment\Console;
 
-	class Inbox extends MY_Controller
-	{
+	class Inbox extends MY_Controller{
 
-		public function __construct()
-		{
+		public function __construct(){
 			parent::__construct();
 			isLogin();
 			$this->load->model('master/M_perhitungan_sample');
@@ -30,24 +28,18 @@
 			$this->load->model('sample/M_nomor');
 		}
 
-		public function index()
-		{
+		public function index(){
 			$isi['judul'] = 'Inbox';
 			$data = $this->session->userdata();
 			$data['id_sidebar'] = $this->input->get('id_sidebar');
 			$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 			// $data['tipe'] = $this->input->get('tipe');
 
-			$this->load->view('tampilan/header', $isi);
-			$this->load->view('tampilan/sidebar', $data);
-			$this->load->view('sample/inbox');
-			$this->load->view('tampilan/footer');
-			$this->load->view('sample/inbox_js');
+			$this->template->template_master('sample/inbox',$isi,$data);
 		}
 
 		/* Proses */
-		public function procesInbox()
-		{
+		public function procesInbox(){
 			$isi['judul'] = 'Inbox';
 			$data = $this->session->userdata();
 			$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -59,20 +51,15 @@
 			// $param['transaksi_status'] = anti_inject($this->input->get_post('transaksi_status'));
 			$param['transaksi_detail_status'] = anti_inject($this->input->get_post('transaksi_detail_status'));
 
-			$result['inbox'] = $this->M_request->getRequestAll($param);
-			$result['inbox_detail'] = $this->M_request->getRequestDetail($param);
-			$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-			$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+			$data['inbox'] = $this->M_request->getRequestAll($param);
+			$data['inbox_detail'] = $this->M_request->getRequestDetail($param);
+			$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+			$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
 
-			$this->load->view('tampilan/header', $isi);
-			$this->load->view('tampilan/sidebar', $data);
-			$this->load->view('sample/inbox_proces', $result);
-			$this->load->view('tampilan/footer');
-			$this->load->view('sample/inbox_proces_js');
+			$this->template->template_master('sample/inbox_proces',$isi,$data);
 		}
 
-		public function procesLogSheet()
-		{
+		public function procesLogSheet(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Lembar Kerja / Log Sheet';
@@ -89,27 +76,22 @@
 			$param['id_logsheet_template'] = $this->input->get_post('template_logsheet_id');
 			$param['logsheet_id'] = $this->input->get_post('logsheet_id');
 
-			$result['inbox'] = $this->M_request->getRequestAll($param);
-			$result['inbox_detail'] = $this->M_request->getRequestDetail($param);
-			$result['logsheet'] = $this->M_inbox->getLogsheet($param);
-			$result['template_logsheet'] = $this->M_template_logsheet->getDetailLogsheet($param);
-			$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-			$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
-			$result['pengambil_sample'] = $this->M_sample_jenis->getPengambil($param);
+			$data['inbox'] = $this->M_request->getRequestAll($param);
+			$data['inbox_detail'] = $this->M_request->getRequestDetail($param);
+			$data['logsheet'] = $this->M_inbox->getLogsheet($param);
+			$data['template_logsheet'] = $this->M_template_logsheet->getDetailLogsheet($param);
+			$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+			$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+			$data['pengambil_sample'] = $this->M_sample_jenis->getPengambil($param);
 
 
 			$template = $this->M_template_logsheet->getTemplateLogsheet($param);
 			// kuery menentukan template
 
-			$this->load->view('tampilan/header', $isi);
-			$this->load->view('tampilan/sidebar', $data);
-			$this->load->view('sample/logsheet_single/logsheet_proces', $result);
-			$this->load->view('tampilan/footer');
-			$this->load->view('sample/logsheet_single/logsheet_proces_js');
+			$this->template->template_master('sample/logsheet_single/logsheet_proces',$isi,$data);
 		}
 
-		public function viewLogSheet()
-		{
+		public function viewLogSheet(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Lembar Kerja / Log Sheet';
@@ -125,27 +107,21 @@
 			$param['template_logsheet_id'] = anti_inject($this->input->get_post('template_logsheet_id'));
 			$param['logsheet_id'] = $this->input->get_post('logsheet_id');
 
-			$result['inbox'] = $this->M_request->getRequestAll($param);
-			$result['inbox_detail'] = $this->M_request->getRequestDetail($param);
+			$data['inbox'] = $this->M_request->getRequestAll($param);
+			$data['inbox_detail'] = $this->M_request->getRequestDetail($param);
 
-			$result['logsheet'] = $this->M_inbox->getLogsheet($param);
-			$result['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
+			$data['logsheet'] = $this->M_inbox->getLogsheet($param);
+			$data['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
 
-			$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-			$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+			$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+			$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
 
 			$template = $this->M_template_logsheet->getTemplateLogsheet($param);
 
-
-			$this->load->view('tampilan/header', $isi);
-			$this->load->view('tampilan/sidebar', $data);
-			$this->load->view('sample/logsheet_single/logsheet_view', $result);
-			$this->load->view('tampilan/footer');
-			$this->load->view('sample/logsheet_single/logsheet_view_js');
+			$this->template->template_master('sample/logsheet_single/logsheet_view',$isi,$data);
 		}
 
-		public function editLogSheet()
-		{
+		public function editLogSheet(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Lembar Kerja / Log Sheet';
@@ -161,27 +137,21 @@
 			$param['template_logsheet_id'] = anti_inject($this->input->get_post('template_logsheet_id'));
 			$param['logsheet_id'] = $this->input->get_post('logsheet_id');
 
-			$result['inbox'] = $this->M_request->getRequestAll($param);
-			$result['inbox_detail'] = $this->M_request->getRequestDetail($param);
+			$data['inbox'] = $this->M_request->getRequestAll($param);
+			$data['inbox_detail'] = $this->M_request->getRequestDetail($param);
 
-			$result['logsheet'] = $this->M_inbox->getLogsheet($param);
-			$result['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
+			$data['logsheet'] = $this->M_inbox->getLogsheet($param);
+			$data['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
 
-			$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-			$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+			$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+			$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
 
 			$template = $this->M_template_logsheet->getTemplateLogsheet($param);
 
-
-			$this->load->view('tampilan/header', $isi);
-			$this->load->view('tampilan/sidebar', $data);
-			$this->load->view('sample/logsheet_single/logsheet_edit', $result);
-			$this->load->view('tampilan/footer');
-			$this->load->view('sample/logsheet_single/logsheet_edit_js');
+			$this->template->template_master('sample/logsheet_single/logsheet_edit',$isi,$data);
 		}
 
-		public function draftLogSheet()
-		{
+		public function draftLogSheet(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Preview Lembar Kerja / Log Sheet';
@@ -199,26 +169,20 @@
 
 			$param['logsheet_id'] = $this->input->get_post('logsheet_id');
 
-			$result['inbox'] = $this->M_request->getRequestAll($param);
-			$result['inbox_detail'] = $this->M_request->getRequestDetail($param);
-			$result['logsheet'] = $this->M_inbox->getLogsheet($param);
-			$result['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
-			$result['detail_logsheet'] = $this->M_template_logsheet->getDetailLogsheet($param);
-			$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-			$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+			$data['inbox'] = $this->M_request->getRequestAll($param);
+			$data['inbox_detail'] = $this->M_request->getRequestDetail($param);
+			$data['logsheet'] = $this->M_inbox->getLogsheet($param);
+			$data['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
+			$data['detail_logsheet'] = $this->M_template_logsheet->getDetailLogsheet($param);
+			$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+			$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
 
 			$template = $this->M_template_logsheet->getTemplateLogsheet($param);
 
-
-			$this->load->view('tampilan/header', $isi);
-			$this->load->view('tampilan/sidebar', $data);
-			$this->load->view('sample/logsheet_single/logsheet_draft', $result);
-			$this->load->view('tampilan/footer');
-			$this->load->view('sample/logsheet_single/logsheet_draft_js');
+			$this->template->template_master('sample/logsheet_single/logsheet_draft',$isi,$data);
 		}
 
-		public function reviewLogSheet()
-		{
+		public function reviewLogSheet(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Konsep Lembar Kerja / Log Sheet';
@@ -235,28 +199,22 @@
 			$param['id_logsheet_template'] = anti_inject($this->input->get_post('template_logsheet_id'));
 			$param['logsheet_id'] = $this->input->get_post('logsheet_id');
 
-			$result['inbox'] = $this->M_request->getRequestAll($param);
-			$result['inbox_detail'] = $this->M_request->getRequestDetail($param);
+			$data['inbox'] = $this->M_request->getRequestAll($param);
+			$data['inbox_detail'] = $this->M_request->getRequestDetail($param);
 
-			$result['detail_logsheet'] = $this->M_template_logsheet->getDetailLogsheet($param);
-			$result['logsheet'] = $this->M_inbox->getLogsheet($param);
-			$result['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
+			$data['detail_logsheet'] = $this->M_template_logsheet->getDetailLogsheet($param);
+			$data['logsheet'] = $this->M_inbox->getLogsheet($param);
+			$data['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
 
-			$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-			$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+			$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+			$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
 
 			$template = $this->M_template_logsheet->getTemplateLogsheet($param);
 
-
-			$this->load->view('tampilan/header', $isi);
-			$this->load->view('tampilan/sidebar', $data);
-			$this->load->view('sample/logsheet_single/logsheet_review', $result);
-			$this->load->view('tampilan/footer');
-			$this->load->view('sample/logsheet_single/logsheet_review_js');
+			$this->template->template_master('sample/logsheet_single/logsheet_review',$isi,$data);
 		}
 
-		public function reviewSertifikat()
-		{
+		public function reviewSertifikat(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Konsep Sertifikat';
@@ -272,30 +230,24 @@
 			$param['template_logsheet_id'] = anti_inject($this->input->get_post('template_logsheet_id'));
 			$param['logsheet_id'] = $this->input->get_post('logsheet_id');
 
-			$result['inbox'] = $this->M_request->getRequestAll($param);
-			$result['inbox_detail'] = $this->M_request->getRequestDetail($param);
+			$data['inbox'] = $this->M_request->getRequestAll($param);
+			$data['inbox_detail'] = $this->M_request->getRequestDetail($param);
 
-			$result['logsheet'] = $this->M_inbox->getLogsheet($param);
+			$data['logsheet'] = $this->M_inbox->getLogsheet($param);
 
-			$result['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
+			$data['logsheet_detail'] = $this->M_inbox->getLogsheetDetail($param);
 
 
-			$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-			$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+			$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+			$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
 
 			$template = $this->M_template_logsheet->getTemplateLogsheet($param);
 
-
-			$this->load->view('tampilan/header', $isi);
-			$this->load->view('tampilan/sidebar', $data);
-			$this->load->view('sample/sertifikat_review', $result);
-			$this->load->view('tampilan/footer');
-			$this->load->view('sample/sertifikat_review_js');
+			$this->template->template_master('sample/sertifikat_review',$isi,$data);
 		}
 
 
-		public function cetakLogSheet()
-		{
+		public function cetakLogSheet(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Lembar Kerja / Log Sheet';
@@ -331,8 +283,7 @@
 			// $this->load->view('sample/cetak/view_logsheet_js');
 		}
 
-		public function cetakSertifikat()
-		{
+		public function cetakSertifikat(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Lembar Kerja / Log Sheet';
@@ -368,8 +319,7 @@
 			// $this->load->view('sample/cetak/view_logsheet_js');
 		}
 
-		public function cetakKonsep()
-		{
+		public function cetakKonsep(){
 			$this->load->model('master/M_template_logsheet');
 
 			$isi['judul'] = 'Lembar Kerja / Log Sheet';
@@ -402,8 +352,7 @@
 			$this->load->view('sample/cetak/cetak_konsep', $result);
 		}
 
-		public function cetakSertifikatSingle()
-		{
+		public function cetakSertifikatSingle(){
 			$this->load->model('master/M_template_logsheet');
 
 			// $isi['judul'] = 'Konsep Lembar Kerja / Log Sheet';
@@ -434,8 +383,7 @@
 		}
 
 		/* GET */
-		public function getInbox()
-		{
+		public function getInbox(){
 			$session = $this->session->userdata();
 
 			if ($this->input->get('id_transaksi')) {
@@ -498,8 +446,7 @@
 		}
 
 		// History
-		public function getHistory()
-		{
+		public function getHistory(){
 			$param['id_transaksi'] = $this->input->get_post('id_transaksi');
 
 			$data = $this->M_inbox->getHistory($param);
@@ -508,8 +455,7 @@
 		}
 		// HIstory
 
-		public function getRequestDashboard()
-		{
+		public function getRequestDashboard(){
 			$isi = $this->session->userdata();
 			// print_r($isi);
 			if ($this->input->get('tgl_cari')) $tgl = explode(' - ', $this->input->get('tgl_cari'));
@@ -547,8 +493,7 @@
 			echo json_encode($data);
 		}
 
-		public function getRumusList()
-		{
+		public function getRumusList(){
 			$list['results'] = array();
 
 			$param['param_search'] = anti_inject($this->input->get_post('param_search'));
@@ -565,15 +510,13 @@
 			echo json_encode($list);
 		}
 
-		public function getLogSheet()
-		{
+		public function getLogSheet(){
 			$param['logsheet_id'] = $this->input->get('logsheet_id');
 			$data = $this->M_inbox->getLogsheet($param);
 			echo json_encode($data);
 		}
 
-		public function getinboxDetail()
-		{
+		public function getinboxDetail(){
 			$param1['transaksi_id'] = $this->input->get_post('transaksi_id');
 			$param['transaksi_non_rutin_id'] = $this->input->get_post('transaksi_non_rutin_id');
 			$param['jenis_id'] = $this->input->get_post('jenis_id');
@@ -596,8 +539,7 @@
 
 		/* INSERT */
 		/* Belum Diterima */
-		public function insertBelumDiterima()
-		{
+		public function insertBelumDiterima(){
 			$isi = $this->session->userdata();
 
 			/* Update Transaksi Detail */
@@ -645,8 +587,7 @@
 
 		/* Diterima */
 
-		public function insertDiterima()
-		{
+		public function insertDiterima(){
 			$isi = $this->session->userdata();
 
 			/* Update Transaksi Detail */
@@ -691,8 +632,7 @@
 		/* Diterima */
 
 		/* On Progress */
-		public function insertProgress()
-		{
+		public function insertProgress(){
 			$isi = $this->session->userdata();
 
 			/* Update Transaksi Detail */
@@ -738,8 +678,7 @@
 		/* On Progress */
 
 		/* Terbit Sertifikat */
-		public function insertTerbitSertifikat()
-		{
+		public function insertTerbitSertifikat(){
 			$isi = $this->session->userdata();
 
 			/* Insert Transaksi Detail */
@@ -781,8 +720,7 @@
 		/* Terbit Sertifikat */
 
 		/* Tunda */
-		public function insertTunda()
-		{
+		public function insertTunda(){
 			$isi = $this->session->userdata();
 
 			/* Update Transaksi Detail */
@@ -829,8 +767,7 @@
 		/* Tunda */
 
 		// Batal
-		public function insertBatal()
-		{
+		public function insertBatal(){
 			$isi = $this->session->userdata();
 
 			/* Update Transaksi Detail */
@@ -872,8 +809,7 @@
 
 		// logsheet
 
-		public function insertDraftLogSheet1()
-		{
+		public function insertDraftLogSheet1(){
 			$session = $this->session->userdata();
 
 			$param_logsheet = array();
@@ -985,8 +921,7 @@
 			$this->M_inbox->updateTransaksiSeksiDisposisi($param_disposisi, $data_disposisi);
 		}
 
-		public function insertDraftLogSheetExcel()
-		{
+		public function insertDraftLogSheetExcel(){
 			error_reporting(0);
 			$session = $this->session->userdata();
 			$upload_path = FCPATH . './dokumen_logsheet/';
@@ -1150,8 +1085,7 @@
 			/*ekstensi file yang diperbolehkan*/
 		}
 
-		public function insertDraftLogSheet()
-		{
+		public function insertDraftLogSheet(){
 			$session = $this->session->userdata();
 
 			$id = $this->input->post('logsheet_id');
@@ -1165,8 +1099,7 @@
 			$this->M_inbox->updateLogSheet($id, $data);
 		}
 
-		public function insertOlahLogSheet()
-		{
+		public function insertOlahLogSheet(){
 			$session = $this->session->userdata();
 			// update status
 			$id = $this->input->post('transaksi_id');
@@ -1211,8 +1144,7 @@
 		}
 
 
-		public function insertLogSheet()
-		{
+		public function insertLogSheet(){
 			$session = $this->session->userdata();
 
 			$id_detail_update = $this->input->get_post('transaksi_detail_id_temp');
@@ -1294,8 +1226,7 @@
 			$this->M_inbox->updateTransaksiSeksiDisposisi($param_disposisi, $data_disposisi);
 		}
 
-		public function insertApproveKonsepLogSheet()
-		{
+		public function insertApproveKonsepLogSheet(){
 			$session = $this->session->userdata();
 
 			/* Penciptaan Dokumen DOCX */
@@ -1458,8 +1389,7 @@
 			/* Update Logsheet */
 		}
 
-		public function insertReviewLogSheet()
-		{
+		public function insertReviewLogSheet(){
 			$session = $this->session->userdata();
 			// update status
 			// $id_logsheet = $this->input->get_post('logsheet_id');
@@ -1499,8 +1429,7 @@
 			$this->M_inbox->updateTransaksiSeksiDisposisi($param_disposisi, $data_disposisi);
 		}
 
-		public function insertApproveSertifikat()
-		{
+		public function insertApproveSertifikat(){
 			$session = $this->session->userdata();
 
 			$id_logsheet = $this->input->get_post('logsheet_id');
@@ -1509,8 +1438,7 @@
 			$this->M_inbox->updateLogSheet($id_logsheet, $data_logsheet);
 		}
 
-		public function insertDOF()
-		{
+		public function insertDOF(){
 
 			$this->load->library('PdfGenerator');
 			$session = $this->session->userdata();
@@ -1712,15 +1640,13 @@
 
 		// logsheet
 
-		public function pdf_create($isi = null)
-		{
+		public function pdf_create($isi = null){
 			$isi_html['isi'] = $isi;
 			$this->load->view('sample/mamas', $isi_html);
 		}
 
 		// closed
-		public function insertClossed()
-		{
+		public function insertClossed(){
 
 			$isi = $this->session->userdata();
 
@@ -1837,8 +1763,7 @@
 			$this->M_inbox->updateTransaksiSeksiDisposisi($param_disposisi, $data_disposisi);
 		}
 
-		public function insertClossedRutin()
-		{
+		public function insertClossedRutin(){
 
 			$isi = $this->session->userdata();
 
@@ -1958,8 +1883,7 @@
 			// $this->M_inbox->updateTransaksiSeksiDisposisi($param_disposisi, $data_disposisi);
 		}
 
-		public function insertClossedNonLetter()
-		{
+		public function insertClossedNonLetter(){
 			$isi = $this->session->userdata();
 
 			/* Update Transaksi Detail */
@@ -2009,8 +1933,7 @@
 
 
 		// Alihkan
-		public function insertAlihkan()
-		{
+		public function insertAlihkan(){
 
 			$session = $this->session->userdata();
 
@@ -2055,8 +1978,7 @@
 		}
 		// Alihkan
 
-		public function storeLogsheetHistory()
-		{
+		public function storeLogsheetHistory(){
 
 			$sample_logsheet_id = $this->input->get_post('logsheet_id');
 			$sample_transaksi_id = $this->input->get_post('transaksi_id');
@@ -2070,8 +1992,7 @@
 		}
 
 		// reset logsheet
-		public function insertReset()
-		{
+		public function insertReset(){
 			$session = $this->session->userdata();
 
 			$param['transaksi_id'] = $this->input->get_post('transaksi_id');
@@ -2140,8 +2061,7 @@
 		// reset logsheet
 
 		// edit surat
-		public function insertEditSurat()
-		{
+		public function insertEditSurat(){
 			$session = $this->session->userdata();
 
 			$param['typeId'] = $this->input->get_post('typeId');
@@ -2376,8 +2296,7 @@
 
 		/* INSERT */
 
-		public function view_dokumen()
-		{
+		public function view_dokumen(){
 			try {
 				$dataFile = 'template.docx';
 				// $dataFile = $this->input->post('transaksi_detail_id_temp').'.docx';
@@ -2418,8 +2337,7 @@
 
 
 		/* Reject Kasie */
-		public function rejectKasie()
-		{
+		public function rejectKasie(){
 			$isi = $this->session->userdata();
 
 			/* Update Transaksi Detail */
@@ -2468,8 +2386,7 @@
 		/* Reject Kasie */
 
 		/* Cek Logsheet */
-		public function cekLogsheet()
-		{
+		public function cekLogsheet(){
 			$data = $this->db->query("SELECT *,
 			to_char(logsheet_tgl_terima,'DD-MM-YYYY') as logsheet_tgl_terima_indo,
 			to_char(logsheet_tgl_uji,'DD-MM-YYYY') as logsheet_tgl_uji_indo,
@@ -2481,8 +2398,7 @@
 		/* Cek Logsheet */
 
 		/* Cek Logsheet Detail */
-		public function cekLogsheetDetail()
-		{
+		public function cekLogsheetDetail(){
 			$data = $this->db->query("SELECT * FROM sample.sample_logsheet_detail WHERE logsheet_id = '" . $this->input->get('logsheet_id') . "' AND id_rumus = '" . $this->input->get('rumus_id') . "' ORDER BY id_rumus ASC,logsheet_detail_urut ASC")->result_array();
 
 			echo json_encode($data);
@@ -2490,8 +2406,7 @@
 		/* Cek Logsheet Detail */
 
 		/* Cek Logsheet Detail Detail */
-		public function cekLogsheetDetailDetail()
-		{
+		public function cekLogsheetDetailDetail(){
 			$data = $this->db->query("SELECT * FROM sample.sample_logsheet_detail_detail WHERE 1=1 AND id_logsheet_detail = '" . $this->input->get('id_logsheet_detail') . "' ORDER BY rumus_detail_urut ASC,id_logsheet_detail ASC")->result_array();
 
 			echo json_encode($data);

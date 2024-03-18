@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_library extends CI_Model
-{
+class M_library extends CI_Model{
 	/* GET */
-	public function getLibrary($data = null, $where = null)
-	{
+	public function getLibrary($data = null, $where = null){
 		$this->db->select("a.transaksi_pic_pengirim,q.user_nama as pic_nama,a.transaksi_id, a.transaksi_tipe, a.transaksi_status, a.transaksi_nomor,a.transaksi_sifat,a.transaksi_kecepatan_tanggap,a.transaksi_judul, b.*, c.jenis_nama, d.peminta_jasa_nama, e.sample_pekerjaan_nama, a.transaksi_tgl, f.identitas_nama, to_char(transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_pengajuan_baru, to_char(transaksi_detail_tgl_memo, 'DD-MM-YYYY') AS transaksi_detail_tgl_memo_baru, to_char(transaksi_detail_tgl_estimasi, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_estimasi_baru,a.transaksi_id_template_keterangan,g.*,h.*,i.logsheet_id,i.id_template_logsheet,i.id_dokumen_tipe,i.id_dokumen_template,i.dokumen_template_file,j.document_type_id,j.document_type_name,k.document_template_id,k.document_template_name,l.klasifikasi_id,l.klasifikasi_nama, m.user_detail_id as drafter_id, m.user_detail_userName as drafter_nik, m.user_detail_name as drafter_nama, m.user_detail_posCode as drafter_poscode, n.user_detail_id as reviewer_id, n.user_detail_userName as reviewer_nik, n.user_detail_name as reviewer_nama, n.user_detail_posCode as reviewer_poscode, o.user_detail_id as approver_id, o.user_detail_userName as approver_nik, o.user_detail_name as approver_nama, o.user_detail_posCode as approver_poscode, p.user_detail_id as tujuan_id, p.user_detail_userName as tujuan_nik, p.user_detail_name as tujuan_nama, p.user_detail_posCode as tujuan_poscode,id_transaksi_rutin,seksi_nama,b.transaksi_detail_no_surat,a.transaksi_nomor,CAST(transaksi_detail_status as INT),a.when_create");
 		$this->db->distinct();
 		$this->db->from('sample.sample_transaksi a');
@@ -59,8 +57,7 @@ class M_library extends CI_Model
 	}
 
 
-	public function getLibraryDetail($data = null)
-	{
+	public function getLibraryDetail($data = null){
 		$this->db->select("a.*,b.jenis_nama,c.identitas_nama, to_char(transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_pengajuan_baru, to_char(transaksi_detail_tgl_memo, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_memo_baru, to_char(transaksi_detail_tgl_estimasi, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_estimasi_baru, to_char(a.when_create, 'DD-MM-YYYY HH24:MI:SS') AS when_create_baru,transaksi_detail_note");
 		$this->db->from('sample.sample_transaksi_detail a');
 		$this->db->join('sample.sample_jenis b', 'b.jenis_id = a.jenis_id', 'left');
@@ -80,8 +77,7 @@ class M_library extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getHistoryLogSheet($data = null)
-	{
+	public function getHistoryLogSheet($data = null){
 		$this->db->select('a.history_logsheet_when, a.sample_history_detail, a.sample_history_isi, a.sample_history_hasil, a.history_logsheet_who');
 		$this->db->from('global.global_history_logsheet a');
 		$this->db->join('sample.sample_logsheet b', 'b.id_transaksi = a.sample_transaksi_id', 'left');
@@ -104,27 +100,7 @@ class M_library extends CI_Model
 		return $sql->result_array();
 	}
 
-	// public function getDetailProgress($value = '')
-	// {
-	// 	$this->db->select('b.transaksi_judul,b.transaksi_status,c.peminta_jasa_nama,d.user_nama as pic_nama,a.sample_log_status,a.sample_log_keterangan,a.sample_log_who,a.sample_log_when');
-	// 	$this->db->from('sample.sample_log a');
-	// 	$this->db->join('sample.sample_transaksi b', 'b.id_transaksi_non_rutin = a.sample_log_id_non_rutin', 'left');
-	// 	$this->db->join('sample.sample_peminta_jasa c', 'c.peminta_jasa_id = b.transaksi_id_peminta_jasa', 'left');
-	// 	$this->db->join('global.global_api_user d', 'd.user_nik_sap = b.transaksi_pic_pengirim_id', 'left');
-
-	// 	if (isset($value['transaksi_non_rutin_id'])) $this->db->where('id_transaksi_non_rutin', $value['transaksi_non_rutin_id']);
-	// 	if (isset($value['transaksi_id'])) $this->db->where('transaksi_id', $value['transaksi_id']);
-	// 	if (isset($value['transaksi_detail_id'])) $this->db->where('transaksi_detail_id', $value['transaksi_detail_id']);
-
-	// 	$this->db->order_by('sample_log_status', 'asc');
-
-	// 	$sql = $this->db->get();
-
-	// 	return $sql->result_array();
-	// }
-
-	public function getLibraryDisposisi($data = null)
-	{
+	public function getLibraryDisposisi($data = null){
 		$this->db->select("b.seksi_nama");
 		$this->db->from('sample.sample_seksi_disposisi a');
 		$this->db->join('global.global_seksi b ', 'a.id_seksi = b.seksi_id', 'left');
@@ -135,8 +111,7 @@ class M_library extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getLibraryEdit($data = null)
-	{
+	public function getLibraryEdit($data = null){
 		$this->db->select('*');
 		$this->db->from('sample.sample_transaksi_detail');
 		if (isset($data['transaksi_detail_id'])) $this->db->where('transaksi_detail_id', $data['transaksi_detail_id']);
@@ -144,15 +119,7 @@ class M_library extends CI_Model
 		return (isset($data['transaksi_detail_id'])) ? $query->row_array() : $query->result_array();
 	}
 
-	// public function getHistoryLogSheet($data = null)
-	// {
-	// 	$this->db->select('*');
-	// 	$this->db->from('global.global_history_logsheet');
-
-	// }
-
-	public function getDOFIdentitas($data = '')
-	{
+	public function getDOFIdentitas($data = ''){
 		if (isset($data['transaksi_id'])) $this->db->where('a.transaksi_id', $data['transaksi_id']);
 		if (isset($data['transaksi_detail_id'])) $this->db->where('a.transaksi_detail_id', $data['transaksi_detail_id']);
 		if (isset($data['transaksi_detail_group'])) $this->db->where('a.transaksi_detail_group', $data['transaksi_detail_group']);
@@ -203,8 +170,7 @@ class M_library extends CI_Model
 	/* GET */
 
 	// UPDATE
-	public function  updateLibraryEdit($id, $data = null)
-	{
+	public function  updateLibraryEdit($id, $data = null){
 		$this->db->where('transaksi_detail_id', $id);
 		$this->db->update('sample.sample_transaksi_detail', $data);
 		return $this->db->affected_rows();

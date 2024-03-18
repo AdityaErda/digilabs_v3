@@ -25,15 +25,16 @@ class Approved extends MY_Controller
 		// $this->checkLogin();
 		$isi['judul'] = 'Sample Approved';
 		$data = $this->session->userdata();
+		$data['session'] = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 		// $data['tipe'] = $this->input->get('tipe');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/approved');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/approved_js');
+		$this->db->where('user_poscode', 'E44000000');
+		$this->db->from('global.global_api_user');
+		$data['vp_ppk'] = $this->db->get()->row_array();
+
+		$this->template->template_master('sample/approved',$isi,$data)
 	}
 
 	// Proccess

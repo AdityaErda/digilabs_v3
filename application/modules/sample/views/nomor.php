@@ -1,4 +1,3 @@
-<?php $sesi = $this->session->userdata(); ?>
 <style>
   .modal-body {
     max-height: calc(100vh - 210px);

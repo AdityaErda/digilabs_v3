@@ -1,10 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_nomor extends CI_Model
-{
-	public function getNomor($data = null, $where = null)
-	{
+class M_nomor extends CI_Model{
+	public function getNomor($data = null, $where = null){
 		$this->db->select("a.*, to_char(transaksi_rutin_tgl, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_rutin_tgl_baru, SUM(CAST(c.transaksi_detail_status as int)) AS status,c.transaksi_detail_status");
 		$this->db->from('sample.sample_transaksi_rutin a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_rutin_id = b.id_transaksi_rutin', 'left');
@@ -30,8 +28,7 @@ class M_nomor extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getNomorAuto($data = null, $where = null)
-	{
+	public function getNomorAuto($data = null, $where = null){
 		$this->db->select("a.*, to_char(transaksi_rutin_tgl, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_rutin_tgl_baru, SUM(CAST(c.transaksi_detail_status as int)) AS status,c.transaksi_detail_status");
 		$this->db->from('sample.sample_transaksi_rutin a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_rutin_id = b.id_transaksi_rutin', 'left');
@@ -54,8 +51,7 @@ class M_nomor extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getNomorById($data = null, $where = null)
-	{
+	public function getNomorById($data = null, $where = null){
 		// $this->db->select('a.*,b.when_create,b.who_create,b.transaksi_nomor,c.peminta_jasa_id,c.jenis_id,c.jenis_pekerjaan_id');
 
 		$this->db->select("a.*, to_char(transaksi_rutin_tgl, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_rutin_tgl_baru, SUM(CAST(c.transaksi_detail_status as int)) AS status");
@@ -87,8 +83,7 @@ class M_nomor extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getNomorAll($param = null)
-	{
+	public function getNomorAll($param = null){
 		if (isset($param['transaksi_rutin_id']))
 			$this->db->where('a.id_transaksi_rutin', $param['transaksi_rutin_id']);
 
@@ -107,8 +102,7 @@ class M_nomor extends CI_Model
 	}
 
 
-	public function getRumusAll($param = null)
-	{
+	public function getRumusAll($param = null){
 		if (isset($param['jenis_id']))
 			$this->db->where('jenis_id', $param['jenis_id']);
 
@@ -121,8 +115,7 @@ class M_nomor extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getLogsheetGroup($param = null)
-	{
+	public function getLogsheetGroup($param = null){
 		if (isset($param['transaksi_rutin_id']))
 			$this->db->where('id_nomor_rutin', $param['transaksi_rutin_id']);
 
@@ -137,8 +130,7 @@ class M_nomor extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getLogsheet($param = null)
-	{
+	public function getLogsheet($param = null){
 		if (isset($param['transaksi_rutin_id']))
 			$this->db->where('id_nomor_rutin', $param['transaksi_rutin_id']);
 
@@ -155,8 +147,7 @@ class M_nomor extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getLogsheetGroupIdentitas($param = null)
-	{
+	public function getLogsheetGroupIdentitas($param = null){
 		if (isset($param['transaksi_rutin_id']))
 			$this->db->where('id_nomor_rutin', $param['transaksi_rutin_id']);
 		// $this->db->order_by('transaksi_nomor', 'asc');
@@ -176,8 +167,7 @@ class M_nomor extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getLogsheetDetail($param = null)
-	{
+	public function getLogsheetDetail($param = null){
 		if (isset($param['logsheet_id'])) $this->db->where('logsheet_id', $param['logsheet_id']);
 
 		$this->db->order_by('logsheet_detail_urut', 'asc');
@@ -195,8 +185,7 @@ class M_nomor extends CI_Model
 		}
 	}
 
-	public function getLogsheetDetailDetail($param = null)
-	{
+	public function getLogsheetDetailDetail($param = null){
 		if (isset($param['logsheet_detail_id'])) $this->db->where('id_logsheet_detail', $param['logsheet_detail_id']);
 		if (isset($param['logsheet_id'])) $this->db->where('id_logsheet', $param['logsheet_id']);
 		if (isset($param['rumus_id'])) $this->db->where('id_rumus', $param['rumus_id']);
@@ -216,8 +205,7 @@ class M_nomor extends CI_Model
 		}
 	}
 
-	public function getNomorDOF($param = null)
-	{
+	public function getNomorDOF($param = null){
 		if (isset($param['transaksi_rutin_id']))
 			$this->db->where('id_nomor_rutin', $param['transaksi_rutin_id']);
 
@@ -242,8 +230,7 @@ class M_nomor extends CI_Model
 	}
 
 
-	public function getNomorMax()
-	{
+	public function getNomorMax(){
 		$this->db->select('MAX( CAST( transaksi_urut AS "numeric") ) as isi');
 		$this->db->from('sample.sample_transaksi');
 		$this->db->where('EXTRACT(YEAR FROM transaksi_tgl) = ' . date('Y'));
@@ -252,8 +239,7 @@ class M_nomor extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getNomorDetailMax()
-	{
+	public function getNomorDetailMax(){
 		$this->db->select('MAX( CAST( transaksi_detail_urut AS "numeric") ) as isi');
 		$this->db->from('sample.sample_transaksi_detail');
 		$this->db->where('EXTRACT(YEAR FROM transaksi_detail_tgl_pengajuan) = ' . date('Y'));
@@ -262,8 +248,7 @@ class M_nomor extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getNomorDetailBySeksiMax($data = null)
-	{
+	public function getNomorDetailBySeksiMax($data = null){
 		$this->db->select('MAX( CAST( transaksi_detail_urut AS "numeric") ) as isi');
 		$this->db->from('sample.sample_transaksi_detail');
 		$this->db->where('EXTRACT(YEAR FROM transaksi_detail_tgl_pengajuan) = ' . date('Y'));
@@ -273,8 +258,7 @@ class M_nomor extends CI_Model
 		return $sql->row_array();
 	}
 
-	public function getNomorDetail($data = null)
-	{
+	public function getNomorDetail($data = null){
 		$this->db->select("a.transaksi_id, a.transaksi_tipe, a.transaksi_status, a.transaksi_nomor, b.*, c.jenis_nama, d.peminta_jasa_nama, e.sample_pekerjaan_nama, f.identitas_nama, to_char(transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_pengajuan_baru, to_char(transaksi_detail_tgl_memo, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_memo_baru, to_char(transaksi_detail_tgl_estimasi, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_estimasi_baru, transaksi_detail_note,a.id_transaksi_rutin as transaksi_rutin_id");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.transaksi_id = b.transaksi_id AND a.id_transaksi_detail = b.transaksi_detail_id', 'left');
@@ -295,8 +279,7 @@ class M_nomor extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function getNomorDetailGroup($data = null)
-	{
+	public function getNomorDetailGroup($data = null){
 		$this->db->select('a.*,b.when_create,b.who_create,b.transaksi_nomor,c.peminta_jasa_id,c.jenis_id,c.jenis_pekerjaan_id,d.jenis_nama,e.peminta_jasa_nama,f.sample_pekerjaan_nama,g.identitas_nama,count(*) as jumlah');
 		$this->db->from('sample.sample_transaksi_rutin a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_rutin_id = b.id_transaksi_rutin', 'left');
@@ -328,8 +311,7 @@ class M_nomor extends CI_Model
 	}
 
 	/* INSERT */
-	public function insertNomor($data)
-	{
+	public function insertNomor($data){
 		$this->db->insert('sample.sample_transaksi', $data);
 
 		return $this->db->affected_rows();
@@ -337,8 +319,7 @@ class M_nomor extends CI_Model
 	/* INSERT */
 
 	/* INSERT DETAIL */
-	public function insertNomorDetail($data)
-	{
+	public function insertNomorDetail($data){
 		$this->db->insert('sample.sample_transaksi_detail', $data);
 
 		return $this->db->affected_rows();
@@ -346,8 +327,7 @@ class M_nomor extends CI_Model
 	/* INSERT DETAIL */
 
 	/* INSERT RUTIN */
-	public function insertNomorRutin($data)
-	{
+	public function insertNomorRutin($data){
 		$this->db->insert('sample.sample_transaksi_rutin', $data);
 
 		return $this->db->affected_rows();
@@ -355,8 +335,7 @@ class M_nomor extends CI_Model
 	/* INSERT RUTIN */
 
 	/* DELETE RUTIN */
-	public function deleteNomorRutin($id)
-	{
+	public function deleteNomorRutin($id){
 		$this->db->where('transaksi_rutin_id', $id);
 		$this->db->delete('sample.sample_transaksi_rutin');
 
@@ -365,8 +344,7 @@ class M_nomor extends CI_Model
 	/* DELETE RUTIN */
 
 	/* DELETE EASYUI */
-	public function deleteNomorEasyui($id)
-	{
+	public function deleteNomorEasyui($id){
 		$this->db->where('transaksi_id', $id);
 		$this->db->delete('sample.sample_transaksi');
 
@@ -380,8 +358,7 @@ class M_nomor extends CI_Model
 	/* DELETE EASYUI */
 
 	/* UPDATE DETAIL */
-	public function updateNomorDetail($data, $id)
-	{
+	public function updateNomorDetail($data, $id){
 		$this->db->set($data);
 		$this->db->where('transaksi_detail_id', $id);
 		$this->db->update('sample.sample_transaksi_detail');
@@ -391,15 +368,13 @@ class M_nomor extends CI_Model
 	/* UPDATE DETAIL */
 
 	/**/
-	public function deleteNomor($data,$id){
-		$this->db->where('transaksi_id', $id);
+	public function deleteNomor($data,$id){	$this->db->where('transaksi_id', $id);
 		$this->db->delete('sample.sample_transaksi');
 	}
 	/**/
 
 	/* UPDATE DETAIL */
-	public function deleteNomorDetail($data, $id)
-	{
+	public function deleteNomorDetail($data, $id){
 		// $this->db->set($data);
 		$this->db->where('transaksi_id', $id);
 		$this->db->delete('sample.sample_transaksi_detail');
@@ -409,8 +384,7 @@ class M_nomor extends CI_Model
 	/* UPDATE DETAIL */
 
 	/* UPDATE CLOSE */
-	public function updateClose($data, $id)
-	{
+	public function updateClose($data, $id){
 		$this->db->set($data);
 		$this->db->where('id_transaksi_rutin', $id);
 		$this->db->update('sample.sample_transaksi');
@@ -418,8 +392,7 @@ class M_nomor extends CI_Model
 	/* UPDATE CLOSE */
 
 	/*UPDATE CLOSE DETAIL */
-	public function updateCloseDetail($data, $id)
-	{
+	public function updateCloseDetail($data, $id){
 		$this->db->set($data);
 		$this->db->where('transaksi_id', $id);
 		$this->db->update('sample.sample_transaksi');
@@ -427,8 +400,7 @@ class M_nomor extends CI_Model
 	/*UPDATE CLOSE DETAIL */
 
 	/* UPDATE CLOSSED */
-	public function updateClossed($data)
-	{
+	public function updateClossed($data){
 		$this->db->query("UPDATE sample.sample_transaksi_detail a SET transaksi_detail_status = '6', transaksi_detail_no_surat = '" . $data['transaksi_detail_no_surat'] . "', transaksi_detail_file = '" . $data['transaksi_detail_file'] . "' FROM sample.sample_transaksi b WHERE a.transaksi_detail_id = b.id_transaksi_detail AND b.id_transaksi_rutin = '" . $data['id_transaksi_rutin'] . "'");
 
 		return $this->db->affected_rows();
@@ -436,8 +408,7 @@ class M_nomor extends CI_Model
 	/* UPDATE CLOSSED */
 
 	/* UPDATE CLOSSED DETAIL */
-	public function updateClossedDetail($data)
-	{
+	public function updateClossedDetail($data){
 		$this->db->query("UPDATE sample.sample_transaksi_detail a SET transaksi_detail_status = '6', transaksi_detail_no_surat = '" . $data['transaksi_detail_no_surat'] . "', transaksi_detail_file = '" . $data['transaksi_detail_file'] . "' FROM sample.sample_transaksi b WHERE a.transaksi_detail_id = b.id_transaksi_detail AND b.transaksi_id = '" . $data['id_transaksi'] . "'");
 
 		return $this->db->affected_rows();
@@ -445,35 +416,30 @@ class M_nomor extends CI_Model
 	/* UPDATE CLOSSED DETAIL */
 
 
-	public function updateNomorTransaksi($id, $data)
-	{
+	public function updateNomorTransaksi($id, $data){
 		$this->db->where('id_transaksi_rutin', $id);
 		$this->db->update('sample.sample_transaksi', $data);
 
 		return $this->db->affected_rows();
 	}
 
-	public function updateNomorTransaksiDetail($data)
-	{
+	public function updateNomorTransaksiDetail($data){
 		$this->db->query("UPDATE sample.sample_transaksi_detail a SET transaksi_detail_status = '" . $data['transaksi_detail_status'] . "' , when_create = '" . $data['when_create'] . "', who_create = '" . $data['who_create'] . "', who_seksi_create = '" . $data['who_seksi_create'] . "' FROM sample.sample_transaksi b WHERE a.transaksi_detail_id = b.id_transaksi_detail AND id_transaksi_rutin = '" . $data['id_transaksi_rutin'] . "' ");
 	}
 
-	public function updateNomorTransaksiSingle($id, $data)
-	{
+	public function updateNomorTransaksiSingle($id, $data){
 		$this->db->where('transaksi_id', $id);
 		$this->db->update('sample.sample_transaksi', $data);
 
 		return $this->db->affected_rows();
 	}
 
-	public function updateNomorTransaksiDetailSingle($data)
-	{
+	public function updateNomorTransaksiDetailSingle($data){
 		$this->db->query("UPDATE sample.sample_transaksi_detail a SET transaksi_detail_status = '" . $data['transaksi_detail_status'] . "' , when_create = '" . $data['when_create'] . "', who_create = '" . $data['who_create'] . "', who_seksi_create = '" . $data['who_seksi_create'] . "' FROM sample.sample_transaksi b WHERE a.transaksi_detail_id = b.id_transaksi_detail AND id_transaksi_rutin = '" . $data['id_transaksi_rutin'] . "' AND a.transaksi_id = '" . $data['id_transaksi'] . "'");
 	}
 
 	// UPDATE LOGSHEET
-	public function updateLogsheet($id, $data)
-	{
+	public function updateLogsheet($id, $data){
 		$this->db->where('id_nomor_rutin', $id);
 		$this->db->update('sample.sample_logsheet', $data);
 
@@ -482,8 +448,7 @@ class M_nomor extends CI_Model
 	// UPDATE LOGSHEET
 
 	/* GET EKSTERNAL */
-	public function getEksternal($data = NULL)
-	{
+	public function getEksternal($data = NULL){
 		$this->db->select('COUNT(*) AS total');
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_seksi_disposisi b', 'a.transaksi_id = b.id_transaksi', 'left');
@@ -497,8 +462,7 @@ class M_nomor extends CI_Model
 	/* GET EKSTERNAL */
 
 	/* GET INTERNAL */
-	public function getInternal($data = NULL)
-	{
+	public function getInternal($data = NULL){
 		$this->db->select('COUNT(*) AS total');
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_seksi_disposisi b', 'a.transaksi_id = b.id_transaksi', 'left');
@@ -512,8 +476,7 @@ class M_nomor extends CI_Model
 	/* GET INTERNAL */
 
 	/* GET RUTIN*/
-	public function getRutin($data = NULL)
-	{
+	public function getRutin($data = NULL){
 		$this->db->select("a.*, to_char(transaksi_rutin_tgl, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_rutin_tgl_baru, SUM(CAST(c.transaksi_detail_status as int)) AS status");
 		$this->db->from('sample.sample_transaksi_rutin a');
 		$this->db->join('sample.sample_transaksi b', 'a.transaksi_rutin_id = b.id_transaksi_rutin', 'left');
@@ -527,8 +490,7 @@ class M_nomor extends CI_Model
 	}
 	/* GET RUTIN*/
 
-	public function getNomorReject($data = null)
-	{
+	public function getNomorReject($data = null){
 		$this->db->select("a.transaksi_id, b.transaksi_detail_id");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.id_transaksi_detail = b.transaksi_detail_id', 'left');
@@ -540,23 +502,20 @@ class M_nomor extends CI_Model
 		return $sql->result_array();
 	}
 
-	public function insertReject($data)
-	{
+	public function insertReject($data){
 		$this->db->query("INSERT INTO sample.sample_transaksi_detail SELECT '" . $data['transaksi_detail_id'] . "', id_seksi, identitas_id, jenis_id, peminta_jasa_id, a.transaksi_id, transaksi_detail_pic_pengirim, transaksi_detail_ext_pengirim, transaksi_detail_jumlah, transaksi_detail_parameter, transaksi_detail_tgl_pengajuan, transaksi_detail_tgl_memo, transaksi_detail_no_memo, transaksi_detail_foto, transaksi_detail_tgl_estimasi, NULL, NULL, is_urgent, jenis_pekerjaan_id, '" . $data['when_create'] . "', '" . $data['who_create'] . "', '" . $data['transaksi_detail_note'] . "', '" . $data['transaksi_detail_status'] . "' FROM sample.sample_transaksi_detail a LEFT JOIN sample.sample_transaksi b ON a.transaksi_detail_id = b.id_transaksi_detail WHERE b.transaksi_id = '" . $data['transaksi_id'] . "'");
 
 		return $this->db->affected_rows();
 	}
 
-	public function Cancel($data = null)
-	{
+	public function Cancel($data = null){
 		$this->db->where('id_transaksi_rutin', $data['transaksi_rutin_id']);
 		$this->db->delete('sample.sample_transaksi');
 
 		return $this->db->affected_rows();
 	}
 
-	public function hapusNomorDetail($param = null)
-	{
+	public function hapusNomorDetail($param = null){
 		if (isset($param['transaksi_id']))
 			$this->db->where('transaksi_id', $param['transaksi_id']);
 		if (isset($param['transaksi_detail_id']))
@@ -567,8 +526,7 @@ class M_nomor extends CI_Model
 		return $this->db->affected_rows();
 	}
 
-	public function hapusNomor($param = null)
-	{
+	public function hapusNomor($param = null){
 		if (isset($param['transaksi_id']))
 			$this->db->where('transaksi_id', $param['transaksi_id']);
 		if (isset($param['transaksi_detail_id']))

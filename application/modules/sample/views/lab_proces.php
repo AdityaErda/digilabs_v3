@@ -3,12 +3,6 @@
     overflow: scroll !important;
   }
 </style>
-
-<?php
-$session = $this->session->userdata();
-$vp_ppk = $this->db->query("SELECT * FROM global.global_api_user WHERE user_poscode = 'E44000000'")->row_array();
-?>
-
 <!-- CONTAINER -->
 <div class="content-wrapper">
   <!-- Container Header -->

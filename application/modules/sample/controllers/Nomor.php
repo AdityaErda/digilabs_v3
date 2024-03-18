@@ -25,11 +25,9 @@ use PhpOffice\PhpWord\TemplateProcessor;
 // use PhpOffice\PhpWord\IOFactory;
 
 
-class Nomor extends MY_Controller
-{
+class Nomor extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		isLogin();
 		$this->load->model('sample/M_nomor');
@@ -40,22 +38,17 @@ class Nomor extends MY_Controller
 		$this->load->model('master/M_sample_pekerjaan');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Nomor Sample';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
+		$data['sesi'] = $this->session->userdata();
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/nomor');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/nomor_js');
+ 		$this->template->template_master('sample/nomor',$isi,$data);
 	}
 
-	public function logsheetMultipleNomor()
-	{
+	public function logsheetMultipleNomor(){
 		$isi['judul'] = 'Logsheet Nomor Sample';
 		$data = $this->session->userdata();
 		$session = $data;
@@ -81,8 +74,7 @@ class Nomor extends MY_Controller
 		$this->load->view('sample/logsheet_rutin/logsheet_multiple_js');
 	}
 
-	public function draftMultipleNomor()
-	{
+	public function draftMultipleNomor(){
 		$isi['judul'] = 'Logsheet Nomor Sample';
 		$data = $this->session->userdata();
 		$session = $data;
@@ -112,8 +104,7 @@ class Nomor extends MY_Controller
 		$this->load->view('sample/logsheet_rutin/draft_multiple_js');
 	}
 
-	public function reviewMultipleNomor()
-	{
+	public function reviewMultipleNomor(){
 		$isi['judul'] = 'Logsheet Nomor Sample';
 		$data = $this->session->userdata();
 		$session = $data;
@@ -143,8 +134,7 @@ class Nomor extends MY_Controller
 		$this->load->view('sample/logsheet_rutin/review_multiple_js');
 	}
 
-	public function cetakMultipleNomor()
-	{
+	public function cetakMultipleNomor(){
 		$data = $this->session->userdata();
 		$session = $data;
 		$param = array();
@@ -168,8 +158,7 @@ class Nomor extends MY_Controller
 		$this->load->view('sample/template/sertifikat_sample_rutin', $data);
 	}
 
-	public function cetakKonsepRutin()
-	{
+	public function cetakKonsepRutin(){
 		$this->load->model('master/M_template_logsheet');
 
 		$isi['judul'] = 'Lembar Kerja / Log Sheet';
@@ -202,8 +191,7 @@ class Nomor extends MY_Controller
 		$this->load->view('sample/cetak/cetak_konsep_rutin', $result);
 	}
 
-	public function getNomor()
-	{
+	public function getNomor(){
 		$isi = $this->session->userdata();
 
 		$datanya = array();
@@ -248,15 +236,13 @@ class Nomor extends MY_Controller
 		echo json_encode($datanya);
 	}
 
-	public function getNomorDOF()
-	{
+	public function getNomorDOF(){
 		$param['transaksi_rutin_id'] = $this->input->get_post('transaksi_rutin_id');
 		$data = $this->M_nomor->getNomorDOF($param);
 		echo json_encode($data);
 	}
 
-	public function getNomorDetail()
-	{
+	public function getNomorDetail(){
 		$param['transaksi_rutin_id'] = $this->input->get('transaksi_rutin_id');
 
 		$data = $this->M_nomor->getNomorDetail($param);
@@ -264,8 +250,7 @@ class Nomor extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function insertProses()
-	{
+	public function insertProses(){
 		$this->load->model('M_lab');
 		$isi = $this->session->userdata();
 		$tgl = date('Y-m-d H:i:s');
@@ -359,8 +344,7 @@ class Nomor extends MY_Controller
 		}
 	}
 
-	public function editEasyui()
-	{
+	public function editEasyui(){
 		$id = $this->input->post('transaksi_detail_id');
 		$data = array(
 			'transaksi_detail_tgl_pengajuan' => date('Y-m-d', strtotime($this->input->get_post('transaksi_detail_tgl_pengajuan_baru'))),
@@ -375,8 +359,7 @@ class Nomor extends MY_Controller
 		$this->M_nomor->updateNomorDetail($data, $id);
 	}
 
-	public function deleteNomorEasyui()
-	{
+	public function deleteNomorEasyui(){
 		$isi = $this->session->userdata();
 
 		/* Insert Transaksi Detail */
@@ -406,8 +389,7 @@ class Nomor extends MY_Controller
 	}
 
 	/* CLOSSED */
-	public function updateClossed()
-	{
+	public function updateClossed(){
 		$isi = $this->session->userdata();
 
 		if (isset($_FILES['transaksi_detail_file'])) {
@@ -461,8 +443,7 @@ class Nomor extends MY_Controller
 	/* CLOSSED */
 
 	/* CLOSSED DETAIL */
-	public function updateClossedDetail()
-	{
+	public function updateClossedDetail(){
 		$isi = $this->session->userdata();
 
 		if (isset($_FILES['transaksi_detail_file'])) {
@@ -515,8 +496,7 @@ class Nomor extends MY_Controller
 	}
 	/* CLOSSED DETAIL */
 
-	public function insertAuto()
-	{
+	public function insertAuto(){
 		$isi = $this->session->userdata();
 		$tgl = date('Y-m-d H:i:s');
 
@@ -565,8 +545,7 @@ class Nomor extends MY_Controller
 		// }
 	}
 
-	public function getAlert()
-	{
+	public function getAlert(){
 		$isi = $this->session->userdata();
 		$param['seksi_id'] = $isi['id_seksi'];
 
@@ -586,8 +565,7 @@ class Nomor extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function Reject()
-	{
+	public function Reject(){
 		$isi = $this->session->userdata();
 		$param['transaksi_rutin_id'] = $this->input->get('id');
 
@@ -620,8 +598,7 @@ class Nomor extends MY_Controller
 		}
 	}
 
-	public function simpanSample()
-	{
+	public function simpanSample(){
 		$isi = $this->session->userdata();
 		$param['transaksi_rutin_id'] = $this->input->get('id');
 
@@ -649,8 +626,7 @@ class Nomor extends MY_Controller
 		}
 	}
 
-	public function Cancel()
-	{
+	public function Cancel(){
 		$param['transaksi_rutin_id'] = $this->input->get_post('id');
 		// print_r($param);
 		// $data = $this
@@ -659,8 +635,7 @@ class Nomor extends MY_Controller
 		// echo json_encode($data);
 	}
 
-	public function hapusNomorDetail()
-	{
+	public function hapusNomorDetail(){
 		$param = [
 			'transaksi_id' => $this->input->get_post('transaksi_id'),
 			'transaksi_detail_id' => $this->input->get_post('transaksi_detail_id'),
@@ -672,8 +647,7 @@ class Nomor extends MY_Controller
 
 	// PROSES LOGSHEET
 	// insert logsheet
-	public function insertLogsheetMultiple()
-	{
+	public function insertLogsheetMultiple(){
 		http: //10.14.41.130/test_digilab_v2/sample/nomor/logsheetMultipleNomor?header_menu=02&menu_id=0205&id_transaksi_rutin=1676365440689&status=0
 
 		$param_url['header_menu'] = $this->input->post('header_menu');
@@ -784,8 +758,7 @@ class Nomor extends MY_Controller
 	// insert logsheet
 
 	// insert draft
-	public function insertLogsheetMultipleDraft()
-	{
+	public function insertLogsheetMultipleDraft(){
 		$this->load->model('M_inbox');
 		$this->load->library('ciqrcode'); //pemanggilan library QR CODE
 
@@ -862,8 +835,7 @@ class Nomor extends MY_Controller
 	// insert draft
 
 	// insert aprrove kasie
-	public function insertLogsheetMultipleReview()
-	{
+	public function insertLogsheetMultipleReview(){
 		$this->load->model('M_inbox');
 		$this->load->library('ciqrcode'); //pemanggilan library QR CODE
 
@@ -1099,8 +1071,7 @@ class Nomor extends MY_Controller
 	}
 	// insert approve kasie
 
-	public function insertLogsheetMultipleApprove()
-	{ {
+	public function insertLogsheetMultipleApprove(){ {
 
 			$param_url['header_menu'] = $this->input->post('header_menu');
 			$param_url['menu_id'] = $this->input->post('menu_id');
@@ -1135,8 +1106,7 @@ class Nomor extends MY_Controller
 	}
 
 	// reset logsheet
-	public function insertReset()
-	{
+	public function insertReset(){
 		$session = $this->session->userdata();
 
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
@@ -1183,8 +1153,7 @@ class Nomor extends MY_Controller
 	}
 	// reset logsheet
 
-	public function insertDOF()
-	{
+	public function insertDOF(){
 		$this->load->library('PdfGenerator');
 
 		$session = $this->session->userdata();
@@ -1490,8 +1459,7 @@ class Nomor extends MY_Controller
 		// redirect($redirect, 'refresh');
 	}
 
-	public function insertCloseNonLetter()
-	{
+	public function insertCloseNonLetter(){
 
 		$session = $this->session->userdata();
 

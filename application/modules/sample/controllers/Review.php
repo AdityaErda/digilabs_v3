@@ -1,12 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Review extends MY_Controller
-{
+class Review extends MY_Controller{
 
-
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		isLogin();
 		$this->load->model('api/M_user', 'M_user_api');
@@ -18,25 +15,24 @@ class Review extends MY_Controller
 		$this->load->model('sample/M_nomor');
 	}
 
-	public function index()
-	{
+	public function index(){
 		// $this->checkLogin();
 		$isi['judul'] = 'Sample Review';
 		$data = $this->session->userdata();
+		$data['session'] = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 		// $data['tipe'] = $this->input->get('tipe');
+		
+		$this->db->where('user_poscode', 'E44000000');
+		$this->db->from('global.global_api_user');
+		$data['vp_ppk'] = $this->db->get()->row_array();
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/review');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/review_js');
+		$this->template->template_master('sample/review',$isi,$data);
 	}
 
 	// Proccess
-	public function procesReview()
-	{
+	public function procesReview(){
 		$isi['judul'] = 'Sample Review';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -49,21 +45,15 @@ class Review extends MY_Controller
 		$param['transaksi_status'] = $this->input->get_post('status');
 
 
-		$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-		$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
-		$result['sample_detail'] = $this->M_request->getRequestDetail($param);
+		$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+		$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+		$data['sample_detail'] = $this->M_request->getRequestDetail($param);
 
-
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/review_proces', $result);
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/review_proces_js');
+		$this->template->template_master('sample/review_proces',$isi,$data);
 	}
 
 	/* GET */
-	public function getReview()
-	{
+	public function getReview(){
 		$isi = $this->session->userdata();
 
 		if ($this->input->get('tgl_cari')) $tgl = explode(' - ', $this->input->get('tgl_cari'));
@@ -117,8 +107,7 @@ class Review extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function insertReview()
-	{
+	public function insertReview(){
 		$session = $this->session->userdata();
 		$data_user['direct_superior'] = substr($session['user_direct_superior'], 0, 6);
 		$user = $this->M_user_api->getUserList($data_user);
@@ -248,8 +237,7 @@ class Review extends MY_Controller
 		sampleLog($this->input->get_post('transaksi_id'), null, $id_non_rutin, $data_transaksi['transaksi_tipe'], $data_transaksi['transaksi_status'], 'Pekerjaan Telah Review Oleh AVP Peminta Jasa ');
 	}
 
-	public function insertReject()
-	{
+	public function insertReject(){
 		$id = $this->input->get_post('transaksi_non_rutin_id');
 		$param['transaksi_reject_alasan']  = anti_inject($this->input->get_post('transaksi_reject_alasan'));
 		$param['transaksi_status'] = '15';

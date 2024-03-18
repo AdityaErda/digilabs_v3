@@ -1,32 +1,24 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Reject_nomor extends MY_Controller
-{
+class Reject_nomor extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		isLogin();
 		$this->load->model('sample/M_reject_nomor');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Reject Nomor Sample';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/reject_nomor');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/reject_nomor_js');
+		$this->template->template_master('sample/reject_nomor',$isi,$data);
 	}
 
-	public function getNomor()
-	{
+	public function getNomor(){
 		$param['tanggal_cari'] = $this->input->get_post('tanggal_cari');
 		$param['tanggal_cari_awal'] = $this->input->get_post('tanggal_cari_awal');
 		$param['tanggal_cari_akhir'] = $this->input->get_post('tanggal_cari_akhir');
@@ -44,8 +36,7 @@ class Reject_nomor extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function prosesNomor()
-	{
+	public function prosesNomor(){
 		$param = array();
 
 		if ($this->input->get('tgl_cari')) $tgl = explode(' - ', $this->input->get('tgl_cari'));

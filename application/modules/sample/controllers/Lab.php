@@ -4,9 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Lab extends MY_Controller
 {
 
-
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		isLogin();
 		$this->load->model('master/M_user', 'M_user');
@@ -21,27 +19,23 @@ class Lab extends MY_Controller
 		$this->load->model('sample/M_approve');
 	}
 
-
-
-	public function index()
-	{
+	public function index(){
 		// $this->checkLogin();
 		$isi['judul'] = 'Sample Accepted';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 		// $data['tipe'] = $this->input->get('tipe');
+		$data['session'] = $this->session->userdata();
+		$this->db->where('user_poscode', 'E44000000');
+		$this->db->from('global.global_api_user');
+		$data['vp_ppk'] = $this->db->get()->row_array();
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/lab');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/lab_js');
+		$this->template->template_master('sample/lab',$isi,$data);
 	}
 
 	// Proccess
-	public function procesLab()
-	{
+	public function procesLab(){
 		$isi['judul'] = 'Sample Accepted';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -54,22 +48,22 @@ class Lab extends MY_Controller
 		$param['transaksi_status'] = $this->input->get_post('status');
 
 
-		$result['sample'] = $this->M_request->getRequestAll($param, $where = null);
-		$result['sample_klasifikasi'] = $this->M_klasifikasi_sample->getKlasifikasiSample($param);
-		$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-		$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
-		$result['sample_detail'] = $this->M_request->getRequestDetail($param);
+		$data['sample'] = $this->M_request->getRequestAll($param, $where = null);
+		$data['sample_klasifikasi'] = $this->M_klasifikasi_sample->getKlasifikasiSample($param);
+		$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+		$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+		$data['sample_detail'] = $this->M_request->getRequestDetail($param);
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/lab_proces', $result);
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/lab_proces_js');
+		$data['session'] = $this->session->userdata();
+		$this->db->where('user_poscode', 'E44000000');
+		$this->db->from('global.global_api_user');
+		$data['vp_ppk'] = $this->db->get()->row_array();
+
+		$this->template->template_master('sample/lab_proces',$isi,$data);
 	}
 
 	// Preview
-	public function previewRequest()
-	{
+	public function previewRequest(){
 		$isi['judul'] = 'Sample Approved';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
@@ -81,23 +75,18 @@ class Lab extends MY_Controller
 		$param['transaksi_non_rutin_id'] = $this->input->get_post('non_rutin');
 		$param['transaksi_status'] = $this->input->get_post('status');
 
-		$result['sample'] = $this->M_request->getRequestNew($param, $where = null);
+		$data['sample'] = $this->M_request->getRequestNew($param, $where = null);
 
-		$result['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
-		$result['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
-		$result['sample_detail'] = $this->M_request->getRequestDetail($param);
+		$data['sample_jenis'] = $this->M_sample_jenis->getJenisSampleUJi($param);
+		$data['pekerjaan_jenis'] = $this->M_sample_pekerjaan->getJenisPekerjaan($param);
+		$data['sample_detail'] = $this->M_request->getRequestDetail($param);
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/request_preview', $result);
-		$this->load->view('tampilan/footer');
-		// $this->load->view('sample/request_proces_js');
+		$this->template->template_master('sample/request_preview',$isi,$data);
 	}
 
 
 	/* GET */
-	public function getLab()
-	{
+	public function getLab(){
 		$isi = $this->session->userdata();
 
 		if ($this->input->get('tgl_cari')) $tgl = explode(' - ', $this->input->get('tgl_cari'));
@@ -138,8 +127,7 @@ class Lab extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getLabDetail()
-	{
+	public function getLabDetail(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
 		$param['transaksi_non_rutin_id'] = $this->input->get_post('transaksi_non_rutin_id');
@@ -150,8 +138,7 @@ class Lab extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getSeksiDisposisi()
-	{
+	public function getSeksiDisposisi(){
 		$param['id_transaksi'] = $this->input->get_post('id_transaksi');
 		$param['id_transaksi_detail'] = $this->input->get_post('id_transaksi_detail');
 		$param['seksi_disposisi_id'] = $this->input->get_post('seksi_disposisi_id');
@@ -166,8 +153,7 @@ class Lab extends MY_Controller
 
 	// BARU
 
-	public function insertLabDetail()
-	{
+	public function insertLabDetail(){
 		$session = $this->session->userdata();
 		$status = $this->input->get_post('transaksi_status');
 		$jumlah_upload_data = count($this->input->get_post('transaksi_detail_id'));
@@ -245,8 +231,7 @@ class Lab extends MY_Controller
 		$this->db->insert_batch('sample.sample_transaksi_detail', $data_detail);
 	}
 
-	public function insertDisposisiAVP()
-	{
+	public function insertDisposisiAVP(){
 		$session = $this->session->userdata();
 		$status = $this->input->get_post('transaksi_status') + 1;
 
@@ -265,8 +250,7 @@ class Lab extends MY_Controller
 		}
 	}
 
-	public function insertDisposisiSeksi()
-	{
+	public function insertDisposisiSeksi(){
 		$session = $this->session->userdata();
 
 		$transaksi_id = $this->input->post('transaksi_id');
@@ -344,8 +328,7 @@ class Lab extends MY_Controller
 		sampleLog(anti_inject($this->input->get_post('transaksi_id')), null, anti_inject($this->input->get_post('transaksi_non_rutin_id')), anti_inject($this->input->get_post('transaksi_tipe')), anti_inject($this->input->get_post('transaksi_status')), 'Pekerjaan Telah Disposisikan Oleh AVP LUK');
 	}
 
-	public function insertDisposisiSeksiChemlat()
-	{
+	public function insertDisposisiSeksiChemlat(){
 		$session = $this->session->userdata();
 
 		$seksi_id_transaksi = $this->input->get_post('transaksi_disposisi_seksi_id_transaksi_chemlat');
@@ -395,8 +378,7 @@ class Lab extends MY_Controller
 			}
 
 	// cetak
-			public function cetakKeterangan()
-			{
+			public function cetakKeterangan(){
 				$param['transaksi_keterangan_id'] = anti_inject($this->input->get_post('transaksi_keterangan_id'));
 				$data['keterangan'] = $this->M_request->getKeterangan($param);
 				$this->load->view('sample/cetak/memo', $data, FALSE);

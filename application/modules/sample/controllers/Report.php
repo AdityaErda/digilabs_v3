@@ -1,34 +1,26 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Report extends MY_Controller
-{
+class Report extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		isLogin();
 		$this->load->model('sample/M_report');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Report Sample';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 		$data['tipe'] = $this->input->get('tipe');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/report');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/report_js');
+		$this->template->template_master('sample/report',$isi,$data);
 	}
 
 	/* GET */
-	public function getJenisSample()
-	{
+	public function getJenisSample(){
 		$listJenis['results'] = array();
 
 		$param['jenis_nama'] = $this->input->get('jenis_nama');
@@ -42,8 +34,7 @@ class Report extends MY_Controller
 		echo json_encode($listJenis);
 	}
 
-	public function getParameter()
-	{
+	public function getParameter(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
 		$param['jenis_id'] = $this->input->get_post('jenis_id');
@@ -59,8 +50,7 @@ class Report extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getHistoryLogSheet()
-	{
+	public function getHistoryLogSheet(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['jenis_id'] = $this->input->get_post('jenis_id');
 		// $param['jenis_id'] = $this->input->get_post('jenis');
@@ -74,8 +64,7 @@ class Report extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function print()
-	{
+	public function print(){
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['jenis_id'] = $this->input->get_post('jenis_id');
 		$param['jenis_id'] = $this->input->get_post('jenis');

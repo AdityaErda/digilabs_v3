@@ -1,41 +1,32 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Approve extends MY_Controller
-{
+class Approve extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 
 		$this->load->model('M_daftar');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Approve Document';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('document/approve');
-		$this->load->view('tampilan/footer');
-		$this->load->view('document/approve_js');
+		$this->template->template_master('document/approve',$isi,$data);
 	}
 
 	// get data
-	public function getDataPengajuanDetail()
-	{
+	public function getDataPengajuanDetail(){
 		$par['transaksi_detail_id'] = ($this->input->get_post('transaksi_detail_id'));
 		echo json_encode($this->M_daftar->getDataPengajuanDetail($par));
 	}
 	// end  data
 
 	// start aprove
-	public function aprovePengajuan()
-	{
+	public function aprovePengajuan(){
 		$user = $this->session->userdata();
 
 		if (isset($_FILES['transaksi_file'])) {
@@ -99,8 +90,7 @@ class Approve extends MY_Controller
 	}
 
 	// start aprove
-	public function tolakPengajuan()
-	{
+	public function tolakPengajuan(){
 		$user = $this->session->userdata();
 
 		if (isset($_FILES['transaksi_file'])) {

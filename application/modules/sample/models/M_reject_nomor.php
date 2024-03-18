@@ -1,10 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_reject_nomor extends CI_Model
-{
-	public function getNomor($data = null, $where = null)
-	{
+class M_reject_nomor extends CI_Model{
+	public function getNomor($data = null, $where = null){
 		$this->db->select("a.transaksi_id, a.transaksi_tipe, a.transaksi_status, a.transaksi_nomor, b.*, c.jenis_nama, d.peminta_jasa_nama, e.sample_pekerjaan_nama, f.identitas_nama, to_char(transaksi_detail_tgl_pengajuan, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_pengajuan_baru, to_char(transaksi_detail_tgl_memo, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_memo_baru, to_char(transaksi_detail_tgl_estimasi, 'DD-MM-YYYY HH24:MI:SS') AS transaksi_detail_tgl_estimasi_baru");
 		$this->db->from('sample.sample_transaksi a');
 		$this->db->join('sample.sample_transaksi_detail b', 'a.transaksi_id = b.transaksi_id AND a.id_transaksi_detail = b.transaksi_detail_id', 'left');
@@ -25,8 +23,7 @@ class M_reject_nomor extends CI_Model
 	}
 
 	/* UPDATE */
-	public function updateNomor($data, $id)
-	{
+	public function updateNomor($data, $id){
 		$this->db->set($data);
 		$this->db->where('transaksi_id', $id);
 		$this->db->update('sample.sample_transaksi');
@@ -36,8 +33,7 @@ class M_reject_nomor extends CI_Model
 	/* UPDATE */
 
 	/* UPDATE DETAIL */
-	public function updateNomorDetail($data, $id)
-	{
+	public function updateNomorDetail($data, $id){
 		$this->db->set($data);
 		$this->db->where('transaksi_id', $id);
 		$this->db->update('sample.sample_transaksi_detail');

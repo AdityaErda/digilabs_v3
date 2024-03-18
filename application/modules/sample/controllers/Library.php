@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Library extends MY_Controller
-{
+class Library extends MY_Controller{
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		isLogin();
 		$this->load->model('sample/M_request');
@@ -14,24 +12,18 @@ class Library extends MY_Controller
 		$this->load->model('sample/M_notifikasi');
 	}
 
-	public function index()
-	{
+	public function index(){
 		$isi['judul'] = 'Library';
 		$data = $this->session->userdata();
 		$data['id_sidebar'] = $this->input->get('id_sidebar');
 		$data['id_sidebar_detail'] = $this->input->get('id_sidebar_detail');
 		// $data['tipe'] = $this->input->get('tipe');
 
-		$this->load->view('tampilan/header', $isi);
-		$this->load->view('tampilan/sidebar', $data);
-		$this->load->view('sample/library');
-		$this->load->view('tampilan/footer');
-		$this->load->view('sample/library_js');
+		$this->template->template_master('sample/library',$isi,$data);
 	}
 
 	/* GET */
-	public function getLibrary()
-	{
+	public function getLibrary(){
 		$session = $this->session->userdata();
 
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
@@ -64,8 +56,7 @@ class Library extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getLibraryLanding()
-	{
+	public function getLibraryLanding(){
 		// if ($this->input->get('tgl_cari')) $tgl = explode(' - ', $this->input->get('tgl_cari'));
 
 		$param['transaksi_id'] = $this->input->get_post('transaksi_id');
@@ -100,8 +91,7 @@ class Library extends MY_Controller
 	/* GET */
 
 	/* GET DETAIL */
-	public function getLibraryDetail()
-	{
+	public function getLibraryDetail(){
 		$param1['transaksi_id'] = $this->input->get_post('transaksi_id');
 		$param['transaksi_non_rutin_id'] = $this->input->get_post('transaksi_non_rutin_id');
 		$param['jenis_id'] = $this->input->get_post('jenis_id');
@@ -121,8 +111,7 @@ class Library extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getHistoryLogSheet()
-	{
+	public function getHistoryLogSheet(){
 		$param['sample_transaksi_id'] = $this->input->get_post('sample_transaksi_id');
 		$param['history_logsheet_id'] = $this->input->get_post('history_logsheet_id');
 
@@ -133,22 +122,10 @@ class Library extends MY_Controller
 		echo json_encode($data);
 	}
 
-	// public function getDetailProgress()
-	// {
-	// 	$param['transaksi_id'] = $this->input->get_post('transaksi_id');
-	// 	$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
-	// 	$param['transaksi_non_rutin_id'] = $this->input->get_post('transaksi_non_rutin_id');
-	// 	$param['transaksi_status'] = $this->input->get_post('transaksi_status');
-
-	// 	$data = $this->M_library->getDetailProgress($param);
-
-	// 	echo json_encode($data);
-	// }
 	/* GET DETAIL */
 
 	// GET EDIT
-	public function getLibraryEdit()
-	{
+	public function getLibraryEdit(){
 		$param['transaksi_detail_id'] = $this->input->get_post('transaksi_detail_id');
 		$data = $this->M_library->getLibraryEdit($param);
 		echo json_encode($data);
@@ -156,8 +133,7 @@ class Library extends MY_Controller
 	// GET EDIT
 
 	// EDIT
-	public function updateLibraryEdit()
-	{
+	public function updateLibraryEdit(){
 		$id = htmlentities($this->input->get_post('transaksi_detail_id'));
 		$param['transaksi_detail_note'] = htmlentities($this->input->get_post('transaksi_detail_note'));
 		$param['transaksi_detail_tgl_memo'] = htmlentities($this->input->get_post('transaksi_detail_tgl_memo'));
@@ -167,23 +143,20 @@ class Library extends MY_Controller
 	}
 	// EDIT
 
-	public function viewSertifikat($filename = NULL)
-	{
+	public function viewSertifikat($filename = NULL){
 		$data = [];
 		$data['path'] = FCPATH . '/dokumen_dof/' . $this->uri->segment(4);
 		$this->load->view('tampilan/header', $data, FALSE);
 		$this->load->view('sample/view_sertifikat', $data, FALSE);
 	}
 
-	public function downloadSertifikat($filename = NULL)
-	{
+	public function downloadSertifikat($filename = NULL){
 		$data = [];
 		$data['path'] = FCPATH . '/dokumen_dof/' . $this->uri->segment(4);
 		force_download($filename, file_get_contents($data['path']));
 	}
 
-	public function getDOFIdentitas()
-	{
+	public function getDOFIdentitas(){
 		$param['transaksi_id'] = $this->input->get('transaksi_id');
 		if ($this->input->get('transaksi_detail_group') != 'null') {
 			$param['transaksi_detail_group'] = $this->input->get('transaksi_detail_group');
@@ -195,8 +168,7 @@ class Library extends MY_Controller
 		echo json_encode($data);
 	}
 
-	public function getDOFStatus()
-	{
+	public function getDOFStatus(){
 		$param['transaksi_id'] = $this->input->get('transaksi_id');
 		$param['transaksi_detail_id'] = $this->input->get('transaksi_detail_id');
 		$param['jenis_id'] = $this->input->get('jenis_id');
